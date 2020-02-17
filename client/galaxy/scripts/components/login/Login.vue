@@ -4,36 +4,35 @@
             <div class="col col-lg-6">
                 <b-alert :show="messageShow" :variant="messageVariant" v-html="messageText" />
                 <b-form id="login" @submit.prevent="submitGalaxyLogin()">
-                    <b-card no-body header="Welcome to Galaxy, please log in">
+                    <b-card no-body header="欢迎使用希望组病原分析平台">
                         <b-card-body>
-                            <b-form-group label="Public name or Email Address">
+                            <b-form-group label="用户名或邮箱">
                                 <b-form-input name="login" type="text" v-model="login" />
                             </b-form-group>
-                            <b-form-group label="Password">
+                            <b-form-group label="密码">
                                 <b-form-input name="password" type="password" v-model="password" />
                                 <b-form-text
-                                    >Forgot password?
+                                    >忘记密码?
                                     <a @click="reset" href="javascript:void(0)" role="button"
-                                        >Click here to reset your password.</a
+                                        >点击这里重置密码.</a
                                     >
                                 </b-form-text>
                             </b-form-group>
-                            <b-button name="login" type="submit">Login</b-button>
+                            <b-button name="login" type="submit">登录</b-button>
                         </b-card-body>
                         <b-card-footer>
-                            Don't have an account?
+                            没有账户?
                             <span v-if="allowUserCreation">
                                 <a
                                     id="register-toggle"
                                     href="javascript:void(0)"
                                     role="button"
                                     @click.prevent="toggleLogin"
-                                    >Register here.</a
+                                    >点击这里注册账户</a
                                 >
                             </span>
                             <span v-else>
-                                Registration for this Galaxy instance is disabled. Please contact an administrator for
-                                assistance.
+                                已被管理员设置为不允许注册，请联系管理员
                             </span>
                         </b-card-footer>
                     </b-card>

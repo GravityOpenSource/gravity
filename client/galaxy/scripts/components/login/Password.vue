@@ -1,13 +1,13 @@
 <template>
     <b-form @submit.prevent="submit">
         <b-alert :show="messageShow" :variant="messageVariant" v-html="messageText" />
-        <b-card header="Change your password">
-            <b-form-group v-if="user" label="Current Password">
+        <b-card header="修改密码">
+            <b-form-group v-if="user" label="当前密码">
                 <b-form-input type="password" v-model="current" />
             </b-form-group>
-            <b-form-group label="New Password"> <b-form-input type="password" v-model="password" /> </b-form-group>
-            <b-form-group label="Confirm password"> <b-form-input type="password" v-model="confirm" /> </b-form-group>
-            <b-button type="submit">Save new password</b-button>
+            <b-form-group label="新密码"> <b-form-input type="password" v-model="password" /> </b-form-group>
+            <b-form-group label="确认新密码"> <b-form-input type="password" v-model="confirm" /> </b-form-group>
+            <b-button type="submit">保存新密码</b-button>
         </b-card>
     </b-form>
 </template>

@@ -6,24 +6,23 @@
                 </b-alert>
                 <b-alert :show="messageShow" :variant="messageVariant" v-html="messageText" />
                 <b-form id="registration" @submit.prevent="submit()">
-                    <b-card no-body header="Create a Galaxy account">
+                    <b-card no-body header="创建账号">
                         <b-card-body>
-                            <b-form-group label="Email Address">
+                            <b-form-group label="邮箱">
                                 <b-form-input name="email" type="text" v-model="email" />
                             </b-form-group>
-                            <b-form-group label="Password">
+                            <b-form-group label="密码">
                                 <b-form-input name="password" type="password" v-model="password" />
                             </b-form-group>
-                            <b-form-group label="Confirm password">
+                            <b-form-group label="确认密码">
                                 <b-form-input name="confirm" type="password" v-model="confirm" />
                             </b-form-group>
-                            <b-form-group label="Public name">
+                            <b-form-group label="用户名">
                                 <b-form-input name="username" type="text" v-model="username" />
                                 <b-form-text
-                                    >Your public name is an identifier that will be used to generate addresses for
-                                    information you share publicly. Public names must be at least three characters in
-                                    length and contain only lower-case letters, numbers, dots, underscores, and dashes
-                                    ('.', '_', '-').</b-form-text
+                                    >您的用户名是一个标识符，将用于为您公开共享的信息生成地址。
+                                     用户名的长度必须至少为三个字符，并且只包含小写字母、数字、 点、下划线和破折号('.', '_', '-')。
+                                     </b-form-text
                                 >
                             </b-form-group>
                             <b-form-group
@@ -32,12 +31,12 @@
                             >
                                 <input name="subscribe" type="checkbox" v-model="subscribe" />
                             </b-form-group>
-                            <b-button name="create" type="submit" :disabled="disableCreate">Create</b-button>
+                            <b-button name="create" type="submit" :disabled="disableCreate">创建</b-button>
                         </b-card-body>
                         <b-card-footer v-if="!isAdmin">
-                            Already have an account?
+                            已有账户?
                             <a id="login-toggle" href="javascript:void(0)" role="button" @click.prevent="toggleLogin"
-                                >Log in here.</a
+                                >点击这里登录</a
                             >
                         </b-card-footer>
                     </b-card>
