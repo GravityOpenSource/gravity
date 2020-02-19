@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<tool id="load_from_basecalled" name="加载数据" version="0.1.0">
+    <description>从Basecalled目录加载指定cell的fastq_pass数据</description>
+    <command>
+        mkdir -p outputs; cd outputs; python '$__tool_directory__/basecalled.py' -n $cell -f fastq -t pass
+    </command>
+    <inputs>
+        <param name="cell" type="text" label="Cell名称" value="20190219-TEST-P1"/>
+    </inputs>
+    <outputs>
+        <collection name="list_output" type="list" label="Basecalled Fastq Files">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        </collection>
+    </outputs>
+<!--    <help><![CDATA[
+        TODO: Fill in help.
+    ]]></help>-->
+</tool>

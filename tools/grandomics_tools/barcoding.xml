@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<tool id="barcoding_fastq_files" name="Qcat" version="0.1.0">
+    <description>拆分Barcode</description>
+    <command>
+        mkdir -p outputs; cd outputs; python '$__tool_directory__/basecalled.py' -n $cell -f fastq -t pass
+    </command>
+    <inputs>
+        <param name="cell" type="text" label="Cell名称" value="20190219-TEST-P1"/>
+    </inputs>
+    <outputs>
+        <collection name="list_output" type="list" label="Basecalled Fastq Files">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        </collection>
+    </outputs>
+<!--    <help><![CDATA[
+        TODO: Fill in help.
+    ]]></help>-->
+</tool>

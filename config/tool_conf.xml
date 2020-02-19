@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<toolbox monitor="true">
+    <section id="grandomics_getext" name="获取数据">
+        <tool file="grandomics_data_source/upload.xml"/>
+        <tool file="grandomics_data_source/basecalled.xml"/>
+    </section>
+    <section id="grandomics_send" name="Send Data">
+        <tool file="cloud/send.xml"/>
+        <tool file="genomespace/genomespace_exporter.xml"/>
+    </section>
+</toolbox>

@@ -66,29 +66,29 @@ reports.ini
 tool_shed_wsgi.ini
 
 # Config files.
-datatypes_conf.xml
-tool_conf.xml
-external_service_types_conf.xml
-migrated_tools_conf.xml
+#datatypes_conf.xml
+#tool_conf.xml
+#external_service_types_conf.xml
+#migrated_tools_conf.xml
 shed_tool_conf.xml
-tool_data_table_conf.xml
-tool_sheds_conf.xml
-integrated_tool_panel.xml
-openid_conf.xml
-shed_tool_data_table_conf.xml
-job_conf.xml
-data_manager_conf.xml
-shed_data_manager_conf.xml
-object_store_conf.xml
-job_metrics_conf.xml
-workflow_schedulers_conf.xml
-config/*
-config/plugins/interactive_environments/**/*.ini
-config/plugins/**/.cache
-!config/plugins
-static/welcome.html.*
-static/welcome.html
-static/client_build_hash.txt
+#tool_data_table_conf.xml
+#tool_sheds_conf.xml
+#integrated_tool_panel.xml
+#openid_conf.xml
+#shed_tool_data_table_conf.xml
+#job_conf.xml
+#data_manager_conf.xml
+#shed_data_manager_conf.xml
+#object_store_conf.xml
+#job_metrics_conf.xml
+#workflow_schedulers_conf.xml
+#config/*
+#config/plugins/interactive_environments/**/*.ini
+#config/plugins/**/.cache
+#!config/plugins
+#static/welcome.html.*
+#static/welcome.html
+#static/client_build_hash.txt
 
 # Tool data.
 tool-data/annotation_profiler_options.xml
