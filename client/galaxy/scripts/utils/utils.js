@@ -342,9 +342,9 @@ export function getQueryString(key) {
 export function setWindowTitle(title) {
     const Galaxy = getGalaxyInstance();
     if (title) {
-        window.document.title = `Galaxy ${Galaxy.config.brand ? ` | ${Galaxy.config.brand}` : ""} | ${_l(title)}`;
+        window.document.title = `GrandOmics Galaxy ${Galaxy.config.brand ? ` | ${Galaxy.config.brand}` : ""} | ${_l(title)}`;
     } else {
-        window.document.title = `Galaxy ${Galaxy.config.brand ? ` | ${Galaxy.config.brand}` : ""}`;
+        window.document.title = `GrandOmics Galaxy ${Galaxy.config.brand ? ` | ${Galaxy.config.brand}` : ""}`;
     }
 }
 
