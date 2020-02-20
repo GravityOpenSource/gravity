@@ -27,7 +27,7 @@
         <param name="input_fastqs" type="data_collection" multiple="true" format="fastq" label="输入FASTQ"/>
     </inputs>
     <outputs>
-        <collection name="list_output" type="list" label="BARCODED FASTQs">
+        <collection name="list_output" type="list" label="MERGED BARCODED FASTQs">
             <discover_datasets pattern="__name_and_ext__" directory="outputs" />
         </collection>
     </outputs>
