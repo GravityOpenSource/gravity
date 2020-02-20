@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<tool id="merge_barcode" name="Merge Barcode" version="0.1.0">
+    <description>Merge Barcode Fastqs</description>
+    <command><![CDATA[
+        mkdir -p outputs && cd outputs && python $__tool_directory__/merge_barcode_fastq.py -n
+        #for $input_fastq in $input_fastqs
+            #if $input_fastq.is_collection
+                #for $fastq in $input_fastq
+                    $fastq.element_identifier
+                #end for
+            #else
+                $input_fastq.element_identifier
+            #end if
+        #end for
+        -i
+        #for $input_fastq in $input_fastqs
+            #if $input_fastq.is_collection
+                #for $fastq in $input_fastq
+                    $fastq
+                #end for
+            #else
+                $input_fastq
+            #end if
+        #end for
+    ]]></command>
+    <inputs>
+        <param name="input_fastqs" type="data_collection" multiple="true" format="fastq" label="输入FASTQ"/>
+    </inputs>
+    <outputs>
+        <collection name="list_output" type="list" label="BARCODED FASTQs">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        </collection>
+    </outputs>
+    <help><![CDATA[
+User' Guide
+--------------
+
+Usage:
+  seqkit seq [flags]
+
+Flags:
+  -p, --complement                complement sequence, flag '-v' is recommended to switch on
+  --dna2rna                       DNA to RNA
+  -G, --gap-letters string        gap letters (default "- \t.")
+  -h, --help                      help for seq
+  -l, --lower-case                print sequences in lower case
+  -M, --max-len int               only print sequences shorter than the maximum length (-1 for no limit) (default -1)
+  -R, --max-qual float            only print sequences with average quality less than this limit (-1 for no limit) (default -1)
+  -m, --min-len int               only print sequences longer than the minimum length (-1 for no limit) (default -1)
+  -Q, --min-qual float            only print sequences with average quality qreater or equal than this limit (-1 for no limit) (default -1)
+  -n, --name                      only print names
+  -i, --only-id                   print ID instead of full head
+  -q, --qual                      only print qualities
+  -b, --qual-ascii-base int       ASCII BASE, 33 for Phred+33 (default 33)
+  -g, --remove-gaps               remove gaps
+  -r, --reverse                   reverse sequence
+  --rna2dna                   RNA to DNA
+  -s, --seq                       only print sequences
+  -u, --upper-case                print sequences in upper case
+  -v, --validate-seq              validate bases according to the alphabet
+  -V, --validate-seq-length int   length of sequence to validate (0 for whole seq) (default 10000)
+
+Global Flags:
+  --alphabet-guess-seq-length int   length of sequence prefix of the first FASTA record based on which seqkit guesses the sequence type (0 for whole seq) (default 10000)
+  --id-ncbi                         FASTA head is NCBI-style, e.g. >gi|110645304|ref|NC_002516.2| Pseud...
+  --id-regexp string                regular expression for parsing ID (default "^(\\S+)\\s?")
+  -w, --line-width int              line width when outputing FASTA format (0 for no wrap) (default 60)
+  -o, --out-file string             out file ("-" for stdout, suffix .gz for gzipped out) (default "-")
+  --quiet                           be quiet and do not show extra information
+  -t, --seq-type string             sequence type (dna|rna|protein|unlimit|auto) (for auto, it automatically detect by the first sequence) (default "auto")
+  -j, --threads int                 number of CPUs. (default value: 1 for single-CPU PC, 2 for others) (default 2)
+
+        ]]></help>
+</tool>

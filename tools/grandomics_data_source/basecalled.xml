@@ -8,7 +8,7 @@
         <param name="cell" type="text" label="Cell名称" value="20190219-TEST-P1"/>
     </inputs>
     <outputs>
-        <collection name="list_output" type="list" label="Basecalled Fastq Files">
+        <collection name="list_output" type="list" label="BASECALLED FASTQs">
             <discover_datasets pattern="__name_and_ext__" directory="outputs" />
         </collection>
     </outputs>

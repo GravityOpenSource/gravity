@@ -8,4 +8,9 @@
         <tool file="cloud/send.xml"/>
         <tool file="genomespace/genomespace_exporter.xml"/>
     </section>
+    <section id="grandomics_tools" name="希望组工具">
+        <tool file="grandomics_tools/barcoding.xml"/>
+        <tool file="grandomics_tools/seqkit.xml"/>
+        <tool file="grandomics_tools/merge.xml"/>
+    </section>
 </toolbox>
