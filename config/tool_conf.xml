@@ -13,6 +13,7 @@
         <tool file="grandomics_tools/barcoding.xml"/>
         <tool file="grandomics_tools/seqkit.xml"/>
         <tool file="grandomics_tools/merge.xml"/>
+        <tool file="grandomics_tools/nanoplexer_demulx.xml"/>
     </section>
     <section id="grandomics_rampart" name="病原实时检测">
         <tool file="grandomics_rampart/rampart_start.xml"/>
