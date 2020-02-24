@@ -39,7 +39,7 @@ var LibraryListView = Backbone.View.extend({
                 if (typeof response.responseJSON !== "undefined") {
                     Toast.error(response.responseJSON.err_msg);
                 } else {
-                    Toast.error("An error occurred.");
+                    Toast.error("发生一个错误。");
                 }
             }
         });
@@ -149,7 +149,8 @@ var LibraryListView = Backbone.View.extend({
                     if (typeof response.responseJSON !== "undefined") {
                         Toast.error(response.responseJSON.err_msg);
                     } else {
-                        Toast.error("An error occurred.");
+                        // Toast.error("An error occurred.");
+                        Toast.error("发生一个错误。");
                     }
                 }
             });
@@ -278,18 +279,18 @@ var LibraryListView = Backbone.View.extend({
                             $(this).removeClass("table-success");
                         });
 
-                    Toast.success("Library created.");
+                    Toast.success("文库创建成功。");
                 },
                 error: (model, response) => {
                     if (typeof response.responseJSON !== "undefined") {
                         Toast.error(response.responseJSON.err_msg);
                     } else {
-                        Toast.error("An error occurred.");
+                        Toast.error("发生一个错误。");
                     }
                 }
             });
         } else {
-            Toast.error("Library's name is missing.");
+            Toast.error("文库名称缺失。");
         }
         return false;
     },
@@ -302,22 +303,22 @@ var LibraryListView = Backbone.View.extend({
         return _.template(
             `<tr class="new-row">
                     <td>
-                        <textarea name="input_library_name" rows="4" class="form-control input_library_name" placeholder="name" ></textarea>
+                        <textarea name="input_library_name" rows="4" class="form-control input_library_name" placeholder="名称" ></textarea>
                     </td>
                     <td>
-                        <textarea rows="4" class="form-control input_library_description" placeholder="description"></textarea>
+                        <textarea rows="4" class="form-control input_library_description" placeholder="描述"></textarea>
                     </td>
                     <td>
-                        <textarea rows="4" class="form-control input_library_synopsis" placeholder="synopsis"></textarea>
+                        <textarea rows="4" class="form-control input_library_synopsis" placeholder="简介"></textarea>
                     </td>
                     <td class="right-center">
                         <button data-toggle="tooltip" data-placement="left" title="Save changes"
                             class="btn btn-secondary btn-sm save_library_btn" type="button">
-                            <span class="fa fa-floppy-o"></span> Save
+                            <span class="fa fa-floppy-o"></span> 保存
                         </button>
                         <button data-toggle="tooltip" data-placement="left" title="Discard changes"
                             class="btn btn-secondary btn-sm cancel_library_btn" type="button">
-                            <span class="fa fa-times"></span> Cancel
+                            <span class="fa fa-times"></span> 关闭
                         </button>
                     </td>     
             </tr>`
@@ -331,13 +332,14 @@ var LibraryListView = Backbone.View.extend({
                     <% if(length === 0) { %> style="display:none;" <% }%> >
                     <thead>
                         <th style="width:30%;">
-                            <a class="sort-libraries-link" title="Click to reverse order" href="javascript:void(0)" role="button">
-                                Name
+<!--                            <a class="sort-libraries-link" title="Click to reverse order" href="javascript:void(0)" role="button">-->
+                            <a class="sort-libraries-link" title="点击转换排序" href="javascript:void(0)" role="button">
+                                名称
                             </a>
                             <span title="Sorted alphabetically" class="fa fa-sort-alpha-<%- order %>"></span>
                         </th>
-                        <th style="width:22%;">Description</th>
-                        <th style="width:22%;">Synopsis</th> 
+                        <th style="width:22%;">描述</th>
+                        <th style="width:22%;">简介</th> 
                         <th style="width:26%;"></th>
                     </thead>
                     <tbody id="library_list_body">
@@ -348,12 +350,14 @@ var LibraryListView = Backbone.View.extend({
                 <% if(length === 0) { %>
                     <% if(search_term.length > 0) { %>
                         <div>
-                            There are no libraries matching your search. Try different keyword.
+<!--                            There are no libraries matching your search. Try different keyword.-->
+                            没有与您的搜索匹配的文库。尝试不同的关键字。
                         </div>
                     <% } else{ %>
                         <div>
-                            There are no libraries visible to you here. If you expected some to show up please consult the
-                            <a href="https://galaxyproject.org/data-libraries/#permissions" target="_blank">library security wikipage</a>.
+<!--                            There are no libraries visible to you here. If you expected some to show up please consult the-->
+<!--                            <a href="https://galaxyproject.org/data-libraries/#permissions" target="_blank">library security wikipage</a>.There are no libraries visible to you here. If you expected some to show up please consult the-->
+                            这里没有可显示的文库。如果你希望显示，请联系技术人员。
                         </div>
                     <% }%>
                 <% }%>

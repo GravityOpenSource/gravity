@@ -268,18 +268,21 @@ var LibraryRowView = Backbone.View.extend({
                     <% } %>
                 <% } else if(edit_mode){ %>
                     <td>
-                        <textarea rows="4" class="form-control input_library_name" placeholder="name" ><%- library.get("name") %></textarea>
+<!--                        <textarea rows="4" class="form-control input_library_name" placeholder="name" ><%- library.get("name") %></textarea>-->
+                        <textarea rows="4" class="form-control input_library_name" placeholder="名称" ><%- library.get("name") %></textarea>
                     </td>
                     <td>
-                        <textarea rows="4" class="form-control input_library_description" placeholder="description"><%- library.get("description") %></textarea>
+<!--                        <textarea rows="4" class="form-control input_library_description" placeholder="description"><%- library.get("description") %></textarea>-->
+                        <textarea rows="4" class="form-control input_library_description" placeholder="描述"><%- library.get("description") %></textarea>
                     </td>
                     <td>
-                        <textarea rows="4" class="form-control input_library_synopsis" placeholder="synopsis"><%- library.get("synopsis") %></textarea>
+<!--                        <textarea rows="4" class="form-control input_library_synopsis" placeholder="synopsis"><%- library.get("synopsis") %></textarea>-->
+                        <textarea rows="4" class="form-control input_library_synopsis" placeholder="简介"><%- library.get("synopsis") %></textarea>
                     </td>
                 <% } %>
                 <td class="right-center">
                     <% if( (library.get("public")) && (library.get("deleted") === false) ) { %>
-                        <span data-toggle="tooltip" data-placement="left" title="Unrestricted library"
+                        <span data-toggle="tooltip" data-placement="left" title="无限制的库"
                             class="fa fa-globe fa-lg"></span>
                     <% }%>
                     <button data-toggle="tooltip" data-placement="left" title="Modify '<%- library.get("name") %>'"

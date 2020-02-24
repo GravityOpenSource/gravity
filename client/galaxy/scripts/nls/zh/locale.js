@@ -50,7 +50,7 @@ define({
     "Account and saved data": "账号及数据保存",
     "Account registration or login": "注册与登录",
     "Support, contact, and community": "支持，联系，社区",
-    "Administer this Galaxy": "管理您的Galaxy",
+    "Administer this Galaxy": "管理您的平台",
     "Visualize datasets": "数据集可视化",
     "Access published resources": "访问发布的资源",
     "Chain tools into workflows": "将工具链接到工作流程中",
@@ -115,10 +115,11 @@ define({
     "You are over your disk quota": "您超出了您的磁盘配额",
     "Tool execution is on hold until your disk usage drops below your allocated quota":
         "工具执行处于暂停状态，直到您的磁盘使用量低于您分配的配额",
-    All: "所有的",
-    None: "一个也没有",
-    "For all selected": "为每个选定",
-
+    All: "全选",
+    None: "不选",
+    "For all selected": "为所有选中",
+    Server: "服务器",
+  
     // ---- history-view-edit
     "Edit history tags": "编辑历史标签",
     "Edit history annotation": "编辑历史备注",
@@ -135,6 +136,10 @@ define({
     "Delete datasets": "删除数据集",
     "Undelete datasets": "取消删除数据集",
     "Permanently delete datasets": "永久删除数据集",
+    "Build Dataset List": "建立数据集列表",
+    "Build Dataset Pair": "建立数据集对",
+    "Build List of Dataset Pairs": "建立数据集对列表",
+    "Build Collection from Rules": "从规则中构建集合",
     "This will permanently remove the data in your datasets. Are you sure?": "这将永久在您的数据集删除数据。你确定？",
 
     // ---- history-view-annotated

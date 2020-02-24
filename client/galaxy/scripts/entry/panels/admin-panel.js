@@ -11,7 +11,8 @@ const AdminPanel = Backbone.View.extend({
         this.config = options.config;
         this.settings = options.settings;
         this.model = new Backbone.Model({
-            title: `Galaxy version ${getGalaxyInstance().config.version_major}`
+            // title: `Galaxy version ${getGalaxyInstance().config.version_major}`
+            title: `系统版本 ${getGalaxyInstance().config.version_major}`
         });
         this.categories = new Backbone.Collection([
             {

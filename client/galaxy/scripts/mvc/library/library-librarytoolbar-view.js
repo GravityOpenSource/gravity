@@ -144,12 +144,15 @@ var LibraryToolbarView = Backbone.View.extend({
         return _.template(
             `<div class="library_style_container">
                 <div class="d-flex align-items-center mb-2">
-                    <a class="btn btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="Go to first page" href="#">
+<!--                    <a class="btn btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="Go to first page" href="#">-->
+                    <a class="btn btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="转到第一页" href="#">
                         <span class="fa fa-home"/>
                     </a>
                     <% if(admin_user === true) { %>
-                        <button data-toggle="tooltip" data-placement="top" title="Create new library" id="create_new_library_btn" class="mr-1 btn btn-secondary" type="button">
-                            <span class="fa fa-plus" /> Library
+<!--                        <button data-toggle="tooltip" data-placement="top" title="Create new library" id="create_new_library_btn" class="mr-1 btn btn-secondary" type="button">-->
+                        <button data-toggle="tooltip" data-placement="top" title="创建新的文库" id="create_new_library_btn" class="mr-1 btn btn-secondary" type="button">
+<!--                            <span class="fa fa-plus" /> Library-->
+                            <span class="fa fa-plus" /> 文库
                         </button>
                     <% } %>
                     <div class="d-flex align-items-center mr-1" />
@@ -158,11 +161,13 @@ var LibraryToolbarView = Backbone.View.extend({
                             <% if(admin_user === true) { %>
                                 <div class="form-check mr-1">
                                     <input class="form-check-input" id="include_deleted_chk" type="checkbox"/>
-                                    <label class="form-check-label" for="include_deleted_chk">include deleted</label>
+<!--                                    <label class="form-check-label" for="include_deleted_chk">include deleted</label>-->
+                                    <label class="form-check-label" for="include_deleted_chk">包含删除</label>
                                 </div>
                                 <div class="form-check mr-1">
                                     <input class="form-check-input" id="exclude_restricted_chk" type="checkbox"/>
-                                    <label class="form-check-label" for="exclude_restricted_chk">exclude restricted</label>
+<!--                                    <label class="form-check-label" for="exclude_restricted_chk">exclude restricted</label>-->
+                                    <label class="form-check-label" for="exclude_restricted_chk">排除限制</label>
                                 </div>
                             <% } %>
                         </form>
@@ -250,7 +255,8 @@ var LibraryToolbarView = Backbone.View.extend({
         );
     },
     templatePaginatorText: function() {
-        return _.template(`per page, <%- total_libraries_count %> total`);
+        // return _.template(`per page, <%- total_libraries_count %> total`);
+        return _.template(`条/页, 总计 <%- total_libraries_count %>`);
     }
 });
 

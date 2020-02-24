@@ -14,7 +14,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 
         <title>
-            GrandOmics Galaxy
+            GrandOmics
             %if app.config.brand:
             | ${app.config.brand}
             %endif
