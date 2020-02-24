@@ -261,7 +261,7 @@ galaxy:
   # and environments are installed IMPORTANT: Due to a current
   # limitation in conda, the total length of the conda_prefix and the
   # job_working_directory path should be less than 50 characters!
-  #conda_prefix: <tool_dependency_dir>/_conda
+  conda_prefix: /opt/conda
 
   # Override the Conda executable to use, it will default to the one on
   # the PATH (if available) and then to <conda_prefix>/bin/conda
@@ -1010,7 +1010,7 @@ galaxy:
   # if you have special tools that require unaltered output.  WARNING:
   # disabling this does make the Galaxy instance susceptible to XSS
   # attacks initiated by your users.
-  #sanitize_all_html: true
+  sanitize_all_html: true
 
   # Whitelist sanitization file. Datasets created by tools listed in
   # this file are trusted and will not have their HTML sanitized on

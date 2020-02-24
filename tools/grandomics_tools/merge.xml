@@ -24,7 +24,7 @@
         #end for
     ]]></command>
     <inputs>
-        <param name="input_fastqs" type="data_collection" multiple="true" format="fastq" label="输入FASTQ"/>
+        <param name="input_fastqs" type="data_collection"  format="fastq" label="输入FASTQ"/>
     </inputs>
     <outputs>
         <collection name="list_output" type="list" label="MERGED BARCODED FASTQs">

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<tool id="seqkit_seq" name="SeqKit Seq" version="0.1.0">
+    <description>seqkit seq</description>
+    <command>
+        seqkit seq --quiet -m $min_length -M $max_length -o $output_fastq $input_fastq
+    </command>
+    <inputs>
+        <param name="cell" type="text" label="Cell名称" value="20190219-TEST-P1"/>
+        <param name="references" type="data" multiple="false" format="fasta" label="参考基因组(example: references.fasta)"/>
+        <param name="genome" type="data" multiple="false" format="json" label="基因组注释(example: genome.json)"/>
+        <param name="primers" type="data" multiple="false" format="json" label="Primers(example: primers.json)"/>
+    </inputs>
+    <outputs>
+        <data name="output_fastq" format="input" metadata_source="input_fastq"/>
+    </outputs>
+    <help><![CDATA[
+User' Guide
+--------------
+
+        ]]></help>
+</tool>

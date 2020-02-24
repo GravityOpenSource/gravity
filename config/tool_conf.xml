@@ -3,6 +3,7 @@
     <section id="grandomics_getext" name="获取数据">
         <tool file="grandomics_data_source/upload.xml"/>
         <tool file="grandomics_data_source/basecalled.xml"/>
+        <tool file="grandomics_data_source/test.xml" />
     </section>
     <section id="grandomics_send" name="Send Data">
         <tool file="cloud/send.xml"/>
@@ -12,5 +13,8 @@
         <tool file="grandomics_tools/barcoding.xml"/>
         <tool file="grandomics_tools/seqkit.xml"/>
         <tool file="grandomics_tools/merge.xml"/>
+    </section>
+    <section id="grandomics_rampart" name="病原实时检测">
+        <tool file="grandomics_rampart/rampart_start.xml"/>
     </section>
 </toolbox>
