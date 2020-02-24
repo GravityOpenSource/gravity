@@ -65,7 +65,7 @@ $.fn.make_text_editable = function(config_dict) {
                 });
             button_elt = $("<button/>")
                 .addClass("btn-sm float-right")
-                .text("Done")
+                .text("完成")
                 .click(() => {
                     set_text(input_elt.val());
                     // Return false so that click does not propogate to container.

@@ -54,10 +54,12 @@ const WorkflowItemView = Backbone.View.extend({
 
     removeWorkflow: function() {
         const wfName = this.model.get("name");
-        if (window.confirm(`Are you sure you want to delete workflow '${wfName}'?`)) {
+        // if (window.confirm(`Are you sure you want to delete workflow '${wfName}'?`)) {
+        if (window.confirm(`您确定要删除流程:'${wfName}'?`)) {
             this.model.destroy({
                 success: function() {
-                    Toast.success(`Successfully deleted workflow '${wfName}'`);
+                  // Toast.success(`Successfully deleted workflow '${wfName}'`);
+                  Toast.success(`成功删除流程:'${wfName}'`);
                 }
             });
             this.remove();
@@ -66,13 +68,15 @@ const WorkflowItemView = Backbone.View.extend({
 
     renameWorkflow: function() {
         const oldName = this.model.get("name");
-        const newName = window.prompt(`Enter a new Name for workflow '${oldName}'`, oldName);
+      // const newName = window.prompt(`Enter a new Name for workflow '${oldName}'`, oldName);
+      const newName = window.prompt(`输入流程'${oldName}'的新名称:`, oldName);
         if (newName) {
             this.model.save(
                 { name: newName },
                 {
                     success: function() {
-                        Toast.success(`Successfully renamed workflow '${oldName}' to '${newName}'`);
+                      // Toast.success(`Successfully renamed workflow '${oldName}' to '${newName}'`);
+                      Toast.success(`修改成功, 已将流程'${oldName}'改为'${newName}'`);
                     }
                 }
             );
@@ -87,14 +91,16 @@ const WorkflowItemView = Backbone.View.extend({
             let newName = `Copy of ${oldName}`;
             const currentOwner = this.model.get("owner");
             if (currentOwner != Galaxy.user.attributes.username) {
-                newName += ` shared by user ${currentOwner}`;
+              // newName += ` shared by user ${currentOwner}`;
+              newName += `由用户${currentOwner}共享`;
             }
             wfJson.name = newName;
             this.collection.create(wfJson, {
                 at: 0,
                 wait: true,
                 success: function() {
-                    Toast.success(`Successfully copied workflow '${oldName}' to '${newName}'`);
+                  // Toast.success(`Successfully copied workflow '${oldName}' to '${newName}'`);
+                  Toast.success(`复制成功, 已将流程'${oldName}'复制为'${newName}'`);
                 },
                 error: function(model, resp, options) {
                     // signature seems to have changed over the course of backbone dev
@@ -121,7 +127,8 @@ const WorkflowItemView = Backbone.View.extend({
                         ${_.escape(this.model.get("name"))}
                     </a>
                     <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="sr-only">Toggle Dropdown</span>
+<!--                      <span class="sr-only">Toggle Dropdown</span>-->
+                      <span class="sr-only">展开</span>
                     </button>
                     ${this._templateActions()}
                 </div>
@@ -130,10 +137,12 @@ const WorkflowItemView = Backbone.View.extend({
                 <div class="${wfId} tags-display"></div>
             </td>
             <td>
-                ${this.model.get("owner") === Galaxy.user.attributes.username ? "You" : this.model.get("owner")}
+<!--                ${this.model.get("owner") === Galaxy.user.attributes.username ? "You" : this.model.get("owner")}-->
+                ${this.model.get("owner") === Galaxy.user.attributes.username ? "你" : this.model.get("owner")}
             </td>
             <td>${this.model.get("number_of_steps")}</td>
-            <td>${this.model.get("published") ? "Yes" : "No"}</td>
+<!--        <td>${this.model.get("published") ? "Yes" : "No"}</td>-->
+            <td>${this.model.get("published") ? "是" : "否"}</td>
             <td>${checkboxHtml}</td>`;
     },
 
@@ -142,7 +151,8 @@ const WorkflowItemView = Backbone.View.extend({
         const propsData = {
             model: this.model,
             disabled: false,
-            context: "workflow"
+          // context: "workflow"
+          context: "流程"
         };
         return mountModelTags(propsData, el);
     },
@@ -152,29 +162,29 @@ const WorkflowItemView = Backbone.View.extend({
         const Galaxy = getGalaxyInstance();
         if (this.model.get("owner") == Galaxy.user.attributes.username) {
             return `<div class="dropdown-menu">
-                        <a class="dropdown-item" href="${getAppRoot()}workflow/editor?id=${this.model.id}">Edit</a>
-                        <a class="dropdown-item" href="${getAppRoot()}workflows/run?id=${this.model.id}">Run</a>
-                        <a class="dropdown-item" href="${getAppRoot()}workflow/sharing?id=${this.model.id}">Share</a>
+                        <a class="dropdown-item" href="${getAppRoot()}workflow/editor?id=${this.model.id}">编辑</a>
+                        <a class="dropdown-item" href="${getAppRoot()}workflows/run?id=${this.model.id}">运行</a>
+                        <a class="dropdown-item" href="${getAppRoot()}workflow/sharing?id=${this.model.id}">分享</a>
                         <a class="dropdown-item" href="${getAppRoot()}api/workflows/${
                 this.model.id
-            }/download?format=json-download">Download</a>
-                        <a class="dropdown-item" href="javascript:void(0)" id="copy-workflow">Copy</a>
-                        <a class="dropdown-item" href="javascript:void(0)" id="rename-workflow">Rename</a>
+            }/download?format=json-download">下载</a>
+                        <a class="dropdown-item" href="javascript:void(0)" id="copy-workflow">复制</a>
+                        <a class="dropdown-item" href="javascript:void(0)" id="rename-workflow">重命名</a>
                         <a class="dropdown-item" href="${getAppRoot()}workflow/display_by_id?id=${
                 this.model.id
-            }">View</a>
-                        <a class="dropdown-item" href="javascript:void(0)" id="delete-workflow">Delete</a>
+            }">流程图</a>
+                        <a class="dropdown-item" href="javascript:void(0)" id="delete-workflow">删除</a>
                     </div>`;
         } else {
             return `<div class="dropdown-menu">
                         <a class="dropdown-item" href="${getAppRoot()}workflow/display_by_username_and_slug?username=${this.model.get(
                 "owner"
-            )}&slug=${this.model.get("slug")}">View</a>
-                        <a class="dropdown-item" href="${getAppRoot()}workflows/run?id=${this.model.id}">Run</a>
-                        <a class="dropdown-item" href="javascript:void(0)" id="copy-workflow">Copy</a>
+            )}&slug=${this.model.get("slug")}">流程图</a>
+                        <a class="dropdown-item" href="${getAppRoot()}workflows/run?id=${this.model.id}">运行</a>
+                        <a class="dropdown-item" href="javascript:void(0)" id="copy-workflow">复制</a>
                         <a class="dropdown-item link-confirm-shared-${
                             this.model.id
-                        }" href="${getAppRoot()}workflow/sharing?unshare_me=True&id=${this.model.id}">Remove</a></li>
+                        }" href="${getAppRoot()}workflow/sharing?unshare_me=True&id=${this.model.id}">移除</a></li>
                     </div>`;
         }
     }
@@ -226,7 +236,8 @@ const WorkflowListView = Backbone.View.extend({
             try {
                 wf_json = JSON.parse(reader.result);
             } catch (e) {
-                Toast.error(`Could not read file '${f.name}'. Verify it is a valid Galaxy workflow`);
+              // Toast.error(`Could not read file '${f.name}'. Verify it is a valid Galaxy workflow`);
+              Toast.error(`无法读取文件: '${f.name}'; 请验证它是有效的流程`);
                 wf_json = null;
             }
             if (wf_json) {
@@ -234,7 +245,8 @@ const WorkflowListView = Backbone.View.extend({
                     at: 0,
                     wait: true,
                     success: function() {
-                        Toast.success(`Successfully imported workflow '${wf_json.name}'`);
+                      // Toast.success(`Successfully imported workflow '${wf_json.name}'`);
+                      Toast.success(`成功导入流程: '${wf_json.name}'`);
                     },
                     error: function(model, resp, options) {
                         Toast.error(options.errorThrown);
@@ -250,7 +262,8 @@ const WorkflowListView = Backbone.View.extend({
         const msg_text = QueryStringParsing.get("message");
         const msg_status = QueryStringParsing.get("status");
         if (msg_status === "error") {
-            Toast.error(_.escape(msg_text || "Unknown Error, please report this to an administrator."));
+          // Toast.error(_.escape(msg_text || "Unknown Error, please report this to an administrator."));
+            Toast.error(_.escape(msg_text || "未知错误，请联系管理员。"));
         } else if (msg_text) {
             Toast.info(_.escape(msg_text));
         }
@@ -291,7 +304,8 @@ const WorkflowListView = Backbone.View.extend({
     confirmDelete: function(workflow) {
         const $el_shared_wf_link = this.$(`.link-confirm-shared-${workflow.id}`);
         $el_shared_wf_link.click(() =>
-            window.confirm(`Are you sure you want to remove the shared workflow '${workflow.attributes.name}'?`)
+            // window.confirm(`Are you sure you want to remove the shared workflow '${workflow.attributes.name}'?`)
+            window.confirm(`您确定要删除共享流程:'${workflow.attributes.name}'?`)
         );
     },
 
@@ -330,12 +344,13 @@ const WorkflowListView = Backbone.View.extend({
 
     /** Template for no workflow */
     _templateNoWorkflow: function() {
-        return '<div class="wf-nodata"> You have no workflows. </div>';
+      // return '<div class="wf-nodata"> You have no workflows. </div>';
+      return '<div class="wf-nodata"> 没有你发布的流程。 </div>';
     },
 
     /** Template for actions buttons */
     _templateActionButtons: function() {
-        return `<ul class="manage-table-actions"><li><input class="search-wf form-control" type="text" autocomplete="off" placeholder="search for workflow..."></li><li><a class="action-button fa fa-plus wf-action" id="new-workflow" title="Create new workflow" href="${getAppRoot()}workflows/create"></a></li><li><a class="action-button fa fa-upload wf-action" id="import-workflow" title="Upload or import workflow" href="${getAppRoot()}workflows/import"></a></li></ul>`;
+        return `<ul class="manage-table-actions"><li><input class="search-wf form-control" type="text" autocomplete="off" placeholder="搜索流程..."></li><li><a class="action-button fa fa-plus wf-action" id="new-workflow" title="创建新的流程" href="${getAppRoot()}workflows/create"></a></li><li><a class="action-button fa fa-upload wf-action" id="import-workflow" title="上传或导入流程" href="${getAppRoot()}workflows/import"></a></li></ul>`;
     },
 
     /** Template for workflow table */
@@ -343,14 +358,14 @@ const WorkflowListView = Backbone.View.extend({
         const tableHtml =
             '<table class="table colored"><thead>' +
             '<tr class="header">' +
-            "<th>Name</th>" +
-            "<th>Tags</th>" +
-            "<th>Owner</th>" +
-            "<th># of Steps</th>" +
-            "<th>Published</th>" +
-            "<th>Show in tools panel</th>" +
+            "<th>名称</th>" +
+            "<th>标签</th>" +
+            "<th>发布者</th>" +
+            "<th>#步骤</th>" +
+            "<th>发布</th>" +
+            "<th>显示到工具面板</th>" +
             "</tr></thead>";
-        return `${tableHtml}<tbody class="workflow-search "><div class="hidden_description_layer"><p>Drop workflow files here to import</p></tbody></table></div>`;
+        return `${tableHtml}<tbody class="workflow-search "><div class="hidden_description_layer"><p>拖拽流程文件到此导入</p></tbody></table></div>`;
     },
 
     /** Main template */
@@ -360,7 +375,7 @@ const WorkflowListView = Backbone.View.extend({
             '<div class="user-workflows wf">' +
             '<div class="response-message"></div>' +
             "<h2>" +
-            _l("Your workflows") +
+            _l("你发布的流程") +
             "</h2>" +
             "</div>" +
             "</div>"

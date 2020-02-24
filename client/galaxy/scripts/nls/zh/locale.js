@@ -34,7 +34,17 @@ define({
     "Saved Histories": "保存历史",
     "Saved Datasets": "保存数据集",
     "Saved Pages": "保存页面",
+    "Create Visualization": "创建可视化",
+    Datasets: "数据集",
+    "Histories shared with me": "与我分享的历史",
+    "Active InteractiveTools": "活动的交互工具",
     Tools: "工具",
+    "Show favorites": "显示收藏夹",
+    "All workflows": "所有流程",
+    "clear search (esc)": "清除搜索 (esc键)",
+    Using: "使用",
+    Details: "详情",
+    "(empty)": "(空)",
 
     //Tooltip
     "Account and saved data": "账号及数据保存",
@@ -47,6 +57,19 @@ define({
     "Analysis home view": "数据分析主页",
     // ---------------------------------------------------------------------------- histories
     History: "历史",
+    "Refresh history": "刷新历史记录",
+    "Create new history": "创建新的历史记录",
+    "View all histories": "查看所有历史记录",
+    "History options": "操作历史记录",
+    "Switch to": "切换",
+    "History Actions": "历史操作",
+    "Set Permissions": "设置权限",
+    "Make Private": "设为私有",
+    "Collapse Expanded Datasets": "合并数据集",
+    "This will make all the data in this history private (excluding library datasets), and will set permissions such that all new data is created as private.  Any datasets within that are currently shared will need to be re-shared or published.  Are you sure you want to do this?": "这将使此历史记录中的所有数据成为私有(不包括数据库)，并将设置权限，以便将所有新数据创建为私有。任何当前共享的数据集都需要重新共享或发布。你确定要这么做吗?",
+    "Really unhide all hidden datasets?": "确认显示所有隐藏的数据集吗?",
+    "Really delete all hidden datasets?": "确认删除所有隐藏的数据集吗?",
+    "Really delete all deleted datasets permanently? This cannot be undone.": "确认清空所有已删除的数据集吗？此操作无法恢复！",
     // ---- history/options-menu
     "History Lists": "历史列表",
     // Saved histories is defined above.
@@ -59,13 +82,16 @@ define({
     "Show Structure": "展示结构",
     "Extract Workflow": "提取为工作流",
     // Delete is defined elsewhere, but is also in this menu.
+    Copy: "复制",
     Delete: "删除",
+    Undelete: "撤销删除",
+    Purge: "清空",
     "Delete Permanently": "永久删除",
     "Dataset Actions": "数据操作",
     "Copy Datasets": "复制数据集",
     "Dataset Security": "数据安全",
     "Resume Paused Jobs": "恢复已暂停的任务",
-    "Collapse Expanded Datasets": false,
+    // "Collapse Expanded Datasets": false,
     "Unhide Hidden Datasets": "取消隐藏的数据集",
     "Delete Hidden Datasets": "删除隐藏的数据集",
     "Purge Deleted Datasets": "清空已删除的数据集",
@@ -95,10 +121,15 @@ define({
 
     // ---- history-view-edit
     "Edit history tags": "编辑历史标签",
-    "Edit history Annotation": "编辑历史备注",
+    "Edit history annotation": "编辑历史备注",
+    "Edit history Annotation": "编辑历史备注", //大写
+    "Unnamed history": "未命名的历史",
     "Click to rename history": "单击要重命名的历史",
     // multi operations
+    "search histories": "搜索历史记录",
+    "search all datasets": "搜索所有数据集",
     "Operations on multiple datasets": "编辑多个数据集",
+    "Create new": "新增",
     "Hide datasets": "隐藏数据集",
     "Unhide datasets": "显示数据集",
     "Delete datasets": "删除数据集",

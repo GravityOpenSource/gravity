@@ -2,7 +2,7 @@
     <div
         class="upload-button"
         v-b-tooltip.hover
-        title="Download from URL or upload files from disk"
+        title="从网站下载或从磁盘上传文件"
         @click="showUploadDialog"
     >
         <div class="progress">
