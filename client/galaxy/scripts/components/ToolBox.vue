@@ -6,7 +6,7 @@
                     <favorites-button v-if="isUser"></favorites-button>
                     <upload-button></upload-button>
                 </div>
-                <div class="panel-header-text">Tools</div>
+                <div class="panel-header-text">工具</div>
             </div>
         </div>
         <div class="unified-panel-controls">

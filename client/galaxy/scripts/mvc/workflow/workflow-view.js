@@ -144,7 +144,7 @@ function reset_tool_search(initValue) {
         tool_menu_frame.find("#search-clear-btn").show();
         if (initValue) {
             var search_input = tool_menu_frame.find("#tool-search-query");
-            search_input.val("search tools");
+            search_input.val("搜索工具");
         }
     }
 }

@@ -6,7 +6,7 @@
                 <input
                     class="search-query parent-width"
                     name="query"
-                    placeholder="search visualizations"
+                    placeholder="搜索可视化"
                     autocomplete="off"
                     type="text"
                     v-model="search"
@@ -33,7 +33,7 @@
                         <td />
                         <td v-if="plugin.name == name">
                             <div v-if="hdas && hdas.length > 0">
-                                <div class="font-weight-bold">Select a dataset to visualize:</div>
+                                <div class="font-weight-bold">选择要可视化的数据集:</div>
                                 <div class="ui-select">
                                     <select class="select" v-model="selected">
                                         <option v-for="file in hdas" :key="file.id" :value="file.id">{{
@@ -47,12 +47,12 @@
                                     class="ui-button-default float-left mt-3 btn btn-primary"
                                     @click="create(plugin)"
                                 >
-                                    <i class="icon fa fa-check" /> <span class="title">Create Visualization</span>
+                                    <i class="icon fa fa-check" /> <span class="title">创建可视化</span>
                                 </button>
                             </div>
                             <div v-else class="alert alert-danger">
-                                There is no suitable dataset in your current history which can be visualized with this
-                                plugin.
+<!--                              There is no suitable dataset in your current history which can be visualized with this plugin.-->
+                              在你当前的历史记录中没有合适的数据可以用这个插件显示出来。
                             </div>
                         </td>
                     </tr>

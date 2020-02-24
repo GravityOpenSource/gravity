@@ -1,5 +1,16 @@
 <template>
     <div class="search-input">
+<!--      <input-->
+<!--          v-model="query"-->
+<!--          ref="input"-->
+<!--          @click="focusAndSelect"-->
+<!--          @keydown.esc="clear"-->
+<!--          class="search-query parent-width tool-search-query"-->
+<!--          name="query"-->
+<!--          placeholder="search tools"-->
+<!--          autocomplete="off"-->
+<!--          type="text"-->
+<!--      />-->
         <input
             v-model="query"
             ref="input"
@@ -7,14 +18,21 @@
             @keydown.esc="clear"
             class="search-query parent-width tool-search-query"
             name="query"
-            placeholder="search tools"
+            placeholder="搜索工具"
             autocomplete="off"
             type="text"
         />
+<!--        <span-->
+<!--            class="search-clear fa fa-times-circle"-->
+<!--            v-b-tooltip.hover-->
+<!--            title="clear search (esc)"-->
+<!--            v-if="showClear"-->
+<!--            @click="clear"-->
+<!--        ></span>-->
         <span
             class="search-clear fa fa-times-circle"
             v-b-tooltip.hover
-            title="clear search (esc)"
+            title="清除搜索 (esc键)"
             v-if="showClear"
             @click="clear"
         ></span>
@@ -42,7 +60,8 @@ export default {
             query: "",
             previousQuery: "",
             reservedKeywordsSynonyms: {
-                favourites: ["#favs", "#favorites", "#favourites"]
+              // favourites: ["#favs", "#favorites", "#favourites"]
+              favourites: ["#收藏", "#收藏的", "#收藏夹"]
             },
             minQueryLength: 3,
 

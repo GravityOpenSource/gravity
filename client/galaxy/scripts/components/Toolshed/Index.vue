@@ -8,7 +8,7 @@
                 @change="setQuery"
                 @keydown.esc="setQuery()"
             />
-            <b-input-group-append v-b-tooltip.hover title="clear search (esc)">
+            <b-input-group-append v-b-tooltip.hover title="清除搜索 (esc键)">
                 <b-btn @click="setQuery()">
                     <i class="fa fa-times" />
                 </b-btn>

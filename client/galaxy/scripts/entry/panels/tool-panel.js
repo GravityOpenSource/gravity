@@ -57,12 +57,14 @@ const ToolPanel = Backbone.View.extend({
                     const $header_btn = $(".panel-header-button");
                     $header_btn.find(".fa").toggleClass("fa-star-o fa-star");
                     $header_btn.tooltip("hide");
-                    if ($search_query.val().indexOf("#favorites") != -1) {
+                    // if ($search_query.val().indexOf("#favorites") != -1) {
+                    if ($search_query.val().indexOf("#收藏") != -1) {
                         $search_query.val("");
                         $search_query.keyup();
                         $header_btn.attr("title", "");
                     } else {
-                        $search_query.val("#favorites").trigger("change");
+                      // $search_query.val("#favorites").trigger("change");
+                      $search_query.val("#收藏").trigger("change");
                     }
                 }
             });
