@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tool id="nanoplexer" name="nanoplexer" version="0.1.0">
-    <description>检测primer</description>
+    <description> Detect primers</description>
     <command><![CDATA[
         mkdir -p outputs && nanoplexer -b $barcode -p outputs -t $threads -L $length $input_fastq
         rm outputs/none.fastq
@@ -41,9 +41,6 @@ Options:
  -v          show version number
 
 -b -p must be specified.
-
-Example:
-nanoplexer -b barcode.fa -p /ouput/ input.fastq
 
         ]]></help>
 </tool>
