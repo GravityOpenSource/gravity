@@ -1,5 +1,5 @@
 uwsgi:
-  admin_users: helingxia@grandomics.com
+
   http: 0.0.0.0:8083
 
   threads: 8
@@ -24,7 +24,9 @@ uwsgi:
 
 
 galaxy:
+  admin_users: 'helingxia@grandomics.com'
   interactivetools_enable: true
+  tool_data_path: tool-data
   # outputs_to_working_directory will provide you with a better level of isolation. It is highly recommended to set
   # this parameter with InteractiveTools.
   outputs_to_working_directory: true

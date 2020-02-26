@@ -1,5 +1,6 @@
 .hg*
 config/plugins/visualizations/*/.cache
+references
 # Downloaded and locally built eggs
 eggs
 scripts/scramble/build
