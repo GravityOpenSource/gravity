@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<tool id="barcoding_fastq_files" name="Qcat" version="0.1.0">
+    <description>拆分Barcode</description>
+    <command><![CDATA[
+        mkdir -p outputs && qcat --quiet -f $input_fastq -b outputs/ --trim -k $kit
+        ]]>
+    </command>
+    <inputs>
+        <param name="input_fastq" type="data" multiple="false" format="fastq" label="输入FASTQ"/>
+        <param name="kit" type="select" format="text" label="试剂盒">
+            <option value="Auto">Auto</option>
+            <option value="RAB204">RAB204</option>
+            <option value="NBD114">NBD114</option>
+            <option value="DUAL">DUAL</option>
+            <option value="RBK001">RBK001</option>
+            <option value="NBD103/NBD104">NBD103/NBD104</option>
+            <option value="RAB214">RAB214</option>
+            <option value="RAB204/RAB214">RAB204/RAB214</option>
+            <option value="PBK004/LWB001">PBK004/LWB001</option>
+            <option value="PBC096">PBC096</option>
+            <option value="NBD104/NBD114">NBD104/NBD114</option>
+            <option value="PBC001">PBC001</option>
+            <option value="VMK001">VMK001</option>
+            <option value="RBK004">RBK004</option>
+            <option value="RPB004/RLB001">RPB004/RLB001</option>
+        </param>
+    </inputs>
+    <outputs>
+        <collection name="list_output" type="list" label="QCAT BARCODED FASTQs">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        </collection>
+    </outputs>
+    <help><![CDATA[
+User' Guide
+--------------
+
+usage:
+    `qcat [-h] [-V] [-l LOG] [--quiet] [-f FASTQ] [-b BARCODE_DIR]
+    [-o OUTPUT] [--min-score MIN_QUAL] [--detect-middle] [-t THREADS]
+    [--min-read-length MIN_LENGTH] [--tsv] [--trim]
+    [-k {Auto,RAB204,NBD114,DUAL,RBK001,NBD103/NBD104,RAB214,RAB204/RAB214,PBK004/LWB001,PBC096,NBD104/NBD114,PBC001,VMK001,RBK004,RPB004/RLB001}]
+    [--list-kits] [--guppy | --epi2me | --dual | --simple]
+    [--no-batch] [--filter-barcodes]
+    [--simple-barcodes SIMPLE_BARCODES]`
+
+    Python command-line tool for demultiplexing Oxford Nanopore reads from FASTQ files
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -V, --version         show program's version number and exit
+  -l LOG, --log LOG     Print debug information
+  --quiet               Don't print summary
+
+General settings:
+  -f FASTQ, --fastq FASTQ                       Barcoded read file
+  -b BARCODE_DIR, --barcode_dir BARCODE_DIR     If specified, qcat will demultiplex reads to this folder
+  -o OUTPUT, --output OUTPUT                    Output file trimmed reads will be written to (default:stdout).
+  --min-score MIN_QUAL                          Minimum barcode score. Barcode calls with a lower
+                                                score will be discarded. Must be between 0 and 100.(default: 60)
+  --detect-middle                               Search for adapters in the whole read
+  -t THREADS, --threads THREADS                 Number of threads. Only works with in guppy mode
+  --min-read-length MIN_LENGTH                  Reads short than <min-read-length> after trimming will be discarded.
+  --tsv                                         Prints a tsv file containing barcode information each read to stdout.
+  --trim                                        Remove adapter and barcode sequences from reads.
+  -k KIT, --kit KIT                             Sequencing kit. Specifying the correct kit will improve sensitivity and specificity and runtime(default: auto)
+                                                {Auto,RAB204,NBD114,DUAL,RBK001,NBD103/NBD104,RAB214,RAB204/RAB214,PBK004/LWB001,PBC096,NBD104/NBD114,PBC001,VMK001,RBK004,RPB004/RLB001}
+  --list-kits                                   List all supported kits
+
+Demultiplexing modes:
+  --guppy               Use Guppy's demultiplexing algorithm (default: false)
+  --epi2me              Use EPI2ME's demultiplexing algorithm (default: true)
+  --dual                Use dual barcoding algorithm
+  --simple              Use simple demultiplexing algorithm. Only looks for barcodes, not for adapter sequences. Use only for testing purposes!
+
+EPI2ME options (only valid with --epi2me):
+  --no-batch            Don't use information from multiple reads for kit detection (default: false)
+  --filter-barcodes     Filter rare barcode calls when run in batch mode
+
+Simple options (only valid with --simple):
+  --simple-barcodes SIMPLE_BARCODES     Use 12 (standard) or 96 (extended) barcodes for demultiplexing
+        ]]></help>
+</tool>

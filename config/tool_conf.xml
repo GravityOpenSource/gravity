@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<toolbox monitor="true">
+    <section id="grandomics_getext" name="获取数据">
+        <tool file="grandomics_data_source/upload.xml"/>
+        <tool file="grandomics_data_source/basecalled.xml"/>
+        <tool file="grandomics_data_source/test.xml" />
+    </section>
+    <section id="grandomics_send" name="Send Data">
+        <tool file="cloud/send.xml"/>
+        <tool file="genomespace/genomespace_exporter.xml"/>
+    </section>
+    <section id="grandomics_tools" name="希望组工具">
+        <tool file="grandomics_tools/barcoding.xml"/>
+        <tool file="grandomics_tools/seqkit.xml"/>
+        <tool file="grandomics_tools/merge.xml"/>
+        <tool file="grandomics_tools/nanoplexer_demulx.xml"/>
+    </section>
+    <section id="grandomics_rampart" name="病原实时检测">
+        <tool file="grandomics_rampart/rampart_start.xml"/>
+    </section>
+</toolbox>
