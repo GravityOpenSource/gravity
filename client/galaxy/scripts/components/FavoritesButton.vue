@@ -41,8 +41,8 @@ export default {
             } else {
                 toolSearchQueryNode.value = "#收藏";
                 toolSearchQueryNode.dispatchEvent(new Event("input"));
-                // this.tooltipText = "隐藏收藏夹";
-                this.tooltipText = "Show favorites";
+                // this.tooltipText = "Show favorites";
+                this.tooltipText = "隐藏收藏夹";
                 this.isFavorites = true;
             }
         }
