@@ -61,12 +61,17 @@ var FolderToolbarView = Backbone.View.extend({
         id: "auto",
         text: "Auto-detect",
         description:
-            "This system will try to detect the file type automatically." +
-            " If your file is not detected properly as one of the known formats," +
-            " it most likely means that it has some format problems (e.g., different" +
-            " number of columns on different rows). You can still coerce the system" +
-            " to set your data to the format you think it should be." +
-            " You can also upload compressed files, which will automatically be decompressed."
+            // "This system will try to detect the file type automatically." +
+            // " If your file is not detected properly as one of the known formats," +
+            // " it most likely means that it has some format problems (e.g., different" +
+            // " number of columns on different rows). You can still coerce the system" +
+            // " to set your data to the format you think it should be." +
+            // " You can also upload compressed files, which will automatically be decompressed."
+            "此系统将尝试自动检测文件类型。"+
+            "如果您的文件没有作为已知格式之一被正确地检测到，"+
+            "这很可能意味着它有一些格式问题(例如，不同行的列数不同)。"+
+            "您仍然可以强制系统将数据设置为您认为应该的格式。"+
+            "你也可以上传压缩文件，这些文件会自动解压。"
     },
 
     // genomes
@@ -179,7 +184,8 @@ var FolderToolbarView = Backbone.View.extend({
         var $checkedValues = this.findCheckedRows();
         var template = this.templateImportIntoHistoryModal();
         if ($checkedValues.length === 0) {
-            Toast.info("You must select some datasets first.");
+            // Toast.info("You must select some datasets first.");
+            Toast.info("您必须首先选择一些数据集。");
         } else {
             var promise = this.fetchUserHistories();
             promise
@@ -205,7 +211,7 @@ var FolderToolbarView = Backbone.View.extend({
                     if (typeof response.responseJSON !== "undefined") {
                         Toast.error(response.responseJSON.err_msg);
                     } else {
-                        Toast.error("An error occurred.");
+                        Toast.error("出现一个错误。");
                     }
                 });
         }
@@ -228,7 +234,7 @@ var FolderToolbarView = Backbone.View.extend({
                     this.processImportToHistory(new_history.id, new_history.name);
                 })
                 .fail((xhr, status, error) => {
-                    Toast.error("An error occurred.");
+                    Toast.error("发生一个错误。");
                 })
                 .always(() => {
                     this.modal.enableButton("Import");
@@ -323,9 +329,11 @@ var FolderToolbarView = Backbone.View.extend({
                 .appendTo("body")
                 .submit()
                 .remove();
-            Toast.info("Your download will begin soon.");
+            // Toast.info("Your download will begin soon.");
+            Toast.info("您的下载即将开始。");
         } else {
-            Toast.error("An error occurred.");
+            // Toast.error("An error occurred.");
+            Toast.error("发生一个错误。");
         }
     },
 
@@ -364,7 +372,7 @@ var FolderToolbarView = Backbone.View.extend({
                 if (typeof response.responseJSON !== "undefined") {
                     Toast.error(response.responseJSON.err_msg);
                 } else {
-                    Toast.error("An error occurred.");
+                    Toast.error("出现一个错误。");
                 }
             });
     },
@@ -551,7 +559,8 @@ var FolderToolbarView = Backbone.View.extend({
                         Toast.error(response.responseJSON.err_msg);
                     }
                 } else {
-                    Toast.error("An error occurred.");
+                    // Toast.error("An error occurred.");
+                    Toast.error("发生一个错误。");
                 }
             }
         });
@@ -663,7 +672,8 @@ var FolderToolbarView = Backbone.View.extend({
         var selection_type = selected_nodes[0].type;
         var paths = [];
         if (selected_nodes.length < 1) {
-            Toast.info("Please select some items first.");
+            // Toast.info("Please select some items first.");
+            Toast.info("请先选择一些项目。");
         } else {
             this.modal.disableButton("Import");
             for (let i = selected_nodes.length - 1; i >= 0; i--) {
@@ -756,7 +766,8 @@ var FolderToolbarView = Backbone.View.extend({
         var history_item_types = [];
         var items_to_add = [];
         if (checked_hdas.length < 1) {
-            Toast.info("You must select some datasets first.");
+            // Toast.info("You must select some datasets first.");
+            Toast.info("请先选择一些数据集。");
         } else {
             this.modal.disableButton("Add");
             checked_hdas.each(function() {
@@ -862,16 +873,19 @@ var FolderToolbarView = Backbone.View.extend({
         var popped_item = history_item_set.pop();
         if (typeof popped_item == "undefined") {
             if (this.options.chain_call_control.failed_number === 0) {
-                Toast.success("Selected datasets imported into history. Click this to start analyzing it.", "", {
+                // Toast.success("Selected datasets imported into history. Click this to start analyzing it.", "", {
+                Toast.success("已将选定的数据集导入历史记录。单击此处开始分析。", "", {
                     onclick: () => {
                         window.location = getAppRoot();
                     }
                 });
             } else if (this.options.chain_call_control.failed_number === this.options.chain_call_control.total_number) {
-                Toast.error("There was an error and no datasets were imported into history.");
+                // Toast.error("There was an error and no datasets were imported into history.");
+                Toast.error("出现错误，没有将任何数据集导入历史记录。");
             } else if (this.options.chain_call_control.failed_number < this.options.chain_call_control.total_number) {
                 Toast.warning(
-                    "Some of the datasets could not be imported into history. Click this to see what was imported.",
+                    // "Some of the datasets could not be imported into history. Click this to see what was imported.",
+                    "某些数据集无法导入历史记录。单击此项查看导入的内容。",
                     "",
                     {
                         onclick: () => {
@@ -913,10 +927,12 @@ var FolderToolbarView = Backbone.View.extend({
         const popped_item = options.paths.pop();
         if (typeof popped_item === "undefined") {
             if (this.options.chain_call_control.failed_number === 0) {
-                Toast.success("Selected files imported into the current folder");
+                // Toast.success("Selected files imported into the current folder");
+                Toast.success("选择导入到当前文件夹的文件");
                 Galaxy.modal.hide();
             } else {
-                Toast.error("An error occurred.");
+                // Toast.error("An error occurred.");
+                Toast.error("发生一个错误。");
             }
             return true;
         }
@@ -963,11 +979,12 @@ var FolderToolbarView = Backbone.View.extend({
         const popped_item = options.paths.pop();
         if (typeof popped_item == "undefined") {
             if (this.options.chain_call_control.failed_number === 0) {
-                Toast.success("Selected folders and their contents imported into the current folder.");
+                // Toast.success("Selected folders and their contents imported into the current folder.");
+                Toast.success("选择的文件夹及其内容已导入到当前文件夹。");
                 Galaxy.modal.hide();
             } else {
                 // TODO better error report
-                Toast.error("An error occurred.");
+                Toast.error("发生一个错误。");
             }
             return true;
         }
@@ -1008,11 +1025,14 @@ var FolderToolbarView = Backbone.View.extend({
         var popped_item = hdas_set.pop();
         if (typeof popped_item == "undefined") {
             if (this.options.chain_call_control.failed_number === 0) {
-                Toast.success("Selected datasets from history added to the folder");
+                // Toast.success("Selected datasets from history added to the folder");
+                Toast.success("从历史记录中选择的数据集添加到文件夹中");
             } else if (this.options.chain_call_control.failed_number === this.options.chain_call_control.total_number) {
-                Toast.error("There was an error and no datasets were added to the folder.");
+                // Toast.error("There was an error and no datasets were added to the folder.");
+                Toast.error("出现错误，没有向文件夹中添加任何数据集。");
             } else if (this.options.chain_call_control.failed_number < this.options.chain_call_control.total_number) {
-                Toast.warning("Some of the datasets could not be added to the folder");
+                // Toast.warning("Some of the datasets could not be added to the folder");
+                Toast.warning("无法将某些数据集添加到文件夹中");
             }
             Galaxy.modal.hide();
             return this.added_hdas;
@@ -1047,14 +1067,17 @@ var FolderToolbarView = Backbone.View.extend({
         var item_to_delete = items_to_delete.pop();
         if (typeof item_to_delete === "undefined") {
             if (this.options.chain_call_control.failed_number === 0) {
-                Toast.success("Selected items were deleted.");
+                // Toast.success("Selected items were deleted.");
+                Toast.success("选择的项目已删除。");
             } else if (this.options.chain_call_control.failed_number === this.options.chain_call_control.total_number) {
                 Toast.error(
-                    "There was an error and no items were deleted. Please make sure you have sufficient permissions."
+                    // "There was an error and no items were deleted. Please make sure you have sufficient permissions."
+                    "出现错误，未删除任何项目。请确保您有足够的权限。"
                 );
             } else if (this.options.chain_call_control.failed_number < this.options.chain_call_control.total_number) {
                 Toast.warning(
-                    "Some of the items could not be deleted. Please make sure you have sufficient permissions."
+                    // "Some of the items could not be deleted. Please make sure you have sufficient permissions."
+                    "无法删除某些项目。请确保您有足够的权限。"
                 );
             }
             Galaxy.modal.hide();
@@ -1073,7 +1096,8 @@ var FolderToolbarView = Backbone.View.extend({
                     } else if (item.type === "file" || item.model_class === "LibraryDataset") {
                         updated_item = new mod_library_model.Item(item);
                     } else {
-                        Galaxy.emit.error("Unknown library item type found.", "datalibs");
+                        // Galaxy.emit.error("Unknown library item type found.", "datalibs");
+                        Galaxy.emit.error("发现未知的库项类型。", "datalibs");
                         Galaxy.emit.error(item.type || item.model_class, "datalibs");
                     }
                     Galaxy.libraries.folderListView.collection.add(updated_item);
@@ -1112,7 +1136,8 @@ var FolderToolbarView = Backbone.View.extend({
         var folder_ids = [];
         var $checkedValues = this.findCheckedRows();
         if ($checkedValues.length === 0) {
-            Toast.info("You must select at least one item for deletion.");
+            // Toast.info("You must select at least one item for deletion.");
+            Toast.info("您必须至少选择一个要删除的项目。");
         } else {
             var template = this.templateDeletingItemsProgressBar();
             this.modal = Galaxy.modal;
@@ -1186,7 +1211,7 @@ var FolderToolbarView = Backbone.View.extend({
                     if (typeof response.responseJSON !== "undefined") {
                         Toast.error(response.responseJSON.err_msg);
                     } else {
-                        Toast.error("An error occurred.");
+                        Toast.error("发生一个错误。");
                     }
                 }
             });
@@ -1230,7 +1255,8 @@ var FolderToolbarView = Backbone.View.extend({
                 break;
             default:
                 Galaxy.libraries.library_router.back();
-                Toast.error("Invalid import source.");
+                // Toast.error("Invalid import source.");
+                Toast.error("无效的导入源。");
                 break;
         }
     },
@@ -1285,7 +1311,8 @@ var FolderToolbarView = Backbone.View.extend({
                 this.modal = Galaxy.modal;
                 this.modal.show({
                     closing_events: true,
-                    title: "Create History Collection from Datasets",
+                    // title: "Create History Collection from Datasets",
+                    title: "从数据集创建历史记录集合",
                     body: template({
                         selected_datasets: checked_items.dataset_ids.length,
                         histories: this.histories.models
@@ -1304,7 +1331,7 @@ var FolderToolbarView = Backbone.View.extend({
                 if (typeof response.responseJSON !== "undefined") {
                     Toast.error(response.responseJSON.err_msg);
                 } else {
-                    Toast.error("An error occurred.");
+                    Toast.error("发生一个错误。");
                 }
             });
     },
@@ -1339,11 +1366,12 @@ var FolderToolbarView = Backbone.View.extend({
         if (new_history_name !== "") {
             this.createNewHistory(new_history_name)
                 .done(new_history => {
-                    Toast.success("History created");
+                    // Toast.success("History created");
+                    Toast.success("历史记录已创建");
                     this.collectionImport(collection_elements, new_history.id, new_history.name);
                 })
                 .fail((xhr, status, error) => {
-                    Toast.error("An error occurred.");
+                    Toast.error("发生一个错误。");
                 });
         } else {
             this.select_collection_history = this.modal.$el.find("#library-collection-history-select");
@@ -1354,7 +1382,8 @@ var FolderToolbarView = Backbone.View.extend({
     },
 
     collectionImport: function(collection_elements, history_id, history_name) {
-        const modal_title = `Creating Collection in ${history_name}`;
+        // const modal_title = `Creating Collection in ${history_name}`;
+        const modal_title = `在 ${history_name} 中创建集合`;
         let creator_class;
         let creationFn;
         this.collectionType = this.modal.$el.find("#library-collection-type-select").val();
@@ -1436,70 +1465,70 @@ var FolderToolbarView = Backbone.View.extend({
         return _.template(
             `<div class="library_style_container">
                 <div class="d-flex align-items-center mb-2">
-                    <a class="mr-1 btn btn-secondary" href="list" data-toggle="tooltip" title="Go to first page">
+                    <a class="mr-1 btn btn-secondary" href="list" data-toggle="tooltip" title="前往第一页">
                         <span class="fa fa-home"/>
                     </a>
                     <div>
                         <form class="form-inline">
-                            <input type="text" id="folder-filter" class="form-control folder-search-input mr-1" placeholder="Search" size="15">
-                            <button style="display:none;" title="Create new folder"
+                            <input type="text" id="folder-filter" class="form-control folder-search-input mr-1" placeholder="搜索" size="15">
+                            <button style="display:none;" title="创建新文件夹"
                                 class="btn btn-secondary toolbtn-create-folder add-library-items add-library-items-folder mr-1"
                                 type="button">
-                                <span class="fa fa-plus"></span> Folder
+                                <span class="fa fa-plus"></span> 文件夹
                             </button>
                             <% if(multiple_add_dataset_options) { %>
-                                <div title="Add datasets to current folder"
+                                <div title="将数据集添加到当前文件夹"
                                     class="dropdown add-library-items add-library-items-datasets mr-1" style="display:none;">
                                     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                                        <span class="fa fa-plus"></span> Datasets <span class="caret"/>
+                                        <span class="fa fa-plus"></span> 数据集 <span class="caret"/>
                                     </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#folders/<%= id %>/import/history"> from History</a>
+                                    <a class="dropdown-item" href="#folders/<%= id %>/import/history"> 从历史</a>
                                     <% if(Galaxy.config.user_library_import_dir !== null) { %>
                                         <a class="dropdown-item" href="#folders/<%= id %>/import/userdir">
-                                            from User Directory
+                                            从用户目录
                                         </a>
                                     <% } %>
                                     <% if(Galaxy.config.library_import_dir !== null || Galaxy.config.allow_library_path_paste) { %>
                                         <h5 class="dropdown-header">Admins only</h5>
                                         <% if(Galaxy.config.library_import_dir !== null) { %>
                                             <a class="dropdown-item" href="#folders/<%= id %>/import/importdir">
-                                                from Import Directory
+                                                从输入目录
                                             </a>
                                         <% } %>
                                         <% if(Galaxy.config.allow_library_path_paste) { %>
                                             <a class="dropdown-item" href="#folders/<%= id %>/import/path">
-                                                from Path
+                                                从路径
                                             </a>
                                         <% } %>
                                     <% } %>
                                 </div>
                             </div>
                             <% } else { %>
-                                <a title="Add Datasets to Current Folder" style="display:none;"
+                                <a title="将数据集添加到当前文件夹" style="display:none;"
                                     class="btn btn-secondary add-library-items add-library-items-datasets mr-1"
                                     href="#folders/<%= id %>/import/history" role="button">
-                                    <span class="fa fa-plus"></span> Datasets
+                                    <span class="fa fa-plus"></span> 数据集
                                 </a>
                             <% } %>
                             <div class="dropdown mr-1">
                                 <button type="button" class="primary-button dropdown-toggle add-to-history"
                                     data-toggle="dropdown">
-                                    <span class="fa fa-book"></span> Export to History <span class="caret"></span>
+                                    <span class="fa fa-book"></span> 输出到历史 <span class="caret"></span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
                                     <a href="javascript:void(0)" role="button" class="toolbtn-bulk-import add-to-history-datasets dropdown-item">
-                                        as Datasets
+                                        随数据集
                                     </a>
                                     <a href="javascript:void(0)" role="button" class="toolbtn-collection-import add-to-history-collection dropdown-item">
-                                        as a Collection
+                                        作为一个集合
                                     </a>
                                 </div>
                             </div>
-                            <div title="Download items as archive"
+                            <div title="将项目下载为存档"
                                 class="dropdown dataset-manipulation mr-1" style="display:none; ">
                                 <button type="button" class="primary-button dropdown-toggle" data-toggle="dropdown">
-                                    <span class="fa fa-save"></span> Download <span class="caret"></span>
+                                    <span class="fa fa-save"></span> 下载 <span class="caret"></span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
                                     <a class="dropdown-item" href="#/folders/<%= id %>/download/tgz">.tar.gz</a>
@@ -1507,21 +1536,21 @@ var FolderToolbarView = Backbone.View.extend({
                                     <a class="dropdown-item" href="#/folders/<%= id %>/download/zip">.zip</a>
                                 </div>
                             </div>
-                            <button data-toggle="tooltip" title="Mark items deleted"
+                            <button data-toggle="tooltip" title="将项目标记为已删除"
                                 class="primary-button toolbtn-bulk-delete logged-dataset-manipulation mr-1"
                                 style="display:none;" type="button">
-                                <span class="fa fa-trash"></span> Delete
+                                <span class="fa fa-trash"></span> 删除
                             </button>
-                            <span class="mr-1" data-toggle="tooltip" title="Show location details">
+                            <span class="mr-1" data-toggle="tooltip" title="显示位置详细信息">
                                 <button data-id="<%- id %>" class="primary-button toolbtn-show-locinfo" type="button">
-                                    <span class="fa fa-info-circle"></span>&nbsp;Details
+                                    <span class="fa fa-info-circle"></span>&nbsp;详情
                                 </button>
                             </span>
                             <div class="form-check logged-dataset-manipulation mr-1" style="display:none;">
                                 <input class="form-check-input include-deleted-datasets-chk"
                                     id="include_deleted_datasets_chk" type="checkbox" />
                                 <label class="form-check-label" for="include_deleted_datasets_chk">
-                                    include deleted
+                                    包含删除
                                 </label>
                             </div>
                         </form>
@@ -1543,7 +1572,7 @@ var FolderToolbarView = Backbone.View.extend({
             `<div>
                 <table class="grid table table-sm">
                     <thead>
-                        <th style="width: 25%;">Library</th>
+                        <th style="width: 25%;">库</th>
                         <th></th>
                     </thead>
                     <tbody>
@@ -1581,7 +1610,7 @@ var FolderToolbarView = Backbone.View.extend({
                 </table>
                 <table class="grid table table-sm">
                     <thead>
-                        <th style="width: 25%;">Folder</th>
+                        <th style="width: 25%;">文件夹</th>
                         <th></th>
                     </thead>
                     <tbody>
@@ -1609,7 +1638,7 @@ var FolderToolbarView = Backbone.View.extend({
         return _.template(
             `<div>
                 <div class="library-modal-item">
-                    Select history:
+                    选择历史:
                     <select name="import_to_history" style="width:50%; margin-bottom: 1em; " autofocus>
                         <% _.each(histories, function(history) { %>
                             <option value="<%= _.escape(history.get("id")) %>">
@@ -1619,7 +1648,7 @@ var FolderToolbarView = Backbone.View.extend({
                     </select>
                 </div>
                 <div class="library-modal-item">
-                    or create new:
+                    或新建:
                     <input type="text" name="history_name" value=""
                         placeholder="name of the new history" style="width:50%;" />
                 </div>
@@ -1630,12 +1659,12 @@ var FolderToolbarView = Backbone.View.extend({
     templateImportIntoHistoryProgressBar: function() {
         return _.template(
             `<div class="import_text">
-                Importing selected items to history <b><%= _.escape(history_name) %></b>
+                将选定的项目导入历史记录 <b><%= _.escape(history_name) %></b>
             </div>
             <div class="progress">
                 <div class="progress-bar progress-bar-import" role="progressbar" aria-valuenow="0" aria-valuemin="0"
                     aria-valuemax="100" style="width: 00%;">
-                    <span class="completion_span">0% Complete</span>
+                    <span class="completion_span">0% 完整</span>
                 </div>
             </div>`
         );
@@ -1644,7 +1673,7 @@ var FolderToolbarView = Backbone.View.extend({
     templateAddingDatasetsProgressBar: function() {
         return _.template(
             `<div class="import_text">
-                Adding selected datasets to library folder <b><%= _.escape(folder_name) %></b>
+                将选定的数据集添加到库文件夹 <b><%= _.escape(folder_name) %></b>
             </div>
             <div class="progress">
                 <div class="progress-bar progress-bar-import" role="progressbar" aria-valuenow="0" aria-valuemin="0"
@@ -1662,7 +1691,7 @@ var FolderToolbarView = Backbone.View.extend({
             <div class="progress">
                 <div class="progress-bar progress-bar-import" role="progressbar" aria-valuenow="0" aria-valuemin="0"
                     aria-valuemax="100" style="width: 00%;">
-                    <span class="completion_span">0% Complete</span>
+                    <span class="completion_span">0% 完整</span>
                 </div>
             </div>`
         );
@@ -1672,58 +1701,66 @@ var FolderToolbarView = Backbone.View.extend({
         return _.template(
             `<div id="file_browser_modal">
                     <div style="margin-bottom:1em;">
-                        <label title="Switch to selecting files" class="radio-inline import-type-switch">
+                        <label title="切换到选择文件" class="radio-inline import-type-switch">
                             <input type="radio" name="jstree-radio" value="jstree-disable-folders" checked="checked">
-                            Choose Files
+                            选择文件
                         </label>
-                        <label title="Switch to selecting folders" class="radio-inline import-type-switch">
+                        <label title="切换到选择文件夹" class="radio-inline import-type-switch">
                             <input type="radio" name="jstree-radio" value="jstree-disable-files">
-                            Choose Folders
+                            选择文件夹
                         </label>
                     </div>
                     <div class="alert alert-info jstree-files-message">
-                        All files you select will be imported into the current folder ignoring their folder structure.
+<!--                        All files you select will be imported into the current folder ignoring their folder structure.-->
+                        您选择的所有文件将被导入到当前文件夹中，忽略它们的文件夹结构。
                     </div>
                     <div class="alert alert-info jstree-folders-message" style="display:none;">
-                        All files within the selected folders and their subfolders will be imported into the current folder.
+<!--                        All files within the selected folders and their subfolders will be imported into the current folder.-->
+                        选定文件夹内的所有文件及其子文件夹将被导入当前文件夹。
                     </div>
                     <div style="margin-bottom:1em;">
                         <label class="checkbox-inline jstree-preserve-structure" style="display:none;">
                             <input class="preserve-checkbox" type="checkbox" value="preserve_directory_structure">
-                                Preserve directory structure
+<!--                                Preserve directory structure-->
+                                保存目录结构
                             </label>
                         <label class="checkbox-inline">
                             <input class="link-checkbox" type="checkbox" value="link_files">
-                                Link files instead of copying
+<!--                                Link files instead of copying-->
+                                链接文件而不是复制
                         </label>
                         <label class="checkbox-inline">
                             <input class="posix-checkbox" type="checkbox" value="to_posix_lines" checked="checked">
-                                Convert line endings to POSIX
+<!--                                Convert line endings to POSIX-->
+                                将行尾转换为POSIX
                         </label>
                         <label class="checkbox-inline">
                             <input class="spacetab-checkbox" type="checkbox" value="space_to_tab">
-                                Convert spaces to tabs
+<!--                                Convert spaces to tabs-->
+                                将空格转换为制表符
                         </label>
                     </div>
-                    <button title="Select all files" type="button" class="button primary-button libimport-select-all">
-                        Select all
+                    <button title="选择所有文件" type="button" class="button primary-button libimport-select-all">
+                        选择所有
                     </button>
-                    <button title="Select no files" type="button" class="button primary-button libimport-select-none">
-                        Unselect all
+                    <button title="取消所有选择的文件" type="button" class="button primary-button libimport-select-none">
+                        取消选择所有
                     </button>
                     <hr /> <!-- append jstree object here -->
                     <div id="jstree_browser">
                     </div>
                     <hr />
-                    <p>You can set extension type and genome for all imported datasets at once:</p>
+<!--                    <p>You can set extension type and genome for all imported datasets at once:</p>-->
+                    <p>你可以设置扩展类型和基因组的所有引入数据集一次:</p>
                     <div>
-                        Type: <span id="library_extension_select" class="library-extension-select" />
-                        Genome: <span id="library_genome_select" class="library-genome-select" />
+                        类型: <span id="library_extension_select" class="library-extension-select" />
+                        基因组: <span id="library_genome_select" class="library-genome-select" />
                     </div>
                     <br />
                     <div>
                         <label class="checkbox-inline tag-files">
-                            Tag datasets based on file names
+<!--                            Tag datasets based on file names-->
+                            基于文件名标记数据集
                             <input class="tag-files" type="checkbox" value="tag_using_filenames">
                         </label>
                     </div>
@@ -1735,39 +1772,47 @@ var FolderToolbarView = Backbone.View.extend({
         return _.template(
             `<div id="file_browser_modal">
                 <div class="alert alert-info jstree-folders-message">
-                    All files within the given folders and their subfolders will be imported into the current folder.
+<!--                    All files within the given folders and their subfolders will be imported into the current folder.-->
+                      给定文件夹及其子文件夹中的所有文件都将导入当前文件夹。
                 </div>
                 <div style="margin-bottom: 0.5em;">
                     <label class="checkbox-inline">
                         <input class="preserve-checkbox" type="checkbox" value="preserve_directory_structure">
-                        Preserve directory structure
+<!--                        Preserve directory structure-->
+                        保存目录结构
                     </label>
                     <label class="checkbox-inline">
                         <input class="link-checkbox" type="checkbox" value="link_files">
-                        Link files instead of copying
+<!--                        Link files instead of copying-->
+                        链接文件而不是复制
                     </label>
                     <br>
                     <label class="checkbox-inline">
                         <input class="posix-checkbox" type="checkbox" value="to_posix_lines" checked="checked">
-                        Convert line endings to POSIX
+<!--                        Convert line endings to POSIX-->
+                        将行尾转换为POSIX
                     </label>
                     <label class="checkbox-inline">
                         <input class="spacetab-checkbox" type="checkbox" value="space_to_tab">
-                        Convert spaces to tabs
+<!--                        Convert spaces to tabs-->
+                        将空格转换为制表符
                     </label>
                 </div>
                 <textarea id="import_paths" class="form-control" rows="5"
-                    placeholder="Absolute paths (or paths relative to Galaxy root) separated by newline" autofocus>
+                    placeholder="换行符分隔的绝对路径（或相对于项目根的路径）" autofocus>
+<!--                    placeholder="Absolute paths (or paths relative to Galaxy root) separated by newline" autofocus>-->
                 </textarea>
                 <hr />
-                <p>You can set extension type and genome for all imported datasets at once:</p>
+<!--                <p>You can set extension type and genome for all imported datasets at once:</p>-->
+                <p>你可以设置扩展类型和基因组的所有引入数据集一次:</p>
                 <div>
-                    Type: <span id="library_extension_select" class="library-extension-select"></span>
-                    Genome: <span id="library_genome_select" class="library-genome-select"></span>
+                    类型: <span id="library_extension_select" class="library-extension-select"></span>
+                    基因组: <span id="library_genome_select" class="library-genome-select"></span>
                 </div>
                 <div>
                     <label class="checkbox-inline tag-files">
-                        Tag datasets based on file names
+<!--                        Tag datasets based on file names-->
+                        基于文件名标记数据集
                         <input class="tag-files" type="checkbox" value="tag_using_filenames">
                     </label>
                 </div>
@@ -1779,7 +1824,8 @@ var FolderToolbarView = Backbone.View.extend({
         return _.template(
             `<div id="add_files_modal">
                 <div class="form-group">
-                    <label>1. Select history:</label>
+<!--                    <label>1. Select history:</label>-->
+                    <label>1. 选择历史:</label>
                     <select id="dataset_add_bulk" name="dataset_add_bulk" class="form-control">
                         <% _.each(histories, function(history) { %> <!-- history select box -->
                             <option value="<%= _.escape(history.get("id")) %>">
@@ -1797,16 +1843,18 @@ var FolderToolbarView = Backbone.View.extend({
     templateHistoryContents: function() {
         return _.template(
             `<div class="form-group">
-                <label>2. Choose the datasets to import:</label>
+<!--                <label>2. Choose the datasets to import:</label>-->
+                <label>2. 选择要导入的数据集:</label>
                 <div class="library_style_container" style="width: 100%;" id="dataset_list">
                     <table class="grid table table-hover table-sm">
                         <thead>
                             <tr>
-                                <th style="width: 30px;" class="mid" title="Check to select all datasets">
+<!--                                <th style="width: 30px;" class="mid" title="Check to select all datasets">-->
+                                <th style="width: 30px;" class="mid" title="检查选择的所有数据集">
                                     <input class="history-import-toggle-all" style="margin: 0;" type="checkbox" />
                                 </th>
                                 <th style="width: 30px;"></th>
-                                <th>Name</th>
+                                <th>名称</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1822,7 +1870,7 @@ var FolderToolbarView = Backbone.View.extend({
                                                 <td><%= _.escape(history_item.get("hid")) %></td>
                                                 <td>
                                                     <%= item_name.length > 75 ? _.escape("...".concat(item_name.substr(-75))) : _.escape(item_name) %>
-                                                    (Dataset Collection)
+                                                    (数据集集合)
                                                 </td>
                                             </tr>
                                         <% } else { %>
@@ -1858,7 +1906,7 @@ var FolderToolbarView = Backbone.View.extend({
         return _.template(
             `
                 <% if ( ( show_page - 1 ) > 0 ) { %>
-                    <% if ( ( show_page - 1 ) > page_count ) { %> <!-- we are on higher page than total page count -->
+                    <% if ( ( show_page - 1 ) > page_count ) { %> <!-- 我们的页面比总页面数多 -->
                         <li class="page-item">
                             <a class="page-link" href="#folders/<%= id %>/page/1">
                                 <span class="fa fa-angle-double-left"></span>
@@ -1926,15 +1974,14 @@ var FolderToolbarView = Backbone.View.extend({
     },
 
     templatePaginatorText: function() {
-        return _.template(`per page,
-            <%- total_items_count %> total`);
+        return _.template(`条/页, 总计 <%- total_items_count %>条`);
     },
 
     templateCollectionSelectModal: function() {
         return _.template(
             `<div> <!-- elements selection -->
                 <div class="library-modal-item">
-                    <h4>Which datasets?</h4>
+                    <h4>哪些数据集？</h4>
                     <form class="form-inline">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="radio_elements" id="selection_radio" value="selection"
@@ -1948,39 +1995,44 @@ var FolderToolbarView = Backbone.View.extend({
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="radio_elements" id="folder_radio" value="folder" <% if (!selected_datasets) { %> checked <% } %> >
-                            <label class="form-check-label" for="folder_radio">all datasets in current folder</label>
+<!--                            <label class="form-check-label" for="folder_radio">all datasets in current folder</label>-->
+                            <label class="form-check-label" for="folder_radio">当前文件夹中的所有数据集</label>
                         </div>
                     </form>
                 </div>
                 <!-- type selection -->
                 <div class="library-modal-item">
-                    <h4>Collection type</h4>
+                    <h4>集合类型</h4>
                     <div class="form-group">
                         <select id="library-collection-type-select" name="library-collection-type-select" class="form-control">
-                            <option value="list">List</option>
-                            <option value="paired">Paired</option>
-                            <option value="list:paired">List of Pairs</option>
-                            <option value="rules">From Rules</option>
+                            <option value="list">列表</option>
+                            <option value="paired">对</option>
+                            <option value="list:paired">列表对</option>
+                            <option value="rules">从规则</option>
                         </select>
                     </div>
-                    <h5>Which type to choose?</h5>
+                    <h5>选择哪种类型?</h5>
                     <dl class="row">
-                        <dt class="col-sm-3">List</dt>
-                        <dd class="col-sm-9">Generic collection which groups any number of datasets into a set; similar to file system folder.</dd>
+                        <dt class="col-sm-3">列表</dt>
+<!--                        <dd class="col-sm-9">Generic collection which groups any number of datasets into a set; similar to file system folder.</dd>-->
+                        <dd class="col-sm-9">将任意数量的数据集分组到一个集合中的泛型集合；类似于文件系统文件夹。</dd>
 
-                        <dt class="col-sm-3">Paired</dt>
-                        <dd class="col-sm-9">Simple collection containing exactly two sequence datasets; one reverse and the other forward.</dd>
+                        <dt class="col-sm-3">对</dt>
+<!--                        <dd class="col-sm-9">Simple collection containing exactly two sequence datasets; one reverse and the other forward.</dd>-->
+                        <dd class="col-sm-9">包含两个序列数据集的简单集合；一个反向，另一个正向。</dd>
 
-                        <dt class="col-sm-3">List of Pairs</dt>
-                        <dd class="col-sm-9">Advanced collection containing any number of Pairs; imagine as Pair-type collections inside of a List-type collection.</dd>
+                        <dt class="col-sm-3">列表对</dt>
+<!--                        <dd class="col-sm-9">Advanced collection containing any number of Pairs; imagine as Pair-type collections inside of a List-type collection.</dd>-->
+                        <dd class="col-sm-9">包含任意数量对的高级集合;将其想象为列表类型集合中的成对类型集合。</dd>
 
-                        <dt class="col-sm-3">From Rules</dt>
-                        <dd class="col-sm-9">Use Galaxy's rule builder to describe collections. This is more of an advanced feature that allows building any number of collections or any type.</dd>
+                        <dt class="col-sm-3">从规则</dt>
+<!--                        <dd class="col-sm-9">Use Galaxy's rule builder to describe collections. This is more of an advanced feature that allows building any number of collections or any type.</dd>-->
+                        <dd class="col-sm-9">使用系统的规则生成器来描述集合。这是一个高级特性，允许构建任意数量的集合或任意类型。</dd>
                     </dl>
                 </div>
                 <!-- history selection/creation -->
                 <div class="library-modal-item">
-                    <h4>Select history</h4>
+                    <h4>选择历史</h4>
                     <div class="form-group">
                         <select id="library-collection-history-select" name="library-collection-history-select" class="form-control">
                             <% _.each(histories, function(history) { %> <!-- history select box -->
@@ -1989,8 +2041,8 @@ var FolderToolbarView = Backbone.View.extend({
                                 </option>
                             <% }); %>
                         </select>
-                        <label>or create new:</label>
-                        <input class="form-control" type="text" name="history_name" value="" placeholder="name of the new history" />
+                        <label>或新建:</label>
+                        <input class="form-control" type="text" name="history_name" value="" placeholder="新历史的名称" />
                     </div>
                 </div>
             </div>`

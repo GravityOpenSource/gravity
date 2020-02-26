@@ -351,7 +351,7 @@ export class TracksterUI extends Backbone.Model {
         if (view.has_changes) {
             Galaxy.modal.show({
                 title: _l("Close visualization"),
-                body: "There are unsaved changes to your visualization which will be lost if you do not save them.",
+                body: "您的可视化中有未保存的更改，如果不保存它们，这些更改将丢失。",
                 buttons: {
                     Cancel: () => {
                         Galaxy.modal.hide();
@@ -431,19 +431,36 @@ export class TracksterUIView extends Backbone.View {
             listTracksParams["f-dbkey"] = dbkey;
         }
 
+        // Galaxy.modal.show({
+        //     title: "View Data in a New or Saved Visualization?",
+        //     // either have text in here or have to remove body and the header/footer margins
+        //     body: `<p><ul style='list-style: disc inside none'>You can add this dataset as:<li>a new track to one of your existing, saved Trackster sessions if they share the genome build: <b>${dbkey ||
+        //         "Not available."}</b></li><li>or create a new session with this dataset as the only track</li></ul></p>`,
+        //     buttons: {
+        //         Cancel: () => {
+        //             window.top.location = `${getAppRoot()}visualizations/list`;
+        //         },
+        //         "View in saved visualization": () => {
+        //             this.view_in_saved(dataset_params);
+        //         },
+        //         "View in new visualization": () => {
+        //             this.view_new();
+        //         }
+        //     }
+        // });
         Galaxy.modal.show({
-            title: "View Data in a New or Saved Visualization?",
+            title: "在新的或保存的可视化视图中查看数据？",
             // either have text in here or have to remove body and the header/footer margins
-            body: `<p><ul style='list-style: disc inside none'>You can add this dataset as:<li>a new track to one of your existing, saved Trackster sessions if they share the genome build: <b>${dbkey ||
-                "Not available."}</b></li><li>or create a new session with this dataset as the only track</li></ul></p>`,
+            body: `<p><ul style='list-style: disc inside none'>可以将此数据集添加为：<li>一个新的轨道到你现有的其中一个，如果它们共享基因组构建，则保存的Trackster会话： <b>${dbkey ||
+                "不可用。"}</b></li><li>或者创建一个以此数据集作为唯一跟踪的新会话</li></ul></p>`,
             buttons: {
-                Cancel: () => {
+                "取消": () => {
                     window.top.location = `${getAppRoot()}visualizations/list`;
                 },
-                "View in saved visualization": () => {
+                "保存的可视化视图": () => {
                     this.view_in_saved(dataset_params);
                 },
-                "View in new visualization": () => {
+                "新可视化视图": () => {
                     this.view_new();
                 }
             }
@@ -461,10 +478,10 @@ export class TracksterUIView extends Backbone.View {
             title: _l("Add Data to Saved Visualization"),
             body: tracks_grid.$el,
             buttons: {
-                Cancel: () => {
+                "取消": () => {
                     window.top.location = `${getAppRoot()}visualizations/list`;
                 },
-                "Add to visualization": () => {
+                "添加可视化": () => {
                     $(window.parent.document)
                         .find("input[name=id]:checked")
                         .each(() => {
@@ -507,7 +524,7 @@ export class TracksterUIView extends Backbone.View {
             url: `${getAppRoot()}api/genomes?chrom_info=True`,
             data: {},
             error: () => {
-                alert("Couldn't create new browser.");
+                alert("无法创建新浏览器。");
             },
             success: response => {
                 // show dialog
@@ -515,10 +532,10 @@ export class TracksterUIView extends Backbone.View {
                     title: _l("New Visualization"),
                     body: this.template_view_new(response),
                     buttons: {
-                        Cancel: () => {
+                        "取消": () => {
                             window.top.location = `${getAppRoot()}visualizations/list`;
                         },
-                        Create: () => {
+                        "创建": () => {
                             this.create_browser($("#new-title").val(), $("#new-dbkey").val());
                             Galaxy.modal.hide();
                         }
@@ -550,14 +567,14 @@ export class TracksterUIView extends Backbone.View {
         var html =
             '<form id="new-browser-form" action="javascript:void(0);" method="post" onsubmit="return false;">' +
             '<div class="form-row">' +
-            '<label for="new-title">Browser name:</label>' +
+            '<label for="new-title">浏览器名称:</label>' +
             '<div class="form-row-input">' +
-            '<input type="text" name="title" id="new-title" value="Unnamed"></input>' +
+            '<input type="text" name="title" id="new-title" value="未命名"></input>' +
             "</div>" +
             '<div style="clear: both;"></div>' +
             "</div>" +
             '<div class="form-row">' +
-            '<label for="new-dbkey">Reference genome build (dbkey): </label>' +
+            '<label for="new-dbkey">参考基因组构建（dbkey）: </label>' +
             '<div class="form-row-input">' +
             '<select name="dbkey" id="new-dbkey">';
 
@@ -567,7 +584,7 @@ export class TracksterUIView extends Backbone.View {
         }
 
         // close selection/finalize template
-        html += `</select></div><div style="clear: both;"></div></div><div class="form-row">Is the build not listed here? <a href="${getAppRoot()}custom_builds" target="_top">Add a Custom Build</a></div></form>`;
+        html += `</select></div><div style="clear: both;"></div></div><div class="form-row">这里没有列出构建吗？<a href="${getAppRoot()}custom_builds" target="_top">添加自定义构建</a></div></form>`;
 
         // return
         return html;
@@ -594,7 +611,7 @@ export class TracksterUIView extends Backbone.View {
             // add new bookmark.
             var position = `${this.ui.view.chrom}:${this.ui.view.low}-${this.ui.view.high}`;
 
-            var annotation = "Bookmark description";
+            var annotation = "书签的描述";
             return this.ui.add_bookmark(position, annotation, true);
         });
 
@@ -603,7 +620,8 @@ export class TracksterUIView extends Backbone.View {
 
         $(window).on("beforeunload", () => {
             if (this.ui.view.has_changes) {
-                return "There are unsaved changes to your visualization that will be lost if you leave this page.";
+                // return "There are unsaved changes to your visualization that will be lost if you leave this page.";
+                return "如果离开此页，将丢失对可视化效果所做的未保存更改。";
             }
         });
     }

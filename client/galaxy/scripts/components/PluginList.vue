@@ -52,7 +52,7 @@
                             </div>
                             <div v-else class="alert alert-danger">
 <!--                              There is no suitable dataset in your current history which can be visualized with this plugin.-->
-                              在你当前的历史记录中没有合适的数据可以用这个插件显示出来。
+                              在您当前的历史记录中没有合适的数据可以用这个插件显示出来。
                             </div>
                         </td>
                     </tr>
@@ -139,7 +139,8 @@ export default {
         },
         _errorMessage: function(e) {
             const message = e && e.response && e.response.data && e.response.data.err_msg;
-            return message || "Request failed for an unknown reason.";
+            // return message || "Request failed for an unknown reason.";
+            return message || "请求失败，原因未知。";
         }
     }
 };

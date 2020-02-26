@@ -132,7 +132,8 @@ var LibraryRowView = Backbone.View.extend({
                 library.set("name", new_name);
                 is_changed = true;
             } else {
-                Toast.warning("Library name has to be at least 3 characters long.");
+                // Toast.warning("Library name has to be at least 3 characters long.");
+                Toast.warning("库的名称必须至少有3个字符");
                 return;
             }
         }
@@ -156,20 +157,23 @@ var LibraryRowView = Backbone.View.extend({
                 success: function(library) {
                     row_view.edit_mode = false;
                     row_view.repaint(library);
-                    Toast.success("Changes to library saved.");
+                    // Toast.success("Changes to library saved.");
+                    Toast.success("已保存对库的修改。");
                 },
                 error: function(model, response) {
                     if (typeof response.responseJSON !== "undefined") {
                         Toast.error(response.responseJSON.err_msg);
                     } else {
-                        Toast.error("An error occurred while attempting to update the library.");
+                        // Toast.error("An error occurred while attempting to update the library.");
+                        Toast.error("尝试更新库时出错。");
                     }
                 }
             });
         } else {
             this.edit_mode = false;
             this.repaint(library);
-            Toast.info("Nothing has changed.");
+            // Toast.info("Nothing has changed.");
+            Toast.info("什么也没有修改。");
         }
     },
 
@@ -191,13 +195,15 @@ var LibraryRowView = Backbone.View.extend({
                 } else if (Galaxy.libraries.preferences.get("with_deleted") === true) {
                     row_view.repaint(library);
                 }
-                Toast.success("Library has been marked deleted.");
+                // Toast.success("Library has been marked deleted.");
+                Toast.success("库已标记为已删除。");
             },
             error: function(model, response) {
                 if (typeof response.responseJSON !== "undefined") {
                     Toast.error(response.responseJSON.err_msg);
                 } else {
-                    Toast.error("An error occurred during deleting the library.");
+                    // Toast.error("An error occurred during deleting the library.");
+                    Toast.error("删除库时出错。");
                 }
             }
         });
@@ -218,13 +224,15 @@ var LibraryRowView = Backbone.View.extend({
                 Galaxy.libraries.libraryListView.collection.add(library);
                 row_view.edit_mode = false;
                 row_view.repaint(library);
-                Toast.success("Library has been undeleted.");
+                // Toast.success("Library has been undeleted.");
+                Toast.success("库已被取消删除。");
             },
             error: function(model, response) {
                 if (typeof response.responseJSON !== "undefined") {
                     Toast.error(response.responseJSON.err_msg);
                 } else {
-                    Toast.error("An error occurred while undeleting the library.");
+                    // Toast.error("An error occurred while undeleting the library.");
+                    Toast.error("删除库时出错。");
                 }
             }
         });
@@ -285,43 +293,43 @@ var LibraryRowView = Backbone.View.extend({
                         <span data-toggle="tooltip" data-placement="left" title="无限制的库"
                             class="fa fa-globe fa-lg"></span>
                     <% }%>
-                    <button data-toggle="tooltip" data-placement="left" title="Modify '<%- library.get("name") %>'"
+                    <button data-toggle="tooltip" data-placement="left" title="修改 '<%- library.get("name") %>'"
                         class="btn btn-secondary btn-sm edit_library_btn" type="button"
                         style="<% if(button_config.edit_library_btn === false) { print("display:none;") } %>">
-                        <span class="fa fa-pencil"></span> Edit
+                        <span class="fa fa-pencil"></span> 编辑
                     </button>
                     <a data-toggle="tooltip" data-placement="left"
-                        title="Permissions of '<%- library.get("name") %>'"
+                        title="'<%- library.get("name") %>'的权限"
                         href="#library/<%- library.get("id") %>/permissions">
                         <button class="btn btn-secondary btn-sm permission_library_btn" type="button"
                             style="<% if(button_config.permission_library_btn === false) { print("display:none;") } %>">
-                            <span class="fa fa-group"></span> Manage
+                            <span class="fa fa-group"></span> 管理
                         </button>
                     </a>
-                    <button data-toggle="tooltip" data-placement="left" title="Save changes"
+                    <button data-toggle="tooltip" data-placement="left" title="保存修改"
                         class="btn btn-secondary btn-sm save_library_btn" type="button"
                         style="<% if(button_config.save_library_btn === false) { print("display:none;") } %>">
-                        <span class="fa fa-floppy-o"></span> Save
+                        <span class="fa fa-floppy-o"></span> 保存
                     </button>
-                    <button data-toggle="tooltip" data-placement="left" title="Discard changes"
+                    <button data-toggle="tooltip" data-placement="left" title="取消修改"
                         class="btn btn-secondary btn-sm cancel_library_btn" type="button"
                         style="<% if(button_config.cancel_library_btn === false) { print("display:none;") } %>">
-                        <span class="fa fa-times"></span> Cancel
+                        <span class="fa fa-times"></span> 取消
                     </button>
-                    <button data-toggle="tooltip" data-placement="left" title="Delete '<%- library.get("name") %>'"
+                    <button data-toggle="tooltip" data-placement="left" title="删除 '<%- library.get("name") %>'"
                         class="btn btn-secondary btn-sm delete_library_btn" type="button"
                         style="<% if(button_config.delete_library_btn === false) { print("display:none;") } %>">
-                        <span class="fa fa-trash-o"></span> Delete
+                        <span class="fa fa-trash-o"></span> 删除
                     </button>
                     <!-- For deleted libraries -->
-                    <span data-toggle="tooltip" data-placement="left" title="Marked deleted"
+                    <span data-toggle="tooltip" data-placement="left" title="标记删除"
                         style="color:grey; <% if(button_config.undelete_library_btn === false) { print("display:none;") } %>"
                         class="fa fa-ban fa-lg">
                     </span>
-                    <button data-toggle="tooltip" data-placement="left" title="Undelete '<%- library.get("name") %>' "
+                    <button data-toggle="tooltip" data-placement="left" title="恢复删除 '<%- library.get("name") %>' "
                         class="btn btn-secondary btn-sm undelete_library_btn" type="button"
                         style="<% if(button_config.undelete_library_btn === false) { print("display:none;") } %>">
-                        <span class="fa fa-unlock"></span> Undelete
+                        <span class="fa fa-unlock"></span> 恢复删除
                     </button>
                 </td>
             </tr>`

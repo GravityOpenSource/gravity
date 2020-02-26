@@ -298,7 +298,7 @@ export default {
                     <input type="hidden" id="operation" name="operation" value="">
                     <td></td>
                     <td colspan="100">
-                        For <span class="grid-selected-count"></span> selected items: 
+                        有<span class="grid-selected-count"></span> 选择的项目: 
             `;
 
             // configure buttons for operations

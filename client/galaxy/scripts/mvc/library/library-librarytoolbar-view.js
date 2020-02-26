@@ -150,14 +150,14 @@ var LibraryToolbarView = Backbone.View.extend({
                     </a>
                     <% if(admin_user === true) { %>
 <!--                        <button data-toggle="tooltip" data-placement="top" title="Create new library" id="create_new_library_btn" class="mr-1 btn btn-secondary" type="button">-->
-                        <button data-toggle="tooltip" data-placement="top" title="创建新的文库" id="create_new_library_btn" class="mr-1 btn btn-secondary" type="button">
+                        <button data-toggle="tooltip" data-placement="top" title="创建新的库" id="create_new_library_btn" class="mr-1 btn btn-secondary" type="button">
 <!--                            <span class="fa fa-plus" /> Library-->
-                            <span class="fa fa-plus" /> 文库
+                            <span class="fa fa-plus" /> 库
                         </button>
                     <% } %>
                     <div class="d-flex align-items-center mr-1" />
                         <form class="form-inline mr-1">
-                            <input type="text" id="library-filter" class="form-control library-search-input mr-1" placeholder="Search" size="15">
+                            <input type="text" id="library-filter" class="form-control library-search-input mr-1" placeholder="搜索" size="15">
                             <% if(admin_user === true) { %>
                                 <div class="form-check mr-1">
                                     <input class="form-check-input" id="include_deleted_chk" type="checkbox"/>
@@ -256,7 +256,7 @@ var LibraryToolbarView = Backbone.View.extend({
     },
     templatePaginatorText: function() {
         // return _.template(`per page, <%- total_libraries_count %> total`);
-        return _.template(`条/页, 总计 <%- total_libraries_count %>`);
+        return _.template(`条/页, 总计 <%- total_libraries_count %>条`);
     }
 });
 

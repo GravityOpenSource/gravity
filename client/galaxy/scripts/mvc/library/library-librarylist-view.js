@@ -279,7 +279,7 @@ var LibraryListView = Backbone.View.extend({
                             $(this).removeClass("table-success");
                         });
 
-                    Toast.success("文库创建成功。");
+                    Toast.success("库创建成功。");
                 },
                 error: (model, response) => {
                     if (typeof response.responseJSON !== "undefined") {
@@ -290,7 +290,7 @@ var LibraryListView = Backbone.View.extend({
                 }
             });
         } else {
-            Toast.error("文库名称缺失。");
+            Toast.error("库的名称缺失。");
         }
         return false;
     },
@@ -351,13 +351,13 @@ var LibraryListView = Backbone.View.extend({
                     <% if(search_term.length > 0) { %>
                         <div>
 <!--                            There are no libraries matching your search. Try different keyword.-->
-                            没有与您的搜索匹配的文库。尝试不同的关键字。
+                            没有与您的搜索匹配的库。尝试不同的关键字。
                         </div>
                     <% } else{ %>
                         <div>
 <!--                            There are no libraries visible to you here. If you expected some to show up please consult the-->
 <!--                            <a href="https://galaxyproject.org/data-libraries/#permissions" target="_blank">library security wikipage</a>.There are no libraries visible to you here. If you expected some to show up please consult the-->
-                            这里没有可显示的文库。如果你希望显示，请联系技术人员。
+                            这里没有可显示的库。如果你希望显示，请联系技术人员。
                         </div>
                     <% }%>
                 <% }%>

@@ -128,7 +128,8 @@ export default {
         },
         _errorMessage: function(e) {
             const message = e && e.response && e.response.data && e.response.data.err_msg;
-            this.messageText = message || "Request failed for an unknown reason.";
+            // this.messageText = message || "Request failed for an unknown reason.";
+            this.messageText = message || "请求失败，原因未知。";
             this.messageVariant = "danger";
         }
     }

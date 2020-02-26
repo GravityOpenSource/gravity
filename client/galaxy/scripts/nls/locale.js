@@ -282,8 +282,7 @@ define({
         "Adding datasets from your history": false,
         "Create New Folder": false,
         // ---------------------------------------------------------------------------- library-librarytoolbar-view
-        // "Create New Library": false,
-        "Create New Library": "创建新的数据库",
+        "Create New Library": false,
         // ---------------------------------------------------------------------------- tours
         Tours: false,
         // ---------------------------------------------------------------------------- user-preferences

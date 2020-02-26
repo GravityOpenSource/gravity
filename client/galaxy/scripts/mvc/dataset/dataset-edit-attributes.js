@@ -21,7 +21,7 @@ var View = Backbone.View.extend({
         this.tabs = this._createTabs();
         this.active_tab = "user";
         this.$el
-            .append($("<h4/>").append("Edit dataset attributes"))
+            .append($("<h4/>").append("编辑数据集属性"))
             .append(this.message.$el)
             .append("<p/>")
             .append(this.tabs.$el)
@@ -48,7 +48,7 @@ var View = Backbone.View.extend({
                 var err_msg = response.responseJSON && response.responseJSON.err_msg;
                 self.message.update({
                     status: "danger",
-                    message: err_msg || "Error occurred while loading the dataset."
+                    message: err_msg || "加载数据集时出错。"
                 });
             }
         });
@@ -73,7 +73,7 @@ var View = Backbone.View.extend({
                 var err_msg = response.responseJSON && response.responseJSON.err_msg;
                 self.message.update({
                     status: "danger",
-                    message: err_msg || "Error occurred while editing the dataset attributes."
+                    message: err_msg || "编辑数据集属性时出错。"
                 });
             }
         });
@@ -135,9 +135,11 @@ var View = Backbone.View.extend({
                 }),
                 submit_autodetect: new Ui.Button({
                     tooltip:
-                        "This will inspect the dataset and attempt to correct the values of fields if they are not accurate.",
+                        // "This will inspect the dataset and attempt to correct the values of fields if they are not accurate.",
+                        "这将检查数据集，并尝试纠正不正确的字段值。",
                     icon: "fa-undo",
-                    title: "Auto-detect",
+                    // title: "Auto-detect",
+                    title: "自动检测",
                     onclick: function() {
                         self._submit("autodetect", form);
                     }

@@ -471,17 +471,17 @@ export default Backbone.View.extend({
                     </div>
                     <div class="upload-box">
                         <div class="upload-helper">
-                            <i class="fa fa-files-o"/>Drop files here
+                            <i class="fa fa-files-o"/>将文件拖到这里
                         </div>
                         <table class="upload-table ui-table-striped" style="display: none;">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Size</th>
-                                    <th>Type</th>
-                                    <th>Genome</th>
-                                    <th>Settings</th>
-                                    <th>Status</th>
+                                    <th>名称</th>
+                                    <th>大小</th>
+                                    <th>类型</th>
+                                    <th>基因组</th>
+                                    <th>设置</th>
+                                    <th>状态</th>
                                     <th/>
                                 </tr>
                             </thead>
@@ -489,10 +489,10 @@ export default Backbone.View.extend({
                         </table>
                     </div>
                     <div class="upload-footer">
-                        <span class="upload-footer-title">Type (set all):</span>
+                        <span class="upload-footer-title">类型(全部设置):</span>
                         <span class="upload-footer-extension"/>
                         <span class="upload-footer-extension-info upload-icon-button fa fa-search"/>
-                        <span class="upload-footer-title">Genome (set all):</span>
+                        <span class="upload-footer-title">基因组(全部设置):</span>
                         <span class="upload-footer-genome"/>
                     </div>
                     <div class="upload-buttons"/>

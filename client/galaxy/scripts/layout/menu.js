@@ -477,7 +477,8 @@ const Tab = Backbone.View.extend({
                 .popover({
                     html: true,
                     placement: "bottom",
-                    content: `Please ${this.buildLink("login or register", "login")} to use this feature.`
+                    // content: `Please ${this.buildLink("login or register", "login")} to use this feature.`
+                    content: `请 ${this.buildLink("登录或注册", "login")} 再使用此功能。`
                 })
                 .popover("show");
             window.setTimeout(() => {

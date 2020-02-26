@@ -15,10 +15,6 @@
 
         <title>
             GrandOmics
-            %if app.config.brand:
-            | ${app.config.brand}
-            %endif
-            | ${self.title()}
         </title>
 
         ## relative href for site root
