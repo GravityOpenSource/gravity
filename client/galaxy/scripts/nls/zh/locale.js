@@ -42,7 +42,7 @@ define({
     "Show favorites": "显示收藏夹",
     "All workflows": "所有流程",
     "clear search (esc)": "清除搜索 (esc键)",
-    Using: "使用",
+    "Using ": "使用 ",
     Details: "详情",
     "(empty)": "(空)",
 
@@ -50,11 +50,12 @@ define({
     "Account and saved data": "账号及数据保存",
     "Account registration or login": "注册与登录",
     "Support, contact, and community": "支持，联系，社区",
-    "Administer this Galaxy": "管理您的Galaxy",
+    "Administer this Galaxy": "管理您的平台",
     "Visualize datasets": "数据集可视化",
     "Access published resources": "访问发布的资源",
     "Chain tools into workflows": "将工具链接到工作流程中",
     "Analysis home view": "数据分析主页",
+    "Log in or register a new account": "登录或注册一个新帐户",
     // ---------------------------------------------------------------------------- histories
     History: "历史",
     "Refresh history": "刷新历史记录",
@@ -66,7 +67,7 @@ define({
     "Set Permissions": "设置权限",
     "Make Private": "设为私有",
     "Collapse Expanded Datasets": "合并数据集",
-    "This will make all the data in this history private (excluding library datasets), and will set permissions such that all new data is created as private.  Any datasets within that are currently shared will need to be re-shared or published.  Are you sure you want to do this?": "这将使此历史记录中的所有数据成为私有(不包括数据库)，并将设置权限，以便将所有新数据创建为私有。任何当前共享的数据集都需要重新共享或发布。你确定要这么做吗?",
+    "This will make all the data in this history private (excluding library datasets), and will set permissions such that all new data is created as private.  Any datasets within that are currently shared will need to be re-shared or published.  Are you sure you want to do this?": "这将使此历史记录中的所有数据成为私有(不包括数据库)，并将设置权限，以便将所有新数据创建为私有。任何当前共享的数据集都需要重新共享或发布。您确定要这么做吗?",
     "Really unhide all hidden datasets?": "确认显示所有隐藏的数据集吗?",
     "Really delete all hidden datasets?": "确认删除所有隐藏的数据集吗?",
     "Really delete all deleted datasets permanently? This cannot be undone.": "确认清空所有已删除的数据集吗？此操作无法恢复！",
@@ -115,16 +116,24 @@ define({
     "You are over your disk quota": "您超出了您的磁盘配额",
     "Tool execution is on hold until your disk usage drops below your allocated quota":
         "工具执行处于暂停状态，直到您的磁盘使用量低于您分配的配额",
-    All: "所有的",
-    None: "一个也没有",
-    "For all selected": "为每个选定",
+    All: "全选",
+    None: "不选",
+    "For all selected": "为所有选中",
+    Server: "服务器",
+    "Visualize this data": "可视化数据",
 
     // ---- history-view-edit
+    "shown": "显示",
+    "hide deleted": "隐藏删除",
+    "deleted": "删除",
+    "hide hidden": "收起隐藏",
+    "hidden": "隐藏",
     "Edit history tags": "编辑历史标签",
     "Edit history annotation": "编辑历史备注",
     "Edit history Annotation": "编辑历史备注", //大写
     "Unnamed history": "未命名的历史",
     "Click to rename history": "单击要重命名的历史",
+    "Drag datasets here to copy them to the current history": "将数据集拖到此处以将其复制到当前历史记录",
     // multi operations
     "search histories": "搜索历史记录",
     "search all datasets": "搜索所有数据集",
@@ -135,7 +144,11 @@ define({
     "Delete datasets": "删除数据集",
     "Undelete datasets": "取消删除数据集",
     "Permanently delete datasets": "永久删除数据集",
-    "This will permanently remove the data in your datasets. Are you sure?": "这将永久在您的数据集删除数据。你确定？",
+    "Build Dataset List": "建立数据集列表",
+    "Build Dataset Pair": "建立数据集对",
+    "Build List of Dataset Pairs": "建立数据集对列表",
+    "Build Collection from Rules": "从规则中构建集合",
+    "This will permanently remove the data in your datasets. Are you sure?": "这将永久在您的数据集删除数据。您确定吗？",
 
     // ---- history-view-annotated
     Dataset: "数据",
@@ -143,7 +156,7 @@ define({
 
     // ---- history-view-edit-current
     "This history is empty. Click 'Get Data' on the left tool menu to start": "历史已空，请单击左边窗格中‘获取数据’",
-    "You must be logged in to create histories": "你必须登录后才能创建历史",
+    "You must be logged in to create histories": "您必须登录后才能创建历史",
     //TODO:
     "You can ": "您可以 ",
     " or ": " 或者 ",
@@ -156,7 +169,53 @@ define({
     //"Include Hidden Datasets" :
     //false,
 
+    // ---------------------------------------------------------------------------- upload-view
+    "Download from web or upload from disk": "从网站下载或从磁盘上传文件",
+    // ---------------------------------------------------------------------------- upload-button
+    // "Download from URL or upload files from disk": false,
+    "Download from URL or upload files from disk": "从网站下载或从磁盘上传文件",
+
+    // ---------------------------------------------------------------------------- trackster
+    "New Visualization": "新的可视化",
+    "Add Data to Saved Visualization": "将数据添加到保存的可视化中",
+    "Close visualization": "关闭可视化",
+    Circster: false,
+    Bookmarks: "书签",
+    "Add group": "添加组",
+
+    // ---------------------------------------------------------------------------- library-dataset-view
+    "Import into History": "导入历史",
+    // ---------------------------------------------------------------------------- library-foldertoolbar-view
+    "Location Details": "位置详情",
+    "Deleting selected items": "删除选中项",
+    "Please select folders or files": "请选择文件夹或文件",
+    "Please enter paths to import": "请输入要导入的路径",
+    "Adding datasets from your history": "从您的历史添加数据集",
+    "Create New Folder": "创建新的文件夹",
+    // ---------------------------------------------------------------------------- library-librarytoolbar-view
+    "Create New Library": "创建新的库",
+
     // ---------------------------------------------------------------------------- datasets
+    // ---------------------------------------------------------------------------- dataset-edit-attributes
+    "Save permissions.": "保存权限。",
+    "Change the datatype to a new type.": "将数据类型更改为新类型。",
+    "Convert the datatype to a new format.": "将数据类型转换为新的格式。",
+    "Save attributes of the dataset.": "保存数据集的属性。",
+    "Change data type": "改变数据类型",
+    "Edit dataset attributes": "编辑数据集属性",
+    "Save permissions": "保存权限",
+    "Manage dataset permissions": "数据集管理权限",
+    "Change datatype": "改变数据类型",
+    "Convert datatype": "转换数据类型",
+    "Convert to new format": "转换为新格式",
+    "Detect datatype": "检测数据类型",
+    "Detect the datatype and change it.": "检测数据类型并更改它。",
+    Save: "保存",
+    Permissions: "权限",
+    Datatypes: "数据类型",
+    Convert: "转换",
+    Attributes: "属性",
+
     // ---- hda-model
     "Unable to purge dataset": "无法清除数据集",
 
@@ -259,6 +318,23 @@ define({
     Roles: "角色",
     "Local data": "本地数据",
     "Form Definitions": "定义表单",
+    "Data types": "数据类型",
+    "Data tables": "数据表",
+    "Display applications": "显示应用程序",
+    Jobs: "工作",
+    "Workflow invocations": "流程调用",
+    "User Management": "用户管理",
+     Forms: "表单",
+    "Tool Management": "工具管理",
+    "Install or Uninstall": "安装或卸载",
+    "Monitor installation": "监控安装",
+    "Manage tools": "管理工具",
+    "Manage metadata": "管理元数据",
+    "Manage whitelist": "管理白名单",
+    "Manage dependencies": "管理依赖关系",
+    "View lineage": "查看家系",
+    "View migration stages": "查看迁移阶段",
+    "View error logs": "查看错误日志",
 
     // ---------------------------------------------------------------------------- Scratchbook
     "Enable/Disable Scratchbook": "启用/禁用 Scratchbook",
@@ -268,9 +344,24 @@ define({
     Tags: "标签",
     "Edit annotation": "编辑备注",
 
-    // ----------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------- error-modal
+    "An error occurred": "发生一个错误",
+    "Please contact a Galaxy administrator if the problem persists.": "如果问题仍然存在，请联系系统管理员。",
+    "An error occurred while updating information with the server.": "使用服务器更新信息时出错。",
+    "The following information can assist the developers in finding the source of the error:":  "以下信息可以帮助开发人员查找错误的来源：",
+    "Error:":  "错误：",
+    "You appear to be offline. Please check your connection and try again.": "您似乎处于离线状态。 请检查您的连接，然后重试。",
+    "Offline?": "离线？",
+    "Galaxy is currently unreachable. Please try again in a few minutes.": "系统目前无法访问。请过几分钟再试。",
+    "Cannot connect to Galaxy": "无法连接到系统",
 
-    ja: true,
+
+    // ---------------------------------------------------------------------------- RuleCollectionBuilder
+    "Numeric sorting.": "数值排序。",
+
+
+
+  ja: true,
     fr: true,
     zh: true
 });

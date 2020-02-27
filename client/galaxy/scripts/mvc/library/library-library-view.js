@@ -40,13 +40,15 @@ var LibraryView = Backbone.View.extend({
             error: function(model, response) {
                 const Galaxy = getGalaxyInstance();
                 if (typeof response.responseJSON !== "undefined") {
-                    Toast.error(`${response.responseJSON.err_msg} Click this to go back.`, "", {
+                    // Toast.error(`${response.responseJSON.err_msg} Click this to go back.`, "", {
+                    Toast.error(`${response.responseJSON.err_msg} 单击此处返回`, "", {
                         onclick: function() {
                             Galaxy.libraries.library_router.back();
                         }
                     });
                 } else {
-                    Toast.error("An error occurred. Click this to go back.", "", {
+                    // Toast.error("An error occurred. Click this to go back.", "", {
+                    Toast.error("发生一个错误。单击此处返回。", "", {
                         onclick: function() {
                             Galaxy.libraries.library_router.back();
                         }
@@ -83,7 +85,8 @@ var LibraryView = Backbone.View.extend({
                 });
             })
             .fail(() => {
-                Toast.error("An error occurred while attempting to fetch library permissions.");
+                // Toast.error("An error occurred while attempting to fetch library permissions.");
+                Toast.error("试图获取库权限时出错。");
             });
 
         $('#center [data-toggle="tooltip"]').tooltip({ trigger: "hover" });
@@ -129,7 +132,7 @@ var LibraryView = Backbone.View.extend({
             minimumInputLength: 0,
             css: id,
             multiple: true,
-            placeholder: "Click to select a role",
+            placeholder: "单击此选择一个角色",
             container: self.$el.find(`#${id}`),
             ajax: {
                 url: `${getAppRoot()}api/libraries/${
@@ -188,10 +191,12 @@ var LibraryView = Backbone.View.extend({
                 self.showPermissions({
                     fetched_permissions: fetched_permissions
                 });
-                Toast.success("The dataset is now private to you.");
+                // Toast.success("The dataset is now private to you.");
+                Toast.success("数据集现在对您是私有的。");
             })
             .fail(() => {
-                Toast.error("An error occurred while attempting to make dataset private.");
+                // Toast.error("An error occurred while attempting to make dataset private.");
+                Toast.error("试图将数据集设为私有时出错。");
             });
     },
 
@@ -203,10 +208,12 @@ var LibraryView = Backbone.View.extend({
                 self.showPermissions({
                     fetched_permissions: fetched_permissions
                 });
-                Toast.success("Access to this dataset is now unrestricted.");
+                // Toast.success("Access to this dataset is now unrestricted.");
+                Toast.success("现在对此数据集的访问不受限制。");
             })
             .fail(() => {
-                Toast.error("An error occurred while attempting to make dataset unrestricted.");
+                // Toast.error("An error occurred while attempting to make dataset unrestricted.");
+                Toast.error("试图将数据集设为不受限时出错。");
             });
     },
 
@@ -236,10 +243,12 @@ var LibraryView = Backbone.View.extend({
                 self.showPermissions({
                     fetched_permissions: fetched_permissions
                 });
-                Toast.success("Permissions saved.");
+                // Toast.success("Permissions saved.");
+                Toast.success("权限已保存。");
             })
             .fail(() => {
-                Toast.error("An error occurred while attempting to set library permissions.");
+                // Toast.error("An error occurred while attempting to set library permissions.");
+                Toast.error("试图设置库权限时出错。");
             });
     },
 
@@ -249,51 +258,64 @@ var LibraryView = Backbone.View.extend({
                 <div>
                     <a href="#">
                         <button data-toggle="tooltip" data-placement="top"
-                            title="Go back to the list of Libraries" class="btn btn-secondary primary-button" type="button">
-                            <span class="fa fa-list"></span>&nbsp;Libraries
+                            title="返回到库列表" class="btn btn-secondary primary-button" type="button">
+                            <span class="fa fa-list"></span>&nbsp;库
                         </button>
                     </a>
                 </div>
                 <h1>
-                    Library: <%= _.escape(library.get("name")) %>
+                    库: <%= _.escape(library.get("name")) %>
                 </h1>
                 <div class="alert alert-warning">
                     <% if (is_admin) { %>
-                        You are logged in as an <strong>administrator</strong> therefore you can manage any library
-                        on this Galaxy instance. Please make sure you understand the consequences.
+<!--                        You are logged in as an <strong>administrator</strong> therefore you can manage any library-->
+<!--                        on this Galaxy instance. Please make sure you understand the consequences.-->
+                        您是以<strong>管理员</strong>身份登录的，因此可以管理这个系统上的任何库。请务必了解后果。
                     <% } else { %>
-                        You can assign any number of roles to any of the following permission types.
-                        However please read carefully the implications of such actions.
+<!--                        You can assign any number of roles to any of the following permission types.-->
+<!--                        However please read carefully the implications of such actions.-->
+                        您可以将任意数量的角色分配给以下任何权限类型。
+                        不过，请仔细阅读这些操作的含义。
                     <% }%>
                 </div>
                 <div class="dataset_table">
-                    <h2>Library permissions</h2>
-                    <h4>Roles that can access the library</h4>
+<!--                    <h2>Library permissions</h2>-->
+                    <h2>库的权限</h2>
+<!--                    <h4>Roles that can access the library</h4>-->
+                    <h4>可以访问库的角色</h4>
                     <div id="access_perm" class="access_perm roles-selection"></div>
-                    <div class="alert alert-info roles-selection">
-                        User with <strong>any</strong> of these roles can access this library.
-                        If there are no access roles set on the library it is considered <strong>unrestricted</strong>.
+<!--                    <div class="alert alert-info roles-selection">-->
+<!--                        User with <strong>any</strong> of these roles can access this library.-->
+<!--                        If there are no access roles set on the library it is considered <strong>unrestricted</strong>.-->
+                        具有<strong>任一</strong>这些角色的用户都可以访问这个库。
+                        如果在库上没有设置访问角色，则认为是<strong>不受限制</strong>的。
                     </div>
-                    <h4>Roles that can manage permissions on this library</h4>
+<!--                    <h4>Roles that can manage permissions on this library</h4>-->
+                    <h4>可以管理此库权限的角色</h4>
                     <div id="manage_perm" class="manage_perm roles-selection"></div>
                     <div class="alert alert-info roles-selection">
-                        User with <strong>any</strong> of these roles can manage permissions on this library
-                        (includes giving access).
+<!--                        User with <strong>any</strong> of these roles can manage permissions on this library-->
+<!--                        (includes giving access).-->
+                        具有<strong>任一</strong>这些角色的用户都可以管理这个库的权限(包括授予访问权)。
                     </div>
-                    <h4>Roles that can add items to this library</h4>
+<!--                    <h4>Roles that can add items to this library</h4>-->
+                    <h4>可以向此库添加项的角色</h4>
                     <div id="add_perm" class="add_perm roles-selection"></div>
                     <div class="alert alert-info roles-selection">
-                        User with <strong>any</strong> of these roles can add items to this library (folders and datasets).
+<!--                        User with <strong>any</strong> of these roles can add items to this library (folders and datasets).-->
+                        具有<strong>任一</strong>这些角色的用户都可以将项添加到此库(文件夹和数据集)。
                     </div>
-                    <h4>Roles that can modify this library</h4>
+<!--                    <h4>Roles that can modify this library</h4>-->
+                    <h4>可以修改此库的角色</h4>
                     <div id="modify_perm" class="modify_perm roles-selection"></div>
                     <div class="alert alert-info roles-selection">
-                        User with <strong>any</strong> of these roles can modify this library (name, synopsis, etc.).
+<!--                        User with <strong>any</strong> of these roles can modify this library (name, synopsis, etc.).-->
+                        具有<strong>任一</strong>这些角色的用户都可以修改这个库(名称、概要等)。
                     </div>
                     <button data-toggle="tooltip" data-placement="top"
-                        title="Save modifications made on this page"
+                        title="保存在本页上所作的修改"
                         class="btn btn-secondary toolbtn_save_permissions primary-button" type="button">
-                        <span class="fa fa-floppy-o"></span>&nbsp;Save
+                        <span class="fa fa-floppy-o"></span>&nbsp;保存
                     </button>
                 </div>
             </div>`

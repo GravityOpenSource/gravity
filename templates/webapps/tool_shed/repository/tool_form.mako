@@ -12,11 +12,7 @@
 <html>
     <head>
         <title>
-            Galaxy
-            %if app.config.brand:
-            | ${app.config.brand}
-            %endif
-            | Tool Preview
+            GrandOmics
         </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         ${h.css( "base" )}
@@ -71,9 +67,9 @@
                 %else:
                     ${row_for_param( prefix, input, tool_state, other_values )}
                 %endif
-            %endfor  
+            %endfor
         </%def>
-        
+
         <%def name="row_for_param( prefix, param, parent_state, other_values )">
             <div class="form-row">
                 <label >${param.label or param.name}:</label>
@@ -82,7 +78,7 @@
                         ${param.help}
                     </div>
                 %endif
-                <div style="clear: both"></div>     
+                <div style="clear: both"></div>
             </div>
         </%def>
 

@@ -14,11 +14,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 
         <title>
-            GrandOmics Galaxy
-            %if app.config.brand:
-            | ${app.config.brand}
-            %endif
-            | ${self.title()}
+            GrandOmics
         </title>
 
         ## relative href for site root

@@ -59,7 +59,8 @@ var FolderRowView = Backbone.View.extend({
                 template = this.templateRowFile();
             }
         } else {
-            Galaxy.emit.error("Unknown library item type found.");
+            // Galaxy.emit.error("Unknown library item type found.");
+            Galaxy.emit.error("发现未知的库类型。");
             Galaxy.emit.error(folder_item.get("type") || folder_item.get("model_class"));
         }
         this.setElement(
@@ -142,7 +143,8 @@ var FolderRowView = Backbone.View.extend({
                 var updated_dataset = new mod_library_model.Item(response);
                 Galaxy.libraries.folderListView.collection.add(updated_dataset);
                 Galaxy.libraries.folderListView.collection.sortFolder("name", "asc");
-                Toast.success("Dataset undeleted. Click this to see it.", "", {
+                // Toast.success("Dataset undeleted. Click this to see it.", "", {
+                Toast.success("数据恢复。点击这里查看。", "", {
                     onclick: function() {
                         var folder_id = that.model.get("folder_id");
                         window.location = `${getAppRoot()}library/list#folders/${folder_id}/datasets/${that.id}`;
@@ -151,9 +153,10 @@ var FolderRowView = Backbone.View.extend({
             },
             error: function(model, response) {
                 if (typeof response.responseJSON !== "undefined") {
-                    Toast.error(`Dataset was not undeleted. ${response.responseJSON.err_msg}`);
+                    Toast.error(`数据集未被删除。 ${response.responseJSON.err_msg}`);
                 } else {
-                    Toast.error("An error occurred! Dataset was not undeleted. Please try again.");
+                    // Toast.error("An error occurred! Dataset was not undeleted. Please try again.");
+                    Toast.error("发生一个错误!数据集未被删除。请再试一次。");
                 }
             }
         });
@@ -174,13 +177,15 @@ var FolderRowView = Backbone.View.extend({
                 var updated_folder = new mod_library_model.FolderAsModel(response);
                 Galaxy.libraries.folderListView.collection.add(updated_folder);
                 Galaxy.libraries.folderListView.collection.sortFolder("name", "asc");
-                Toast.success("Folder undeleted.");
+                // Toast.success("Folder undeleted.");
+                Toast.success("文件夹未删除。");
             },
             error: function(model, response) {
                 if (typeof response.responseJSON !== "undefined") {
-                    Toast.error(`Folder was not undeleted. ${response.responseJSON.err_msg}`);
+                    Toast.error(`文件夹未被删除。 ${response.responseJSON.err_msg}`);
                 } else {
-                    Toast.error("An error occurred! Folder was not undeleted. Please try again.");
+                    // Toast.error("An error occurred! Folder was not undeleted. Please try again.");
+                    Toast.error("发生一个错误!文件夹未被删除。请再试一次。");
                 }
             }
         });
@@ -208,7 +213,8 @@ var FolderRowView = Backbone.View.extend({
                 folder.set("name", new_name);
                 is_changed = true;
             } else {
-                Toast.warning("Folder name has to be at least 3 characters long.");
+                // Toast.warning("Folder name has to be at least 3 characters long.");
+                Toast.warning("文件夹名必须至少有3个字符长。");
                 return;
             }
         }
@@ -230,14 +236,16 @@ var FolderRowView = Backbone.View.extend({
                     if (typeof response.responseJSON !== "undefined") {
                         Toast.error(response.responseJSON.err_msg);
                     } else {
-                        Toast.error("An error occurred while attempting to update the folder.");
+                        // Toast.error("An error occurred while attempting to update the folder.");
+                        Toast.error("试图更新文件夹时出错。");
                     }
                 }
             });
         } else {
             this.options.edit_mode = false;
             this.repaint(folder);
-            Toast.info("Nothing has changed.");
+            // Toast.info("Nothing has changed.");
+            Toast.info("什么都没有改变。");
         }
     },
 
@@ -260,7 +268,7 @@ var FolderRowView = Backbone.View.extend({
         return _.template(
             `<tr class="folder_row library-row" data-id="<%- content_item.id %>">
                 <td class="mid">
-                    <span title="Folder" class="fa fa-folder-o"></span>
+                    <span title="文件夹" class="fa fa-folder-o"></span>
                 </td>
                 <td class="mid"><input style="margin: 0;" type="checkbox"></td>
                 <% if(!edit_mode) { %>
@@ -281,14 +289,14 @@ var FolderRowView = Backbone.View.extend({
                     <% } %>
                 <% } else if(edit_mode){ %>
                     <td>
-                        <textarea rows="4" class="form-control input_folder_name" placeholder="name" ><%- content_item.get("name") %></textarea>
+                        <textarea rows="4" class="form-control input_folder_name" placeholder="名称" ><%- content_item.get("name") %></textarea>
                     </td>
                     <td>
-                        <textarea rows="4" class="form-control input_folder_description" placeholder="description" ><%- content_item.get("description") %></textarea>
+                        <textarea rows="4" class="form-control input_folder_description" placeholder="描述" ><%- content_item.get("description") %></textarea>
                     </td>
                 <% } %>
                 <td></td>
-                <td>folder</td>
+                <td>文件夹</td>
                 <td></td>
                 <td>
                     <%= _.escape(content_item.get("update_time")) %>
@@ -296,29 +304,29 @@ var FolderRowView = Backbone.View.extend({
                 <td></td>
                 <td class="right-center">
                     <% if(edit_mode) { %> <!-- start edit mode -->
-                        <button data-toggle="tooltip" data-placement="top" title="Save changes"
+                        <button data-toggle="tooltip" data-placement="top" title="保存修改"
                             class="primary-button btn-sm save_folder_btn" type="button"
                             style="<% if(button_config.save_folder_btn === false) { print("display:none;") } %>">
-                            <span class="fa fa-floppy-o"></span> Save
+                            <span class="fa fa-floppy-o"></span> 保存
                         </button>
-                        <button data-toggle="tooltip" data-placement="top" title="Discard changes"
+                        <button data-toggle="tooltip" data-placement="top" title="取消修改"
                             class="primary-button btn-sm cancel_folder_btn" type="button"
                             style="<% if(button_config.cancel_folder_btn === false) { print("display:none;") } %>">
-                            <span class="fa fa-times"></span> Cancel
+                            <span class="fa fa-times"></span> 取消
                         </button>
                     <% } else if (!edit_mode){%> <!-- start no edit mode -->
                         <button data-toggle="tooltip" data-placement="top"
-                            title="Modify '<%- content_item.get("name") %>'"
+                            title="修改 '<%- content_item.get("name") %>'"
                             class="primary-button btn-sm edit_folder_btn" type="button"
                             style="<% if(button_config.edit_folder_btn === false) { print("display:none;") } %>">
-                            <span class="fa fa-pencil"></span> Edit
+                            <span class="fa fa-pencil"></span> 编辑
                         </button>
                         <a href="#/folders/<%- content_item.id %>/permissions">
                             <button data-toggle="tooltip" data-placement="top"
                                 class="primary-button btn-sm permission_folder_btn"
-                                title="Permissions of '<%- content_item.get("name") %>'"
+                                title="'<%- content_item.get("name") %>'的权限"
                                     style="<% if(button_config.permission_folder_btn === false) { print("display:none;") } %>">
-                                <span class="fa fa-group"></span> Manage
+                                <span class="fa fa-group"></span> 管理
                             </button>
                         </a>
                     <% } %> <!-- end no edit mode -->
@@ -331,7 +339,7 @@ var FolderRowView = Backbone.View.extend({
         return _.template(
             `<tr class="dataset_row library-row" data-id="<%- content_item.id %>">
                 <td class="mid">
-                    <span title="Dataset" class="fa fa-file-o"></span>
+                    <span title="数据集" class="fa fa-file-o"></span>
                 </td>
                 <td class="mid">
                     <input style="margin: 0;" type="checkbox">
@@ -354,23 +362,23 @@ var FolderRowView = Backbone.View.extend({
                 </td>
                 <td class="right-center">
                     <% if (content_item.get("is_unrestricted")) { %>
-                        <span data-toggle="tooltip" data-placement="top" title="Unrestricted dataset"
+                        <span data-toggle="tooltip" data-placement="top" title="无限制的数据集"
                             class="fa fa-globe"></span>
                     <% } %>
                     <% if (content_item.get("is_private")) { %>
-                        <span data-toggle="tooltip" data-placement="top" title="Private dataset"
+                        <span data-toggle="tooltip" data-placement="top" title="私有的数据集"
                             class="fa fa-key"></span>
                     <% } %>
                     <% if ((content_item.get("is_unrestricted") === false) && (content_item.get("is_private") === false)) { %>
-                        <span data-toggle="tooltip" data-placement="top" title="Restricted dataset"
+                        <span data-toggle="tooltip" data-placement="top" title="有限制的数据集"
                             class="fa fa-shield"></span>
                     <% } %>
                     <% if (content_item.get("can_manage")) { %>
                         <a href="#folders/<%- content_item.get("folder_id") %>/datasets/<%- content_item.id %>/permissions">
                             <button data-toggle="tooltip" data-placement="top"
                                 class="primary-button btn-sm permissions-dataset-btn"
-                                title="Permissions of '<%- content_item.get("name") %>'">
-                                <span class="fa fa-group"></span> Manage
+                                title="'<%- content_item.get("name") %>'的权限">
+                                <span class="fa fa-group"></span> 管理
                             </button>
                         </a>
                     <% } %>
@@ -383,7 +391,7 @@ var FolderRowView = Backbone.View.extend({
         return _.template(
             `<tr class="active deleted_dataset library-row" data-id="<%- content_item.id %>">
                 <td class="mid">
-                    <span title="Dataset" class="fa fa-file-o"></span>
+                    <span title="数据集" class="fa fa-file-o"></span>
                 </td>
                 <td></td>
                 <td style="color:grey;">
@@ -411,11 +419,11 @@ var FolderRowView = Backbone.View.extend({
                 </td>
                 <td class="right-center">
                     <span data-toggle="tooltip" data-placement="top"
-                        title="Marked deleted" class="fa fa-ban"></span>
+                        title="标记删除" class="fa fa-ban"></span>
                     <button data-toggle="tooltip" data-placement="top"
-                        title="Undelete '<%- content_item.get("name") %>'"
+                        title="恢复删除 '<%- content_item.get("name") %>'"
                         class="primary-button btn-sm undelete_dataset_btn" type="button" style="margin-left:1em;">
-                        <span class="fa fa-unlock"></span> Undelete
+                        <span class="fa fa-unlock"></span> 恢复删除
                     </button>
                 </td>
             </tr>`
@@ -426,7 +434,7 @@ var FolderRowView = Backbone.View.extend({
         return _.template(
             `<tr class="active deleted_folder library-row" data-id="<%- content_item.id %>">
                 <td class="mid">
-                    <span title="Folder" class="fa fa-folder-o"></span>
+                    <span title="文件夹" class="fa fa-folder-o"></span>
                 </td>
                 <td></td>
                 <td style="color:grey;">
@@ -455,11 +463,11 @@ var FolderRowView = Backbone.View.extend({
                 <td></td>
                 <td class="right-center">
                     <span data-toggle="tooltip" data-placement="top"
-                        title="Marked deleted" class="fa fa-ban"></span>
+                        title="标记删除" class="fa fa-ban"></span>
                     <button data-toggle="tooltip" data-placement="top"
-                        title="Undelete '<%- content_item.get("name") %>'"
+                        title="恢复删除 '<%- content_item.get("name") %>'"
                         class="primary-button btn-sm undelete_folder_btn" type="button" style="margin-left:1em;">
-                        <span class="fa fa-unlock"></span> Undelete
+                        <span class="fa fa-unlock"></span> 恢复删除
                     </button>
                 </td>
             </tr>`

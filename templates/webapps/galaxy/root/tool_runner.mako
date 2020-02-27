@@ -2,10 +2,7 @@
 <html>
     <head>
         <title>
-            Galaxy
-            %if app.config.brand:
-            | ${app.config.brand}
-            %endif
+            GrandOmics
         </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link href="${h.url_for('/static/style/base.css')}" rel="stylesheet" type="text/css" />

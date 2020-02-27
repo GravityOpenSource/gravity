@@ -275,7 +275,8 @@ var DatasetListItemEdit = _super.extend(
                 return null;
             }
             if (!_.isObject(visualizations[0])) {
-                this.warn("Visualizations have been switched off");
+                // this.warn("Visualizations have been switched off");
+                this.warn("可视化已经关闭");
                 return null;
             }
             if (visualizations.length >= 1) {

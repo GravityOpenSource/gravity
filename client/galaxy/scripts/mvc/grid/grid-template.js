@@ -64,7 +64,7 @@ export default {
             var show_popup = options.global_actions.length >= 3;
             if (show_popup) {
                 tmpl +=
-                    '<li><a class="action-button" id="popup-global-actions" class="menubutton">Actions</a></li>' +
+                    '<li><a class="action-button" id="popup-global-actions" class="menubutton">操作</a></li>' +
                     '<div popupmenu="popup-global-actions">';
             }
             for (const action of options.global_actions) {
@@ -136,7 +136,8 @@ export default {
         // empty grid?
         if (items_length === 0) {
             // No results.
-            tmpl += '<tr><td colspan="100"><em>No Items</em></td></tr>';
+            // tmpl += '<tr><td colspan="100"><em>No Items</em></td></tr>';
+            tmpl += '<tr><td colspan="100"><em>没有项目</em></td></tr>';
         }
 
         // create rows
@@ -261,7 +262,7 @@ export default {
             if (options.show_item_checkboxes) {
                 tmpl += "<td></td>";
             }
-            tmpl += '<td colspan="100">' + '<span id="page-link-container">' + "Page:";
+            tmpl += '<td colspan="100">' + '<span id="page-link-container">' + "页面:";
 
             if (min_page > 1) {
                 tmpl +=
@@ -285,7 +286,7 @@ export default {
 
             // Show all link
             tmpl += `
-                    <span class="page-link-grid" id="show-all-link-span"> | <a href="javascript:void(0);" onclick="return false;" page_num="all">Show All</a></span>
+                    <span class="page-link-grid" id="show-all-link-span"> | <a href="javascript:void(0);" onclick="return false;" page_num="all">显示全部</a></span>
                     </td>
                 </tr>`;
         }
@@ -298,7 +299,7 @@ export default {
                     <input type="hidden" id="operation" name="operation" value="">
                     <td></td>
                     <td colspan="100">
-                        For <span class="grid-selected-count"></span> selected items: 
+                        有<span class="grid-selected-count"></span> 个选择的项目: 
             `;
 
             // configure buttons for operations
@@ -403,7 +404,7 @@ export default {
 
         // show advanced search link in standard display
         if (show_advanced_search_link) {
-            tmpl += '<a href="javascript:void(0)" class="advanced-search-toggle">Advanced Search</a>';
+            tmpl += '<a href="javascript:void(0)" class="advanced-search-toggle">高级搜索</a>';
         }
 
         // finalize standard search display
@@ -412,7 +413,7 @@ export default {
         //
         // advanced search
         //
-        tmpl += `<div id="advanced-search" style="display: ${advanced_search_display}; margin-top: 5px;"><table><tr><td style="text-align: left" colspan="100"><a href="javascript:void(0)" class="advanced-search-toggle">Close Advanced Search</a></td></tr>`;
+        tmpl += `<div id="advanced-search" style="display: ${advanced_search_display}; margin-top: 5px;"><table><tr><td style="text-align: left" colspan="100"><a href="javascript:void(0)" class="advanced-search-toggle">关闭高级搜索</a></td></tr>`;
 
         // add advanced filters
         for (const column of options.columns) {

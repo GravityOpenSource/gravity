@@ -10,15 +10,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 
         <title>
-            Galaxy
-            %if app.config.brand:
-            | ${app.config.brand}
-            %endif
+            GrandOmics
         </title>
-        
+
         ## relative href for site root
         <link rel="index" href="${ h.url_for( '/' ) }"/>
-        
+
         ## TODO: use loaders to move everything but the essentials below the fold
         ${ h.css(
             'jquery-ui/smoothness/jquery-ui',
