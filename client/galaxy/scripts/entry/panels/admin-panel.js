@@ -12,7 +12,7 @@ const AdminPanel = Backbone.View.extend({
         this.settings = options.settings;
         this.model = new Backbone.Model({
             // title: `Galaxy version ${getGalaxyInstance().config.version_major}`
-            title: `系统版本 ${getGalaxyInstance().config.version_major}`
+            title: `系统版本 1.0`
         });
         this.categories = new Backbone.Collection([
             {

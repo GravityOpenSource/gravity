@@ -1986,7 +1986,7 @@ export default {
     /* overflow: scroll; */
 }
 .select2-container {
-    min-width: 60px;
+    min-width: 150px;
 }
 .vertical #hot-table {
     width: 100%;

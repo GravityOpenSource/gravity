@@ -301,7 +301,8 @@ const View = Backbone.View.extend({
             const input_field = this.form.field_list[input_id];
             const input_def = this.form.input_list[input_id];
             if (!input_id || !input_def || !input_field) {
-                Galaxy.emit.debug("tool-form::validate()", "Retrieving input objects failed.");
+                // Galaxy.emit.debug("tool-form::validate()", "Retrieving input objects failed.");
+                Galaxy.emit.debug("tool-form::validate()", "检索输入对象失败。");
                 continue;
             }
             if (!input_def.optional && input_value == null) {
@@ -324,7 +325,8 @@ const View = Backbone.View.extend({
                     } else if (batch_src !== src) {
                         this.form.highlight(
                             input_id,
-                            "Please select either dataset or dataset list fields for all batch mode fields."
+                            // "Please select either dataset or dataset list fields for all batch mode fields."
+                            "请为所有批处理模式字段选择数据集或数据集列表字段。"
                         );
                         return false;
                     }
@@ -334,7 +336,8 @@ const View = Backbone.View.extend({
                 } else if (batch_n !== n) {
                     this.form.highlight(
                         input_id,
-                        `Please make sure that you select the same number of inputs for all batch mode fields. This field contains <b>${n}</b> selection(s) while a previous field contains <b>${batch_n}</b>.`
+                        // `Please make sure that you select the same number of inputs for all batch mode fields. This field contains <b>${n}</b> selection(s) while a previous field contains <b>${batch_n}</b>.`
+                        `请确保为所有分批处理模式字段选择相同数量的输入。此字段包含<b>${n}</b>个选择，而前一个字段包含<b>${batch}</b>。`
                     );
                     return false;
                 }
@@ -389,16 +392,21 @@ const View = Backbone.View.extend({
             const tool_name = this.form.model.get("name");
             return `<div class="donemessagelarge">
                         <p>
-                            Executed <b>${tool_name}</b> and successfully added ${njobsText} to the queue.
+<!--                            Executed <b>${tool_name}</b> and successfully added ${njobsText} to the queue.-->
+                            执行<b>${tool_name}</b>，并成功向队列添加${njobsText}。
                         </p>
-                        ${this._templateRow(inputs, `The tool uses ${ninputsText}`)}
+<!--                        ${this._templateRow(inputs, `The tool uses ${ninputsText}`)}-->
+                        ${this._templateRow(inputs, `该工具使用${ninputsText}`)}
+<!--                        ${this._templateRow(response.outputs, `It produces ${noutputsText}`)}-->
                         ${this._templateRow(response.outputs, `It produces ${noutputsText}`)}
                         <p>
-                            You can check the status of queued jobs and view the resulting data by refreshing the History panel. When the job has been run the status will change from 'running' to 'finished' if completed successfully or 'error' if problems were encountered.
+<!--                            You can check the status of queued jobs and view the resulting data by refreshing the History panel. When the job has been run the status will change from 'running' to 'finished' if completed successfully or 'error' if problems were encountered.-->
+                             您可以通过刷新“历史记录”面板来检查排队作业的状态并查看结果数据。 运行作业后，如果成功完成，状态将从“正在运行”更改为“完成”，如果遇到问题，则状态将会变为“错误”。
                         </p>
                     </div>`;
         } else {
-            return this._templateError(response, "Invalid success response. No jobs found.");
+            // return this._templateError(response, "Invalid success response. No jobs found.");
+            return this._templateError(response, "无效的成功响应。找不到作业。");
         }
     },
 
@@ -407,8 +415,8 @@ const View = Backbone.View.extend({
             .addClass("errormessagelarge")
             .append(
                 $("<p/>").text(
-                    `The server could not complete the request. Please contact the Galaxy Team if this error persists. ${err_msg ||
-                        ""}`
+                    // `The server could not complete the request. Please contact the Galaxy Team if this error persists. ${err_msg || ""}`
+                    `服务器无法完成请求。如果此错误仍然存在，请与技术团队联系。${err_msg || ""}`
                 )
             )
             .append($("<pre/>").text(JSON.stringify(response, null, 4)));

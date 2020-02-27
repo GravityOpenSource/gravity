@@ -1394,7 +1394,8 @@ extend(TracksterView.prototype, DrawableCollection.prototype, {
                 chrom_data.resolve(result.chrom_info);
             },
             error: function() {
-                alert(`Could not load chroms for this dbkey: ${this.dbkey}`);
+                // alert(`Could not load chroms for this dbkey: ${this.dbkey}`);
+                alert(`无法为此dbkey: ${this.dbkey}，加载浏览器`);
             }
         });
         return chrom_data;

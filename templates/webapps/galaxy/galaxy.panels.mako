@@ -34,13 +34,7 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1">
 
         <title>
-            Galaxy
-            %if app.config.brand:
-            | ${app.config.brand}
-            %endif
-            %if self.galaxy_config['title']:
-            | ${self.galaxy_config['title']}
-            %endif
+            GrandOmics
         </title>
         ## relative href for site root
         <link rel="index" href="${ h.url_for( '/' ) }"/>
@@ -53,7 +47,7 @@
 
     <body scroll="no" class="full-content">
         <div id="everything">
-            
+
             <div id="background"></div>
 
             %if self.galaxy_config['master']:
@@ -147,10 +141,10 @@
     <style type="text/css">
 
         #everything {
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
         }
 
@@ -190,7 +184,7 @@
 <%def name="javascript_app()">
     <!-- galaxy.panels.mako javascript_app -->
     <script type="text/javascript">
-    
+
         var galaxyConfig = ${ h.dumps( self.galaxy_config ) };
 
         ## TODO: Some visualizations (and more?) currently use this config, should be refactored.

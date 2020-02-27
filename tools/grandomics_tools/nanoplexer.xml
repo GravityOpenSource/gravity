@@ -5,7 +5,11 @@
         mkdir -p outputs && nanoplexer -b $barcode -p outputs -t $threads -L $length $input_fastq
         rm outputs/none.fastq
         cat outputs/*fastq > $output_fastq
-        ]]>
+        ]]>The following untracked working tree files would be overwritten by merge:
+        config/galaxy.yml
+        Please move or remove them before you merge.
+        Aborting
+
     </command>
     <inputs>
         <param name="input_fastq" type="data" multiple="false" format="fastq" label="输入FASTQ"/>

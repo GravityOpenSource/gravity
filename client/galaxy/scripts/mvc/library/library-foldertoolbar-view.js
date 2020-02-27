@@ -1650,7 +1650,7 @@ var FolderToolbarView = Backbone.View.extend({
                 <div class="library-modal-item">
                     或新建:
                     <input type="text" name="history_name" value=""
-                        placeholder="name of the new history" style="width:50%;" />
+                        placeholder="新历史的名字" style="width:50%;" />
                 </div>
             </div>`
         );

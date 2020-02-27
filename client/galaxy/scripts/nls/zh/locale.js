@@ -318,6 +318,23 @@ define({
     Roles: "角色",
     "Local data": "本地数据",
     "Form Definitions": "定义表单",
+    "Data types": "数据类型",
+    "Data tables": "数据表",
+    "Display applications": "显示应用程序",
+    Jobs: "工作",
+    "Workflow invocations": "流程调用",
+    "User Management": "用户管理",
+     Forms: "表单",
+    "Tool Management": "工具管理",
+    "Install or Uninstall": "安装或卸载",
+    "Monitor installation": "监控安装",
+    "Manage tools": "管理工具",
+    "Manage metadata": "管理元数据",
+    "Manage whitelist": "管理白名单",
+    "Manage dependencies": "管理依赖关系",
+    "View lineage": "查看家系",
+    "View migration stages": "查看迁移阶段",
+    "View error logs": "查看错误日志",
 
     // ---------------------------------------------------------------------------- Scratchbook
     "Enable/Disable Scratchbook": "启用/禁用 Scratchbook",
@@ -327,9 +344,24 @@ define({
     Tags: "标签",
     "Edit annotation": "编辑备注",
 
-    // ----------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------- error-modal
+    "An error occurred": "发生一个错误",
+    "Please contact a Galaxy administrator if the problem persists.": "如果问题仍然存在，请联系系统管理员。",
+    "An error occurred while updating information with the server.": "使用服务器更新信息时出错。",
+    "The following information can assist the developers in finding the source of the error:":  "以下信息可以帮助开发人员查找错误的来源：",
+    "Error:":  "错误：",
+    "You appear to be offline. Please check your connection and try again.": "您似乎处于离线状态。 请检查您的连接，然后重试。",
+    "Offline?": "离线？",
+    "Galaxy is currently unreachable. Please try again in a few minutes.": "系统目前无法访问。请过几分钟再试。",
+    "Cannot connect to Galaxy": "无法连接到系统",
 
-    ja: true,
+
+    // ---------------------------------------------------------------------------- RuleCollectionBuilder
+    "Numeric sorting.": "数值排序。",
+
+
+
+  ja: true,
     fr: true,
     zh: true
 });

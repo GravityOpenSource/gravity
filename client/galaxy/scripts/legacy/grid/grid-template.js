@@ -117,7 +117,8 @@ export default {
         // empty grid?
         if (items_length === 0) {
             // No results.
-            tmpl += '<tr><td colspan="100"><em>No Items</em></td></tr>';
+            // tmpl += '<tr><td colspan="100"><em>No Items</em></td></tr>';
+            tmpl += '<tr><td colspan="100"><em>没有项目</em></td></tr>';
         }
 
         // create rows

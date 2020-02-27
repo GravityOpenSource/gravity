@@ -405,7 +405,8 @@ body {
             border: none;
         }
         .navbar-brand-title {
-            color: $white;
+            //color: $white;
+            display: none;
         }
     }
 }

@@ -132,7 +132,7 @@ var LibraryView = Backbone.View.extend({
             minimumInputLength: 0,
             css: id,
             multiple: true,
-            placeholder: "Click to select a role",
+            placeholder: "单击此选择一个角色",
             container: self.$el.find(`#${id}`),
             ajax: {
                 url: `${getAppRoot()}api/libraries/${
@@ -313,7 +313,7 @@ var LibraryView = Backbone.View.extend({
                         具有<strong>任一</strong>这些角色的用户都可以修改这个库(名称、概要等)。
                     </div>
                     <button data-toggle="tooltip" data-placement="top"
-                        title="Save modifications made on this page"
+                        title="保存在本页上所作的修改"
                         class="btn btn-secondary toolbtn_save_permissions primary-button" type="button">
                         <span class="fa fa-floppy-o"></span>&nbsp;保存
                     </button>

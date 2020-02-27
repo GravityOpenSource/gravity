@@ -1221,7 +1221,7 @@ var LibraryDatasetView = Backbone.View.extend({
                     </select>
                 </div>
                 <div class="library-modal-item">or create new:
-                    <input type="text" name="history_name" value="" placeholder="name of the new history"
+                    <input type="text" name="history_name" value="" placeholder="新历史的名字"
                         style="width:50%;" />
                 </div>
             </div>`
