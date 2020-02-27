@@ -1,18 +1,59 @@
-import argparse, os, re
+import argparse, os
+from multiprocessing import Pool
 
-BASECALLED_DIR = '/data/basecalled'
+
+def find_files(cell_dir, pass_required):
+    files = list()
+    for root, _, filanames in os.walk(cell_dir):
+        for filename in filanames:
+            if not filename.endswith('fastq'): continue
+            if pass_required and filename.find('_pass_') == -1: continue
+            files.append(os.path.join(cell_dir, pass_required))
+    return sorted(files)
+
+
+def make_symlink(files, outdir):
+    for filo in files:
+        target = os.path.join(outdir, os.path.basename(filo))
+        if os.path.exists(target): continue
+        os.symlink(filo, target)
+
+
+def split_list(array, number):
+    results = [list() for i in range(number)]
+    for i in range(len(array)):
+        j = i % number
+        results[j].append(i)
+    return results
+
+
+def merge_files(files, target_file):
+    fo = open(target_file, 'w')
+    for filo in files:
+        fi = open(filo)
+        for line in fi:
+            fo.write(line)
+        fi.close()
+    fo.close()
+
 
 def main(args):
-    indir = os.path.join(BASECALLED_DIR, args.cell_name)
-    files = list()
-    for root, _, filanames in os.walk(indir):
-        for filename in filanames:
-            if not filename.endswith(args.format): continue
-            path = os.path.join(root, filename)
-            typo = os.path.basename(os.path.dirname(path))
-            if args.type != 'all' and typo.find(args.type) == -1: continue
-            files.append(path)
-    for f in files: os.symlink(f, os.path.basename(f))
+    basecalled_dir = os.getenv('BASECALLED_DIR')
+    if not basecalled_dir: raise Exception("can not find $BASECALLED_DIR in Environment variables")
+    cell_dir = os.path.join(basecalled_dir, args.cell)
+    if not os.path.isdir(cell_dir): raise Exception("can not find cell %s in $BASECALLED_DIR" % cell_dir)
+    if not os.path.isdir(args.outdir): os.makedirs(args.outdir)
+    files = find_files(cell_dir, args.pass_required)
+    if len(files) <= args.number:
+        make_symlink(files, args.outdir)
+    else:
+        multi_files = split_list(files, args.number)
+        pool = Pool(args.number)
+        for i in args.number:
+            outfile = os.path.join(args.outdir, 'merge_%d.fastq' % i)
+            pool.apply_async(merge_files(multi_files[i], outfile))
+        pool.join()
+        pool.close()
 
 
 if __name__ == '__main__':
@@ -20,9 +61,10 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description='Author: Ying Zhu (zhuy@grandomics.com) from GrandOmics'
     )
-    parser.add_argument('-n', '--cell_name', required=True, help='cell name')
-    parser.add_argument('-f', '--format', default='fastq', choices=('fastq', 'fast5'), help='data fortmat')
-    parser.add_argument('-t', '--type', default='all', choices=('all', 'pass', 'fail'), help='type')
+    parser.add_argument('-c', '--cell', required=True, help='cell name')
+    parser.add_argument('-r', '--pass_required', default='pass', choices=('true', 'false'), help='pass fastq required')
+    parser.add_argument('-n', '--number', default=10, help='merge number')
+    parser.add_argument('-o', '--outdir', required=True, help='outdir')
     parser.set_defaults(function=main)
     args = parser.parse_args()
     args.function(args)

@@ -1,13 +1,14 @@
 import argparse, os, random, string, shutil, json, docker
 
-RAMPART_WORK_DIR = '/data/rampart'
-BASECALLED_DIR = '/data/basecalled'
-
 
 class Cell(object):
     def __init__(self, name):
         self._name = name
         self._ramdom = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+        self._rampart_work_dir = os.getenv('RAMPART_WORK_DIR')
+        self._basecalled_dir = os.getenv('BASECALLED_DIR')
+        if not self._rampart_work_dir: raise Exception("can not find $RAMPART_WORK_DIR in Environment variables")
+        if not self._basecalled_dir: raise Exception("can not find $BASECALLED_DIR in Environment variables")
 
     @property
     def name(self):
@@ -15,7 +16,7 @@ class Cell(object):
 
     @property
     def rampart_work_cell_dir(self):
-        path = os.path.join(RAMPART_WORK_DIR, self.name)
+        path = os.path.join(self._rampart_work_dir, self.name)
         if not os.path.isdir(path): os.makedirs(path)
         return path
 
@@ -27,7 +28,7 @@ class Cell(object):
 
     @property
     def fastq_dir(self):
-        cell_dir = os.path.join(BASECALLED_DIR, self._name)
+        cell_dir = os.path.join(self._basecalled_dir, self._name)
         if os.path.isdir(cell_dir):
             for root, dirnames, _ in os.walk(cell_dir):
                 for dirname in dirnames:
@@ -40,7 +41,7 @@ class Cell(object):
             'ports': {'%d/tcp' % port: port, '%d/tcp' % (port + 1): port + 1},
             'command': 'run-rampart %s' % self.name,
             'environment': {
-                'GALAXY_RAMPART_WORK_DIR': RAMPART_WORK_DIR,
+                'GALAXY_RAMPART_WORK_DIR': self._rampart_work_dir,
                 'GALAXY_RAMPART_PORT1': port,
                 'GALAXY_RAMPART_PORT2': port + 1,
                 'NODE_OPTIONS': '--max_old_space_size=%s' % (32 * 1024)
@@ -103,7 +104,7 @@ class Docker(object):
         for container in self.containers:
             _port = self.get_port(container)
             if _port: ports.append(_port)
-        for _port in range(3000, 65534, 2):
+        for _port in range(10000, 65534, 2):
             if _port not in ports: return _port
         raise Exception('ERROR: there is no port avaliable between 3000 to 65532')
 
@@ -118,7 +119,6 @@ def write_html(out_html, port):
         port, '100%', '100%'
     ))
     fo.close()
-
 
 
 def main(args):

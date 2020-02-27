@@ -7,7 +7,6 @@
         -r $references
         -p $primers
         -c $cell
-        -i swr.cn-north-1.myhuaweicloud.com/itcenter/rampart:galaxy
         -o $output
     ]]></command>
     <inputs>

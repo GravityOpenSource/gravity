@@ -3,25 +3,26 @@ from jbrowse import run_jbrowse
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SOURCE_CODE_DIR = os.path.join(BASE_DIR, 'source_code', 'jbrowse')
-NGINX_HTML_DIR = '/usr/share/nginx/html'
 
 
 class Jbrowse(object):
 
     def __init__(self):
         self._ramdom = ''
+        self._jbrowse_html_dir = os.getenv('JBROWSE_HTML_DIR')
+        if not self._jbrowse_html_dir: raise Exception("can not find $JBROWSE_HTML_DIR in Environment variables")
 
     @property
     def outdir(self):
         if not self._ramdom:
             while True:
                 ramdom = ''.join(random.sample(string.ascii_letters + string.digits, 32))
-                path = os.path.join(NGINX_HTML_DIR, ramdom)
+                path = os.path.join(self._jbrowse_html_dir, ramdom)
                 if not os.path.isdir(path):
                     os.makedirs(path)
                     self._ramdom = ramdom
                     break
-        return os.path.join(NGINX_HTML_DIR, self._ramdom)
+        return os.path.join(self._jbrowse_html_dir, self._ramdom)
 
     def write_track_xml(self, track_xml_handle):
         fo = open(os.path.join(self.outdir, 'galaxy.xml'), 'w')

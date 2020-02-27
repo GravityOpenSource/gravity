@@ -115,7 +115,7 @@ galaxy:
   # many options which are explained in detail in the config file
   # documentation.
   #database_connection: sqlite:///./database/universe.sqlite?isolation_level=IMMEDIATE
-  database_connection: postgresql://postgres@postgresql-server:5432/galaxy?client_encoding=utf8 \
+  database_connection: postgresql://postgres@postgresql-server:5432/galaxy?client_encoding=utf8
 
 
   # If the server logs errors about not having enough database pool
@@ -213,7 +213,7 @@ galaxy:
   # preferable. This file will be created automatically upon tool
   # installation, whereas Galaxy will fail to start if any files in
   # tool_config_file cannot be read.
-  shed_tool_config_file: config/shed_tool_conf.xml
+  # shed_tool_config_file: config/shed_tool_conf.xml
 
   # Enable / disable checking if any tools defined in the above non-shed
   # tool_config_files (i.e., tool_conf.xml) have been migrated from the
@@ -1134,7 +1134,7 @@ galaxy:
 
   # Add an option to the library upload form which allows administrators
   # to upload a directory of files.
-  library_import_dir: '/data/library/admin'
+  library_import_dir: /data/library/admin
 
   # Add an option to the library upload form which allows authorized
   # non-administrators to upload a directory of files.  The configured
@@ -1142,7 +1142,7 @@ galaxy:
   # admin user's Galaxy login ( email ).  The non-admin user is
   # restricted to uploading files or sub-directories of files contained
   # in their directory.
-  user_library_import_dir: '/data/library/users'
+  user_library_import_dir: /data/library/users
 
   # If user_library_import_dir is set, this option will auto create a
   # library import directory for every user (based on their email) upon
