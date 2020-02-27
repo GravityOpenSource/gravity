@@ -1,0 +1,55 @@
+<tool id="nanoplexer_demulx" name="nanoplexer" version="0.1.0" python_template_version="3.5">
+    <requirements>
+        <requirement type="package" version="0.1">nanoplexer</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        nanoplexer -b '$input1' -p outdir -t $threads -L $b_len $input2
+        cat outdir/*fastq > '$output1'
+    ]]></command>
+    <inputs>
+        <param type="data" name="input1" format="fa" />
+        <param type="data" name="input2" format="fastq" />
+        <param name="threads" type="integer" label=" 线程数" value="1" />
+        <param name="b_len" type="integer" label=" 序列前 后端barcode寻找区域长度" value="70" />
+    </inputs>
+    <outputs>
+        <data name="output1" format="fastq" />
+    </outputs>
+    <help><![CDATA[
+        Usage: nanoplexer [options] input.fastq
+
+Options:
+ -b  FILE    barcode file
+ -d  FILE    dual barcode pair file
+ -p  CHAR    output path
+ -l  FILE    output log file
+ -B  NUM     batch size [default 400M]
+ -t  INT     number of threads [default 3]
+ -m  INT     match score [default 2]
+ -x  INT     mismatch score [default 2]
+ -o  INT     gap open score [default 3]
+ -e  INT     gap extension score [default 1]
+ -s  INT     minimal alignment score for demultiplexing
+ -i          ignore parameter estimation
+ -h          help information
+ -v          show version number
+
+-b -p must be specified.
+
+Example:
+nanoplexer -b barcode.fa -p /ouput/ input.fastq
+
+
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+@misc{githubnanoplexer,
+  author = {LastTODO, FirstTODO},
+  year = {TODO},
+  title = {nanoplexer},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/hanyue36/nanoplexer},
+}</citation>
+    </citations>
+</tool>
