@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <tool id="seqkit_seq" name="SeqKit Seq" version="0.1.0">
     <description>seqkit seq</description>
-    <command>
+    <command detect_errors="exit_code"><![CDATA[
         seqkit seq --quiet -m $min_length -M $max_length -o $output_fastq $input_fastq
-    </command>
+    ]]></command>
     <inputs>
         <param name="input_fastq" type="data" multiple="false" format="fastq" label="输入FASTQ"/>
         <param name="min_length" type="integer" label=" 筛选最小长度" value="400"/>

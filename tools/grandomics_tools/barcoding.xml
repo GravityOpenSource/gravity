@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <tool id="barcoding_fastq_files" name="Qcat" version="0.1.0">
     <description>拆分Barcode</description>
-    <command><![CDATA[
+    <command detect_errors="exit_code"><![CDATA[
         mkdir -p outputs && qcat --quiet -f $input_fastq -b outputs/ --trim -k $kit
         ]]>
     </command>

@@ -1,0 +1,43 @@
+<html>
+<body>
+<table class="table" cellpadding="0" cellspacing="0" >
+    <tr>
+        <th>Cell名称</th>
+        <th>访问端口</th>
+        <th>访问链接</th>
+    </tr>
+    {%  for container in containers %}
+    <tr>
+        <td>{{ container.name }}</td>
+        <td>{{ container.port }}</td>
+        <td>
+            <a class="light" href="http://{{ host }}:{{ container.port }}/" target="_blank">点击查看</a>
+        </td>
+    {% endfor %}
+    </tr>
+</table>
+
+<style type="text/css">
+    body {
+        background-color: #02292e;
+        color: #fffcf2;
+    }
+
+    table.table {
+        margin-top: 60px;
+        width: 100%;
+        text-align: center;
+    }
+
+    table.table td , table.table th {
+        border-bottom: #fffcf2 solid 1px;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    a.light, a.light:hover, a.light:active {
+        color: #fffcf2;
+        font-weight: bold;
+    }
+</style>
+</body>
+</html>

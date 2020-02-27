@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
-<tool id="seqkit_seq" name="SeqKit Seq" version="0.1.0">
-    <description>seqkit seq</description>
-    <command>
-        seqkit seq --quiet -m $min_length -M $max_length -o $output_fastq $input_fastq
-    </command>
+<tool id="rampart_start" name="新增" version="0.1.0">
+    <description>新增一个检测实例用以检测信息的cell数据</description>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$__tool_directory__/rampart_start.py'
+        -g $genome
+        -r $references
+        -p $primers
+        -c $cell
+        -i swr.cn-north-1.myhuaweicloud.com/itcenter/rampart:galaxy
+        -o $output
+    ]]></command>
     <inputs>
         <param name="cell" type="text" label="Cell名称" value="20190219-TEST-P1"/>
         <param name="references" type="data" multiple="false" format="fasta" label="参考基因组(example: references.fasta)"/>
@@ -11,7 +17,7 @@
         <param name="primers" type="data" multiple="false" format="json" label="Primers(example: primers.json)"/>
     </inputs>
     <outputs>
-        <data name="output_fastq" format="input" metadata_source="input_fastq"/>
+        <data name="output" format="html" label="新增:实时检测结果"/>
     </outputs>
     <help><![CDATA[
 User' Guide

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<tool id="rampart_stop" name="关闭" version="0.1.0">
+    <description>关闭指定Cell的实时检测实例</description>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$__tool_directory__/rampart_stop.py' -c $cell -o $output
+    ]]></command>
+    <inputs>
+        <param name="cell" type="text" label="Cell名称" value="20190219-TEST-P1"/>
+    </inputs>
+    <outputs>
+        <data name="output" format="html" label="关闭:实时检测结果"/>
+    </outputs>
+</tool>

@@ -1,8 +1,9 @@
 import argparse, os, re
 
+BASECALLED_DIR = '/data/basecalled'
 
 def main(args):
-    indir = os.path.join(args.basecalled, args.cell_name)
+    indir = os.path.join(BASECALLED_DIR, args.cell_name)
     files = list()
     for root, _, filanames in os.walk(indir):
         for filename in filanames:
@@ -22,7 +23,6 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--cell_name', required=True, help='cell name')
     parser.add_argument('-f', '--format', default='fastq', choices=('fastq', 'fast5'), help='data fortmat')
     parser.add_argument('-t', '--type', default='all', choices=('all', 'pass', 'fail'), help='type')
-    parser.add_argument('-b', '--basecalled', default=os.getenv('BASECALLED_DIR'), help='basecalled path')
     parser.set_defaults(function=main)
     args = parser.parse_args()
     args.function(args)
