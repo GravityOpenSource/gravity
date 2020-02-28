@@ -8,7 +8,8 @@ def find_files(cell_dir, pass_required):
         for filename in filanames:
             if not filename.endswith('fastq'): continue
             if pass_required and filename.find('_pass_') == -1: continue
-            files.append(os.path.join(cell_dir, pass_required))
+            files.append(os.path.join(root, filename))
+    if not files: raise Exception("can not find any fastq files")
     return sorted(files)
 
 
@@ -23,7 +24,7 @@ def split_list(array, number):
     results = [list() for i in range(number)]
     for i in range(len(array)):
         j = i % number
-        results[j].append(i)
+        results[j].append(array[i])
     return results
 
 
@@ -43,17 +44,17 @@ def main(args):
     cell_dir = os.path.join(basecalled_dir, args.cell)
     if not os.path.isdir(cell_dir): raise Exception("can not find cell %s in $BASECALLED_DIR" % cell_dir)
     if not os.path.isdir(args.outdir): os.makedirs(args.outdir)
-    files = find_files(cell_dir, args.pass_required)
+    files = find_files(cell_dir, args.pass_required == 'true')
     if len(files) <= args.number:
         make_symlink(files, args.outdir)
     else:
         multi_files = split_list(files, args.number)
-        pool = Pool(args.number)
-        for i in args.number:
+        pool = Pool(args.number if args.number < 8 else 8)
+        for i in range(args.number):
             outfile = os.path.join(args.outdir, 'merge_%d.fastq' % i)
-            pool.apply_async(merge_files(multi_files[i], outfile))
-        pool.join()
+            pool.apply_async(merge_files, args=(multi_files[i], outfile))
         pool.close()
+        pool.join()
 
 
 if __name__ == '__main__':
@@ -63,8 +64,8 @@ if __name__ == '__main__':
     )
     parser.add_argument('-c', '--cell', required=True, help='cell name')
     parser.add_argument('-r', '--pass_required', default='pass', choices=('true', 'false'), help='pass fastq required')
-    parser.add_argument('-n', '--number', default=10, help='merge number')
-    parser.add_argument('-o', '--outdir', required=True, help='outdir')
+    parser.add_argument('-n', '--number', default=10, type=int, help='merge number')
+    parser.add_argument('-o', '--outdir', required=True, help='output dir')
     parser.set_defaults(function=main)
     args = parser.parse_args()
     args.function(args)

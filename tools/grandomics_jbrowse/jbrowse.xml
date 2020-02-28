@@ -1,11 +1,11 @@
-<tool id="jbrowse" name="JBrowse" version="@TOOL_VERSION@+@WRAPPER_VERSION@">
-  <description>genome browser</description>
-  <macros>
-    <import>macros.xml</import>
-  </macros>
-  <expand macro="requirements"/>
-  <version_command>python '${__tool_directory__}/jbrowse.py' --version</version_command>
-  <command detect_errors="aggressive"><![CDATA[
+<tool id="jbrowse" name="基因组浏览器" version="@TOOL_VERSION@+@WRAPPER_VERSION@">
+    <description>genome browser</description>
+    <macros>
+        <import>macros.xml</import>
+    </macros>
+    <expand macro="requirements"/>
+    <version_command>python '${__tool_directory__}/jbrowse.py' --version</version_command>
+    <command detect_errors="aggressive"><![CDATA[
     python '$__tool_directory__/main.py'
     #if str($standalone) == "Complete":
         --standalone
@@ -13,31 +13,8 @@
     --track_xml $trackxml
     --out_html $output
   ]]></command>
-  <configfiles>
-      <configfile name="dummyIndex"><![CDATA[
-      <html>
-          <head>
-          </head>
-          <body>
-              <h1>JBrowse Data Directory</h1>
-              <p>
-                Hi! This is not a full JBrowse instance. JBrowse v0.4(+?)
-                started shipping with the ability to produce just the
-                "data" directory from a JBrowse instance, rather than a
-                complete, standalone instance. This was intended to be used
-                with the in-development Apollo integration, but may have other
-                uses as well.
-              </p>
-              <p>
-                <u>This is not usable on its own</u>. The output dataset may be
-                used with Apollo, or may be passed through the "JBrowse -
-                Convert to Standalone" tool in Galaxy to "upgrade" to a full
-                JBrowse instance.
-              </p>
-          </body>
-      </html>
-      ]]></configfile>
-      <configfile name="trackxml"><![CDATA[<?xml version="1.0"?>
+    <configfiles>
+        <configfile name="trackxml"><![CDATA[<?xml version="1.0"?>
 <root>
     <metadata>
         <gencode>$gencode</gencode>
@@ -304,1027 +281,327 @@
         />
 </root>
 ]]></configfile>
-  </configfiles>
-  <inputs>
-    <conditional name="reference_genome">
-        <param help="Built-in references" label="Reference genome to display" name="genome_type_select" type="select">
-            <option selected="True" value="indexed">Use a built-in genome</option>
-            <option value="history">Use a genome from history</option>
-        </param>
-        <when value="indexed">
-            <param
-              help="If your genome of interest is not listed, contact the Galaxy team"
-              label="Select a reference genome"
-              name="genomes"
-              type="select"
-              >
-                <options from_data_table="all_fasta">
-                    <filter column="2" type="sort_by" />
-                    <validator message="No genomes are available for the selected input dataset" type="no_options" />
-                </options>
+    </configfiles>
+    <inputs>
+        <conditional name="reference_genome">
+            <param help="内建参考基因组" label="参考基因组" name="genome_type_select" type="select">
+                <option selected="True" value="indexed">使用内建的参考基因组数据</option>
+                <option value="history">使用“历史”中的参考基因组数据</option>
             </param>
-        </when>
-        <when value="history">
-            <param
-              format="fasta"
-              label="Select the reference genome"
-              name="genome"
-              type="data" />
-        </when>
-    </conditional>
-
-    <param name="standalone" type="boolean" truevalue="Complete" falsevalue="Data Directory" checked="true" label="Produce Standalone Instance" help="Produce a full, working JBrowse instance or just the data directory. Data dir mode is experimental and intended to be used with Apollo"/>
-
-    <param name="gencode" type="select" label="Genetic Code">
-      <option value="1">1. The Standard Code</option>
-      <option value="2">2. The Vertebrate Mitochondrial Code</option>
-      <option value="3">3. The Yeast Mitochondrial Code</option>
-      <option value="4">4. The Mold, Protozoan, and Coelenterate Mitochondrial Code and the Mycoplasma/Spiroplasma Code</option>
-      <option value="5">5. The Invertebrate Mitochondrial Code</option>
-      <option value="6">6. The Ciliate, Dasycladacean and Hexamita Nuclear Code</option>
-      <option value="9">9. The Echinoderm and Flatworm Mitochondrial Code</option>
-      <option value="10">10. The Euplotid Nuclear Code</option>
-      <option value="11">11. The Bacterial, Archaeal and Plant Plastid Code</option>
-      <option value="12">12. The Alternative Yeast Nuclear Code</option>
-      <option value="13">13. The Ascidian Mitochondrial Code</option>
-      <option value="14">14. The Alternative Flatworm Mitochondrial Code</option>
-      <option value="16">16. Chlorophycean Mitochondrial Code</option>
-      <option value="21">21. Trematode Mitochondrial Code</option>
-      <option value="22">22. Scenedesmus obliquus Mitochondrial Code</option>
-      <option value="23">23. Thraustochytrium Mitochondrial Code</option>
-      <option value="24">24. Pterobranchia Mitochondrial Code</option>
-      <option value="25">25. Candidate Division SR1 and Gracilibacteria Code</option>
-   </param>
-    <repeat name="track_groups" title="Track Group">
-        <param label="Track Category"
-               name="category"
-               type="text"
-               value="Default"
-               help="Organise your tracks into Categories for a nicer end-user experience. You can use #date# and it will be replaced with the current date in 'yyyy-mm-dd' format, which is very useful for repeatedly updating a JBrowse instance when member databases / underlying tool versions are updated." optional="False"/>
-    <repeat name="data_tracks" title="Annotation Track">
-        <conditional name="data_format" label="Track Options">
-            <param type="select" label="Track Type" name="data_format_select">
-                <option value="gene_calls">GFF/GFF3/BED Features</option>
-                <option value="pileup">BAM Pileups</option>
-                <option value="blast">Blast XML</option>
-                <option value="wiggle">BigWig XY</option>
-                <option value="vcf">VCF SNPs</option>
-                <option value="rest">REST Endpoint</option>
-                <option value="sparql">SPARQL</option>
-            </param>
-            <when value="blast">
-                <expand macro="input_conditional" label="BlastXML Track Data" format="blastxml" />
-
-                <param label="Features used in Blast Search"
-                       help="in GFF3. This is used  so we know where to map features. E.g. where results of which CDS Protein32 match up to. The query IDs in your blast results should MATCH some feature IDs in your GFF3 file. This is an optional field and is most useful if using JBrowse to display protein blast results on a DNA genome. blastn results don't need this, blastp results on a protein sequence don't need this."
-                       format="gff3"
-                       name="blast_parent"
-                       optional="true"
-                       type="data"/>
-
-                <param label="Minimum Gap Size"
-                       help="before a new match_part feature is created"
-                       name="min_gap"
-                       type="integer"
-                       value="10"
-                       min="2" />
-                <param label="Is this a protein blast search?"
-                       type="boolean"
-                       name="is_protein"
-                       truevalue="true"
-                       falsevalue="false" />
-
-                <param label="Index this track" name="index" type="boolean" checked="false" truevalue="true" falsevalue="false" />
-
-                <expand macro="track_styling"
-                        classname="feature"
-                        label="description"
-                        description="Hit_titles"
-                        height="600px"/>
-                <expand macro="color_selection"
-                        token_scaling_lin_select="false"
-                        token_scaling_log_select="true" />
-                <expand macro="track_custom_config" />
-                <expand macro="track_menu" />
-                <expand macro="track_display" />
-            </when>
-            <when value="vcf">
-                <expand macro="input_conditional" label="SNP Track Data" format="vcf" />
-                <expand macro="track_custom_config" />
-                <expand macro="track_display" />
-            </when>
-            <when value="gene_calls">
-                <expand macro="input_conditional" label="GFF/GFF3/BED Track Data" format="gff,gff3,bed" />
-                <conditional name="match_part" label="match/match_part data">
-                    <param label="This is match/match_part data"
-                           type="boolean"
-                           name="match_part_select"
-                           truevalue="true"
-                           falsevalue="false" />
-                    <when value="true">
-                        <param label="Match Part Feature Type"
-                               name="name"
-                               type="text"
-                               value="match"
-                               help="Match_parts have several options for the parent feature type, such as cDNA_match, match, translated_nucleotide_match, etc. Please select the appropriate one here. You can leave empty to try autodetection (only works with CanvasFeatures track type)."
-                               optional="True"/>
-                    </when>
-                    <when value="false" />
-                </conditional>
-
-                <param label="Index this track" name="index" type="boolean" checked="false" truevalue="true" falsevalue="false" />
-
-                <conditional name="track_config">
-                    <param type="select" label="JBrowse Track Type [Advanced]" name="track_class">
-                        <option value="NeatHTMLFeatures/View/Track/NeatFeatures" selected="true">Neat HTML Features</option>
-                        <option value="NeatCanvasFeatures/View/Track/NeatFeatures">Neat Canvas Features</option>
-                        <option value="JBrowse/View/Track/HTMLFeatures">HTML Features</option>
-                        <option value="JBrowse/View/Track/CanvasFeatures">Canvas Features</option>
-                        <option value="BlastView/View/Track/CanvasFeatures">Blast Features</option><!-- Disable plugins until https://github.com/GMOD/jbrowse/issues/1288 is fixed -->
-                    </param>
-                    <when value="JBrowse/View/Track/CanvasFeatures">
-                        <expand macro="canvas_options" />
-                    </when>
-                    <when value="JBrowse/View/Track/HTMLFeatures">
-                        <expand macro="html_options" />
-                    </when>
-                    <when value="BlastView/View/Track/CanvasFeatures" />
-                    <when value="NeatHTMLFeatures/View/Track/NeatFeatures">
-                        <expand macro="html_options" />
-                    </when>
-                    <when value="NeatCanvasFeatures/View/Track/NeatFeatures">
-                        <expand macro="canvas_options" />
-                    </when>
-                </conditional>
-                <expand macro="track_styling"
-                        classname="feature"
-                        label="product,name,id"
-                        description="note,description"
-                        height="10px"/>
-                <expand macro="color_selection" />
-                <expand macro="track_custom_config" />
-                <expand macro="track_menu" />
-                <expand macro="track_display" />
-            </when>
-            <when value="pileup">
-                <expand macro="input_conditional" label="BAM Track Data" format="bam" />
-                <param label="Autogenerate SNP Track"
-                       help="Not recommended for deep coverage BAM files"
-                       type="boolean"
-                       name="auto_snp"
-                       truevalue="true"
-                       falsevalue="false" />
-                <param label="Maximum size of BAM chunks"
-                       name="chunkSizeLimit"
-                       type="integer"
-                       help="Maximum size in bytes of BAM chunks that the browser will try to deal with. When this is exceeded, most tracks will display 'Too much data' message."
-                       value="5000000" />
-                <expand macro="track_custom_config" />
-                <expand macro="track_display" />
-            </when>
-            <when value="wiggle">
-                <expand macro="input_conditional" label="BigWig Track Data" format="bigwig" />
-
-                <param label="Use XYPlot"
-                       help="instead of continuous colored band"
-                       type="boolean"
-                       name="xyplot"
-                       truevalue="JBrowse/View/Track/Wiggle/XYPlot"
-                       falsevalue="JBrowse/View/Track/Wiggle/Density" />
-                <param label="Show variance band"
-                       help="Only for XYPlots"
-                       type="boolean"
-                       name="var_band"
-                       truevalue="true"
-                       falsevalue="false" />
-
-                <conditional name="scaling" label="Scaling">
-                    <param type="select" label="Track Scaling" name="scale_select">
-                        <option value="auto_local" selected="true">Autoscale (local)</option>
-                        <option value="auto_global">Autoscale (global)</option>
-                        <option value="fixed">Specify Min/Max</option>
-                    </param>
-                    <when value="auto_local"></when>
-                    <when value="auto_global"></when>
-                    <when value="fixed">
-                        <param label="Track minimum" name="minimum"
-                            type="integer" value="0" />
-                        <param label="Track maximum" name="maximum"
-                            type="integer" value="100" />
-                    </when>
-                </conditional>
-                <param type="select" label="Visual Scaling" name="scale_select2">
-                    <option value="linear" selected="true">Linear</option>
-                    <option value="log">Logarithmic (Dynamically Calculated)</option>
+            <when value="indexed">
+                <param
+                        help="如果没有您感兴趣的内建的参考基因组，请联系管理员。"
+                        label="选择参考基因组"
+                        name="genomes"
+                        type="select"
+                >
+                    <options from_data_table="all_fasta">
+                        <filter column="2" type="sort_by"/>
+                        <validator message="“历史”中没有可用的参考基因组" type="no_options"/>
+                    </options>
                 </param>
-
-                <param label="Use MultiBigWig Plugin" name="MultiBigWig" truevalue="True" falsevalue="" type="boolean"
-                    help="MultiBigWig is a plugin to group multiple big-wig tracks in a more aesthetically pleasing format and to show data in a higher density display." />
-
-                <expand macro="color_selection_minmax" />
-                <expand macro="track_custom_config" />
-                <expand macro="track_display" />
             </when>
-            <when value="rest">
-                <param type="text" label="REST Endpoint" name="url" />
-                <param type="text" label="Track Label" name="label" value="REST Genes" />
-                <expand macro="track_styling"
-                        classname="feature"
-                        label="description"
-                        description="Hit_titles"
-                        height="600px"/>
-                <expand macro="color_selection"
-                        token_scaling_lin_select="false"
-                        token_scaling_log_select="true" />
-                <expand macro="track_menu" />
-                <expand macro="track_display" />
-            </when>
-
-            <when value="sparql">
-                <param type="text" label="SPARQL Server URL" name="url" />
-                <param type="text" label="Track Label" name="label" value="SPARQL Genes" />
-                <param type="text" label="SPARQL Query" name="query" area="true">
-                    <sanitizer>
-                         <mapping initial="galaxy.util.mapped_chars">
-                           <add source="&#10;" target=" " />
-                           <add source="&gt;" target="__gt__" />
-                           <add source="&lt;" target="__lt__" />
-                         </mapping>
-                         <valid initial="default">
-                           <add value="|" />
-                           <add value="#" />
-                           <add value="{"/>
-                           <add value="}"/>
-                           <add value="!"/>
-                           <add value="?"/>
-                           <add value="&amp;"/>
-                           <add value="+"/>
-                           <add value="="/>
-                           <add value="'"/>
-                           <add value='"'/>
-                         </valid>
-                    </sanitizer>
-                </param>
-                <expand macro="track_styling"
-                        classname="feature"
-                        label="description"
-                        description="Hit_titles"
-                        height="600px"/>
-                <expand macro="color_selection"
-                        token_scaling_lin_select="false"
-                        token_scaling_log_select="true" />
-                <expand macro="track_menu" />
-                <expand macro="track_display" />
+            <when value="history">
+                <param
+                        format="fasta"
+                        label="选择参考基因组"
+                        name="genome"
+                        type="data"/>
             </when>
         </conditional>
-    </repeat>
-    </repeat>
 
-    <expand macro="general_options" />
-    <!-- Disable plugins until https://github.com/GMOD/jbrowse/issues/1288 is fixed -->
-    <section name="plugins" title="Plugins" expanded="false">
+        <param name="standalone" type="hidden" value="Complete"/>
 
-        <param
-            label="BlastView" name="BlastView" truevalue="True" falsevalue="" type="boolean" checked="true"
-            help="A JBrowse plugin for viewing blast alignments. This plugin makes MANY assumptions about the format of your data, and may not work without those assumptions: 1) you use protein_match / match_part 2) your features have a Blast_qseq, Blast_mseq, and Blast_sseq attribute in their GFF3 representation." />
+        <!--
+        <param name="standalone" type="boolean" truevalue="Complete" falsevalue="Data Directory" checked="true"
+               label="Produce Standalone Instance"
+               help="Produce a full, working JBrowse instance or just the data directory. Data dir mode is experimental and intended to be used with Apollo"/>
+        -->
 
-        <param
-            label="Combo Track Selector" name="ComboTrackSelector" truevalue="True" falsevalue="" type="boolean"
-            help="ComboTrackSelector is a plugin to allow the co-existence of the Hierarchical and Faceted Track selectors in JBrowse, built for/by the Arabidopsis Information Portal (Araport) project" />
-        <!-- No way to disable now that it's built in jbrowse conda package -->
-        <!--param
-            label="Bookmarks" name="Bookmarks" truevalue="True" falsevalue="" type="boolean"
-            help="JBrowse plugin allowing users to manage a persistent list of bookmarks kept in localstorage" /-->
+        <param name="gencode" type="select" label="Genetic Code">
+            <option value="1">1. The Standard Code</option>
+            <option value="2">2. The Vertebrate Mitochondrial Code</option>
+            <option value="3">3. The Yeast Mitochondrial Code</option>
+            <option value="4">4. The Mold, Protozoan, and Coelenterate Mitochondrial Code and the Mycoplasma/Spiroplasma
+                Code
+            </option>
+            <option value="5">5. The Invertebrate Mitochondrial Code</option>
+            <option value="6">6. The Ciliate, Dasycladacean and Hexamita Nuclear Code</option>
+            <option value="9">9. The Echinoderm and Flatworm Mitochondrial Code</option>
+            <option value="10">10. The Euplotid Nuclear Code</option>
+            <option value="11">11. The Bacterial, Archaeal and Plant Plastid Code</option>
+            <option value="12">12. The Alternative Yeast Nuclear Code</option>
+            <option value="13">13. The Ascidian Mitochondrial Code</option>
+            <option value="14">14. The Alternative Flatworm Mitochondrial Code</option>
+            <option value="16">16. Chlorophycean Mitochondrial Code</option>
+            <option value="21">21. Trematode Mitochondrial Code</option>
+            <option value="22">22. Scenedesmus obliquus Mitochondrial Code</option>
+            <option value="23">23. Thraustochytrium Mitochondrial Code</option>
+            <option value="24">24. Pterobranchia Mitochondrial Code</option>
+            <option value="25">25. Candidate Division SR1 and Gracilibacteria Code</option>
+        </param>
+        <repeat name="track_groups" title="Track Group">
+            <param label="Track Category"
+                   name="category"
+                   type="text"
+                   value="Default"
+                   help="Organise your tracks into Categories for a nicer end-user experience. You can use #date# and it will be replaced with the current date in 'yyyy-mm-dd' format, which is very useful for repeatedly updating a JBrowse instance when member databases / underlying tool versions are updated."
+                   optional="False"/>
+            <repeat name="data_tracks" title="Annotation Track">
+                <conditional name="data_format" label="Track Options">
+                    <param type="select" label="Track Type" name="data_format_select">
+                        <option value="gene_calls">GFF/GFF3/BED Features</option>
+                        <option value="pileup">BAM Pileups</option>
+                        <option value="blast">Blast XML</option>
+                        <option value="wiggle">BigWig XY</option>
+                        <option value="vcf">VCF SNPs</option>
+                        <option value="rest">REST Endpoint</option>
+                        <option value="sparql">SPARQL</option>
+                    </param>
+                    <when value="blast">
+                        <expand macro="input_conditional" label="BlastXML Track Data" format="blastxml"/>
 
-        <param
-            label="GC Content" name="GCContent" truevalue="True" falsevalue="" type="boolean"
-            help="A JBrowse plugin for plotting GC Content and GC Skew. The plugin consists of a storeClass that automatically calculates the percentage of G/C bases in a region, a track type that derives from the Wiggle XY or density types, and a dialog box to adjust the sliding window size, window step size, and the calculation mode (content or skew)." />
+                        <param label="Features used in Blast Search"
+                               help="in GFF3. This is used  so we know where to map features. E.g. where results of which CDS Protein32 match up to. The query IDs in your blast results should MATCH some feature IDs in your GFF3 file. This is an optional field and is most useful if using JBrowse to display protein blast results on a DNA genome. blastn results don't need this, blastp results on a protein sequence don't need this."
+                               format="gff3"
+                               name="blast_parent"
+                               optional="true"
+                               type="data"/>
 
-        <!--param type="select" label="JBrowse Theme" name="theme">
-            <option value="" selected="True">Default</option>
-            <option value="Minimalist">Minimalist</option>
-            <option value="Dark">Dark</option>
-        </param-->
-    </section>
+                        <param label="Minimum Gap Size"
+                               help="before a new match_part feature is created"
+                               name="min_gap"
+                               type="integer"
+                               value="10"
+                               min="2"/>
+                        <param label="Is this a protein blast search?"
+                               type="boolean"
+                               name="is_protein"
+                               truevalue="true"
+                               falsevalue="false"/>
 
-    <param type="hidden" name="uglyTestingHack" value="" />
-  </inputs>
-  <outputs>
-      <data format="html" name="output" label="JBrowse on $on_string - $standalone"/>
-  </outputs>
-  <tests>
-    <test>
-      <!-- gencode -->
-      <param name="reference_genome|genome_type_select" value="history"/>
-      <param name="reference_genome|genome" value="merlin.fa"/>
-      <param name="gencode" value="1" />
-      <param name="standalone" value="Data Directory" />
-      <param name="uglyTestingHack" value="enabled" />
-      <output name="output" file="gencode/test-1.xml" lines_diff="16"/>
-    </test>
-    <test>
-      <param name="reference_genome|genome_type_select" value="history"/>
-      <param name="reference_genome|genome" value="merlin.fa"/>
-      <param name="gencode" value="11" />
-      <param name="standalone" value="Data Directory" />
-      <param name="uglyTestingHack" value="enabled" />
-      <output name="output" file="gencode/test.xml" lines_diff="16"/>
-    </test>
-    <test>
-      <param name="reference_genome|genome_type_select" value="history"/>
-      <param name="reference_genome|genome" value="merlin.fa"/>
-      <param name="gencode" value="11" />
-      <param name="standalone" value="Data Directory" />
-      <repeat name="track_groups">
-        <param name="category" value="Default" />
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="bed/test-3.bed,bed/test-6.bed"/>
-            </conditional>
-        </repeat>
-      </repeat>
-      <param name="uglyTestingHack" value="enabled" />
-      <output name="output" file="bed/test.xml" lines_diff="32"/>
-    </test>
-    <test>
-      <param name="reference_genome|genome_type_select" value="history"/>
-      <param name="reference_genome|genome" value="merlin.fa"/>
-      <param name="gencode" value="11" />
-      <param name="standalone" value="Data Directory" />
-      <repeat name="track_groups">
-        <param name="category" value="Auto Coloured" />
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="gff3/A.gff,gff3/B.gff,gff3/C.gff,gff3/D.gff"/>
-                <conditional name="match_part">
-                    <param name="match_part_select" value="false"/>
-                </conditional>
-                <section name="jbcolor_scale">
-                    <conditional name="color_score">
-                        <param name="color_score_select" value="none"/>
-                    </conditional>
-                    <conditional name="color">
-                        <param name="color_select" value="automatic"/>
-                    </conditional>
-                </section>
-            </conditional>
-        </repeat>
-      </repeat>
+                        <param label="Index this track" name="index" type="boolean" checked="false" truevalue="true"
+                               falsevalue="false"/>
 
-      <repeat name="track_groups">
-        <param name="category" value="Ignore Scale" />
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="gff3/1.gff"/>
-                <conditional name="match_part">
-                    <param name="match_part_select" value="false"/>
-                </conditional>
-                <section name="jbcolor_scale">
-                    <conditional name="color_score">
-                        <param name="color_score_select" value="none"/>
-                        <conditional name="color">
-                            <param name="color_select" value="manual"/>
-                            <param name="style_color" value="#ff00ff"/>
+                        <expand macro="track_styling"
+                                classname="feature"
+                                label="description"
+                                description="Hit_titles"
+                                height="600px"/>
+                        <expand macro="color_selection"
+                                token_scaling_lin_select="false"
+                                token_scaling_log_select="true"/>
+                        <expand macro="track_custom_config"/>
+                        <expand macro="track_menu"/>
+                        <expand macro="track_display"/>
+                    </when>
+                    <when value="vcf">
+                        <expand macro="input_conditional" label="SNP Track Data" format="vcf"/>
+                        <expand macro="track_custom_config"/>
+                        <expand macro="track_display"/>
+                    </when>
+                    <when value="gene_calls">
+                        <expand macro="input_conditional" label="GFF/GFF3/BED Track Data" format="gff,gff3,bed"/>
+                        <conditional name="match_part" label="match/match_part data">
+                            <param label="This is match/match_part data"
+                                   type="boolean"
+                                   name="match_part_select"
+                                   truevalue="true"
+                                   falsevalue="false"/>
+                            <when value="true">
+                                <param label="Match Part Feature Type"
+                                       name="name"
+                                       type="text"
+                                       value="match"
+                                       help="Match_parts have several options for the parent feature type, such as cDNA_match, match, translated_nucleotide_match, etc. Please select the appropriate one here. You can leave empty to try autodetection (only works with CanvasFeatures track type)."
+                                       optional="True"/>
+                            </when>
+                            <when value="false"/>
                         </conditional>
-                    </conditional>
-                </section>
-            </conditional>
-        </repeat>
-      </repeat>
 
-      <repeat name="track_groups">
-        <param name="category" value="Scaled Colour" />
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="gff3/1.gff"/>
-                <conditional name="match_part">
-                    <param name="match_part_select" value="false"/>
-                </conditional>
-                <section name="jbcolor_scale">
-                    <conditional name="color_score">
-                        <param name="color_score_select" value="score"/>
-                        <param name="score_scaling" value="linear"/>
-                        <conditional name="score_scales">
-                            <param name="scale_select" value="automatic"/>
-                        </conditional>
-                        <conditional name="color_scheme">
-                            <param name="score_scheme" value="opacity"/>
-                            <conditional name="color">
-                                <param name="color_select" value="automatic"/>
-                            </conditional>
-                        </conditional>
-                    </conditional>
-                </section>
-            </conditional>
-        </repeat>
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="gff3/1.gff"/>
-                <conditional name="match_part">
-                    <param name="match_part_select" value="false"/>
-                </conditional>
-                <section name="jbcolor_scale">
-                    <conditional name="color_score">
-                        <param name="color_score_select" value="score"/>
-                        <param name="score_scaling" value="linear"/>
-                        <conditional name="score_scales">
-                            <param name="scale_select" value="automatic"/>
-                        </conditional>
-                        <conditional name="color_scheme">
-                            <param name="score_scheme" value="opacity"/>
-                            <conditional name="color">
-                                <param name="color_select" value="manual"/>
-                                <param name="style_color" value="#0000ff"/>
-                            </conditional>
-                        </conditional>
-                    </conditional>
-                </section>
-            </conditional>
-        </repeat>
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="gff3/1.gff"/>
-                <conditional name="match_part">
-                    <param name="match_part_select" value="false"/>
-                </conditional>
-                <section name="jbcolor_scale">
-                    <conditional name="color_score">
-                        <param name="color_score_select" value="score"/>
-                        <param name="score_scaling" value="linear"/>
-                        <conditional name="score_scales">
-                            <param name="scale_select" value="manual"/>
-                            <param name="minimum" value="0"/>
-                            <param name="maximum" value="1000"/>
-                        </conditional>
-                        <conditional name="color_scheme">
-                            <param name="score_scheme" value="opacity"/>
-                            <conditional name="color">
-                                <param name="color_select" value="automatic"/>
-                            </conditional>
-                        </conditional>
-                    </conditional>
-                </section>
-            </conditional>
-        </repeat>
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="gff3/1.gff"/>
-                <conditional name="match_part">
-                    <param name="match_part_select" value="false"/>
-                </conditional>
-                <section name="jbcolor_scale">
-                    <conditional name="color_score">
-                        <param name="color_score_select" value="score"/>
-                        <param name="score_scaling" value="linear"/>
-                        <conditional name="score_scales">
-                            <param name="scale_select" value="manual"/>
-                            <param name="minimum" value="0"/>
-                            <param name="maximum" value="1000"/>
-                        </conditional>
-                        <conditional name="color_scheme">
-                            <param name="score_scheme" value="opacity"/>
-                            <conditional name="color">
-                                <param name="color_select" value="manual"/>
-                                <param name="style_color" value="#ff0000"/>
-                            </conditional>
-                        </conditional>
-                    </conditional>
-                </section>
-            </conditional>
-        </repeat>
-      </repeat>
+                        <param label="Index this track" name="index" type="boolean" checked="false" truevalue="true"
+                               falsevalue="false"/>
 
-      <repeat name="track_groups">
-        <param name="category" value="Realistic" />
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="gff3/interpro.gff"/>
-                <conditional name="match_part">
-                    <param name="match_part_select" value="false"/>
-                </conditional>
-                <section name="jbcolor_scale">
-                    <conditional name="color_score">
-                        <param name="color_score_select" value="none"/>
-                    </conditional>
-                    <conditional name="color">
-                        <param name="color_select" value="automatic"/>
-                    </conditional>
-                </section>
-            </conditional>
-        </repeat>
-        <repeat name="data_tracks">
-            <conditional name="data_format">
-                <param name="data_format_select" value="gene_calls"/>
-                <param name="annotation" value="gff3/2.gff"/>
-                <conditional name="match_part">
-                    <param name="match_part_select" value="true"/>
-                    <param name="name" value="cDNA_match"/>
-                </conditional>
-                <section name="jbcolor_scale">
-                    <conditional name="color_score">
-                        <param name="color_score_select" value="none"/>
-                    </conditional>
-                    <conditional name="color">
-                        <param name="color_select" value="automatic"/>
-                    </conditional>
-                </section>
-            </conditional>
-        </repeat>
-      </repeat>
+                        <conditional name="track_config">
+                            <param type="select" label="JBrowse Track Type [Advanced]" name="track_class">
+                                <option value="NeatHTMLFeatures/View/Track/NeatFeatures" selected="true">Neat HTML
+                                    Features
+                                </option>
+                                <option value="NeatCanvasFeatures/View/Track/NeatFeatures">Neat Canvas Features</option>
+                                <option value="JBrowse/View/Track/HTMLFeatures">HTML Features</option>
+                                <option value="JBrowse/View/Track/CanvasFeatures">Canvas Features</option>
+                                <option value="BlastView/View/Track/CanvasFeatures">Blast Features
+                                </option><!-- Disable plugins until https://github.com/GMOD/jbrowse/issues/1288 is fixed -->
+                            </param>
+                            <when value="JBrowse/View/Track/CanvasFeatures">
+                                <expand macro="canvas_options"/>
+                            </when>
+                            <when value="JBrowse/View/Track/HTMLFeatures">
+                                <expand macro="html_options"/>
+                            </when>
+                            <when value="BlastView/View/Track/CanvasFeatures"/>
+                            <when value="NeatHTMLFeatures/View/Track/NeatFeatures">
+                                <expand macro="html_options"/>
+                            </when>
+                            <when value="NeatCanvasFeatures/View/Track/NeatFeatures">
+                                <expand macro="canvas_options"/>
+                            </when>
+                        </conditional>
+                        <expand macro="track_styling"
+                                classname="feature"
+                                label="product,name,id"
+                                description="note,description"
+                                height="10px"/>
+                        <expand macro="color_selection"/>
+                        <expand macro="track_custom_config"/>
+                        <expand macro="track_menu"/>
+                        <expand macro="track_display"/>
+                    </when>
+                    <when value="pileup">
+                        <expand macro="input_conditional" label="BAM Track Data" format="bam"/>
+                        <param label="Autogenerate SNP Track"
+                               help="Not recommended for deep coverage BAM files"
+                               type="boolean"
+                               name="auto_snp"
+                               truevalue="true"
+                               falsevalue="false"/>
+                        <param label="Maximum size of BAM chunks"
+                               name="chunkSizeLimit"
+                               type="integer"
+                               help="Maximum size in bytes of BAM chunks that the browser will try to deal with. When this is exceeded, most tracks will display 'Too much data' message."
+                               value="5000000"/>
+                        <expand macro="track_custom_config"/>
+                        <expand macro="track_display"/>
+                    </when>
+                    <when value="wiggle">
+                        <expand macro="input_conditional" label="BigWig Track Data" format="bigwig"/>
 
-      <param name="uglyTestingHack" value="enabled" />
-      <output name="output" file="gff3/test.xml" lines_diff="260" />
-    </test>
-    <test>
-        <param name="reference_genome|genome_type_select" value="history"/>
-        <param name="reference_genome|genome" value="merlin.fa"/>
-        <param name="gencode" value="11" />
-        <param name="standalone" value="Data Directory" />
+                        <param label="Use XYPlot"
+                               help="instead of continuous colored band"
+                               type="boolean"
+                               name="xyplot"
+                               truevalue="JBrowse/View/Track/Wiggle/XYPlot"
+                               falsevalue="JBrowse/View/Track/Wiggle/Density"/>
+                        <param label="Show variance band"
+                               help="Only for XYPlots"
+                               type="boolean"
+                               name="var_band"
+                               truevalue="true"
+                               falsevalue="false"/>
 
-        <repeat name="track_groups">
-            <param name="category" value="With menu or index" />
-            <repeat name="data_tracks">
-                <conditional name="data_format">
-                    <param name="data_format_select" value="gene_calls"/>
-                    <param name="annotation" value="gff3/1.gff"/>
-                    <conditional name="match_part">
-                        <param name="match_part_select" value="false"/>
-                    </conditional>
-                    <section name="jbcolor_scale">
-                        <conditional name="color_score">
-                            <param name="color_score_select" value="none"/>
+                        <conditional name="scaling" label="Scaling">
+                            <param type="select" label="Track Scaling" name="scale_select">
+                                <option value="auto_local" selected="true">Autoscale (local)</option>
+                                <option value="auto_global">Autoscale (global)</option>
+                                <option value="fixed">Specify Min/Max</option>
+                            </param>
+                            <when value="auto_local"></when>
+                            <when value="auto_global"></when>
+                            <when value="fixed">
+                                <param label="Track minimum" name="minimum"
+                                       type="integer" value="0"/>
+                                <param label="Track maximum" name="maximum"
+                                       type="integer" value="100"/>
+                            </when>
                         </conditional>
-                        <conditional name="color">
-                            <param name="color_select" value="automatic"/>
-                        </conditional>
-                    </section>
-                    <section name="jbmenu">
-                        <repeat name="track_menu">
-                            <param name="menu_action" value="iframeDialog"/>
-                            <param name="menu_label" value="Some menu item"/>
-                            <param name="menu_title" value="Frame title"/>
-                            <param name="menu_url" value="https://example.com/#!/?id={name}&amp;q={type}&amp;z=&quot;{end}&quot;"/>
-                            <param name="menu_icon" value="dijitIconNewTask"/>
-                        </repeat>
-                        <repeat name="track_menu">
-                            <param name="menu_action" value="newWindow"/>
-                            <param name="menu_label" value="Another menu item"/>
-                            <param name="menu_title" value="Frame title 2"/>
-                            <param name="menu_url" value="https://example.com/#!/?id={name}&amp;q={type}&amp;z=&quot;{end}&quot;"/>
-                        </repeat>
-                    </section>
-                </conditional>
-            </repeat>
-            <repeat name="data_tracks">
-                <conditional name="data_format">
-                    <param name="data_format_select" value="gene_calls"/>
-                    <param name="annotation" value="gff3/1.gff"/>
-                    <param name="index" value="true"/>
-                    <conditional name="match_part">
-                        <param name="match_part_select" value="false"/>
-                    </conditional>
-                    <section name="jbcolor_scale">
-                        <conditional name="color_score">
-                            <param name="color_score_select" value="none"/>
-                        </conditional>
-                        <conditional name="color">
-                            <param name="color_select" value="automatic"/>
-                        </conditional>
-                    </section>
+                        <param type="select" label="Visual Scaling" name="scale_select2">
+                            <option value="linear" selected="true">Linear</option>
+                            <option value="log">Logarithmic (Dynamically Calculated)</option>
+                        </param>
+
+                        <param label="Use MultiBigWig Plugin" name="MultiBigWig" truevalue="True" falsevalue=""
+                               type="boolean"
+                               help="MultiBigWig is a plugin to group multiple big-wig tracks in a more aesthetically pleasing format and to show data in a higher density display."/>
+
+                        <expand macro="color_selection_minmax"/>
+                        <expand macro="track_custom_config"/>
+                        <expand macro="track_display"/>
+                    </when>
+                    <when value="rest">
+                        <param type="text" label="REST Endpoint" name="url"/>
+                        <param type="text" label="Track Label" name="label" value="REST Genes"/>
+                        <expand macro="track_styling"
+                                classname="feature"
+                                label="description"
+                                description="Hit_titles"
+                                height="600px"/>
+                        <expand macro="color_selection"
+                                token_scaling_lin_select="false"
+                                token_scaling_log_select="true"/>
+                        <expand macro="track_menu"/>
+                        <expand macro="track_display"/>
+                    </when>
+
+                    <when value="sparql">
+                        <param type="text" label="SPARQL Server URL" name="url"/>
+                        <param type="text" label="Track Label" name="label" value="SPARQL Genes"/>
+                        <param type="text" label="SPARQL Query" name="query" area="true">
+                            <sanitizer>
+                                <mapping initial="galaxy.util.mapped_chars">
+                                    <add source="&#10;" target=" "/>
+                                    <add source="&gt;" target="__gt__"/>
+                                    <add source="&lt;" target="__lt__"/>
+                                </mapping>
+                                <valid initial="default">
+                                    <add value="|"/>
+                                    <add value="#"/>
+                                    <add value="{"/>
+                                    <add value="}"/>
+                                    <add value="!"/>
+                                    <add value="?"/>
+                                    <add value="&amp;"/>
+                                    <add value="+"/>
+                                    <add value="="/>
+                                    <add value="'"/>
+                                    <add value='"'/>
+                                </valid>
+                            </sanitizer>
+                        </param>
+                        <expand macro="track_styling"
+                                classname="feature"
+                                label="description"
+                                description="Hit_titles"
+                                height="600px"/>
+                        <expand macro="color_selection"
+                                token_scaling_lin_select="false"
+                                token_scaling_log_select="true"/>
+                        <expand macro="track_menu"/>
+                        <expand macro="track_display"/>
+                    </when>
                 </conditional>
             </repeat>
         </repeat>
 
-        <param name="uglyTestingHack" value="enabled" />
-        <output name="output" file="menus/test.xml" lines_diff="44"/>
-    </test>
-    <test>
-        <param name="reference_genome|genome_type_select" value="history"/>
-        <param name="reference_genome|genome" value="merlin.fa"/>
-        <param name="gencode" value="11" />
-        <param name="standalone" value="Data Directory" />
-
-        <repeat name="track_groups">
-            <param name="category" value="With canvas config" />
-            <repeat name="data_tracks">
-                <conditional name="data_format">
-                    <param name="data_format_select" value="gene_calls"/>
-                    <param name="annotation" value="gff3/1.gff"/>
-                    <conditional name="match_part">
-                        <param name="match_part_select" value="false"/>
-                    </conditional>
-                    <conditional name="track_config">
-                        <param name="track_class" value="JBrowse/View/Track/CanvasFeatures"/>
-                        <section name="canvas_options">
-                            <param name="transcriptType" value="transcript"/>
-                            <param name="subParts" value="exon"/>
-                            <param name="impliedUTRs" value="true"/>
-                        </section>
-                    </conditional>
-                    <section name="jbcolor_scale">
-                        <conditional name="color_score">
-                            <param name="color_score_select" value="none"/>
-                        </conditional>
-                        <conditional name="color">
-                            <param name="color_select" value="automatic"/>
-                        </conditional>
-                    </section>
-                </conditional>
-            </repeat>
-        </repeat>
-
-        <param name="uglyTestingHack" value="enabled" />
-        <output name="output" file="track_config/test.xml" lines_diff="30"/>
-    </test>
-    <test>
-        <param name="reference_genome|genome_type_select" value="history"/>
-        <param name="reference_genome|genome" value="merlin.fa"/>
-        <param name="gencode" value="11" />
-        <param name="standalone" value="Data Directory" />
-
-        <repeat name="track_groups">
-            <param name="category" value="With custom track config" />
-            <repeat name="data_tracks">
-                <conditional name="data_format">
-                    <param name="data_format_select" value="gene_calls"/>
-                    <param name="annotation" value="gff3/1.gff"/>
-                    <conditional name="match_part">
-                        <param name="match_part_select" value="false"/>
-                    </conditional>
-                    <section name="jb_custom_config">
-                        <repeat name="option">
-                            <param name="opt_key" value="displayMode"/>
-                            <conditional name="opt_value">
-                                <param name="val_type" value="text"/>
-                                <param name="val" value="collapsed"/>
-                            </conditional>
-                        </repeat>
-                        <repeat name="option">
-                            <param name="opt_key" value="histograms.height"/>
-                            <conditional name="opt_value">
-                                <param name="val_type" value="integer"/>
-                                <param name="val" value="150"/>
-                            </conditional>
-                        </repeat>
-                        <repeat name="option">
-                            <param name="opt_key" value="maxFeatureScreenDensity"/>
-                            <conditional name="opt_value">
-                                <param name="val_type" value="float"/>
-                                <param name="val" value="0.1"/>
-                            </conditional>
-                        </repeat>
-                        <repeat name="option">
-                            <param name="opt_key" value="style.strandArrow"/>
-                            <conditional name="opt_value">
-                                <param name="val_type" value="boolean"/>
-                                <param name="val" value="false"/>
-                            </conditional>
-                        </repeat>
-                    </section>
-                </conditional>
-            </repeat>
-        </repeat>
-
-        <param name="uglyTestingHack" value="enabled" />
-        <output name="output" file="custom_config/test.xml" lines_diff="30"/>
-    </test>
-    <test>
-        <param name="reference_genome|genome_type_select" value="history"/>
-        <param name="reference_genome|genome" value="merlin.fa"/>
-        <param name="gencode" value="11" />
-        <param name="standalone" value="Data Directory" />
-
-        <repeat name="track_groups">
-            <param name="category" value="Auto Coloured" />
-            <repeat name="data_tracks">
-                <conditional name="data_format">
-                    <param name="data_format_select" value="pileup"/>
-                    <param name="annotation" value="bam/merlin-sample.bam"/>
-                </conditional>
-            </repeat>
-        </repeat>
-
-        <param name="uglyTestingHack" value="enabled" />
-        <output name="output" file="bam/test.xml" lines_diff="42"/>
-    </test>
-
-    <test>
-        <!-- data_table -->
-        <param name="reference_genome|genome_type_select" value="indexed"/>
-        <param name="reference_genome|genome" value="merlin"/>
-        <param name="gencode" value="1" />
-        <param name="standalone" value="Data Directory" />
-        <param name="uglyTestingHack" value="enabled" />
-        <output name="output" file="gencode/test-data_table.xml" lines_diff="4" />
-    </test>
-
-    <test>
-        <param name="reference_genome|genome_type_select" value="history"/>
-        <param name="reference_genome|genome" value="merlin.fa"/>
-        <param name="gencode" value="11" />
-        <param name="standalone" value="Data Directory" />
-
-        <repeat name="track_groups">
-            <param name="category" value="External endpoints" />
-            <repeat name="data_tracks">
-                <conditional name="data_format">
-                    <param name="data_format_select" value="rest"/>
-                    <param name="url" value="http://example.org.external/rest_api/"/>
-                    <param name="label" value="Rest api"/>
-                </conditional>
-            </repeat>
-            <repeat name="data_tracks">
-                <conditional name="data_format">
-                    <param name="data_format_select" value="sparql"/>
-                    <param name="url" value="http://example.org.external/sparql/"/>
-                    <param name="label" value="Sparql endpoint"/>
-                    <param name="query" value="  DEFINE sql:select-option 'order'
-  prefix rdf:    &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-  select ?start,
-         ?end,
-         IF( ?faldo_type = faldo:ForwardStrandPosition,
-             1,
-             IF( ?faldo_type = faldo:ReverseStrandPosition,
-                 -1,
-                  0
-               )
-           ) as ?strand,
-         str(?obj_type_name) as ?type,
-         str(?label) as ?name,
-         str(?obj_name) as ?description,
-         ?obj as ?uniqueID,
-         ?parent as ?parentUniqueID
-  where {
-    values ?faldo_type { faldo:ForwardStrandPosition faldo:ReverseStrandPosition faldo:BothStrandsPosition }
-  }"/>
-                </conditional>
-            </repeat>
-        </repeat>
-
-        <param name="uglyTestingHack" value="enabled" />
-        <output name="output" file="endpoints/test.xml" lines_diff="16"/>
-    </test>
-  </tests>
-  <help><![CDATA[
-JBrowse-in-Galaxy
-=================
-
-JBrowse-in-Galaxy offers a highly configurable, workflow-compatible
-alternative to Trackster.
-
-Overview
---------
-
-JBrowse is a fast, embeddable genome browser built completely with
-JavaScript and HTML5.
-
-The JBrowse-in-Galaxy (JiG) tool was written to help build complex
-JBrowse installations straight from Galaxy, taking advantage of the
-latest Galaxy features such as dataset collections, sections, and colour
-pickers. It allows you to build up a JBrowse instance without worrying
-about how to run the command line tools to format your data, and which
-options need to be supplied and where. Additionally it comes with many
-javascript functions to handle colouring of features which would be
-nearly impossible to write without the assistance of this tool.
-
-The JBrowse-in-Galaxy tool is maintained by `the Galaxy IUC
-<https://github.com/galaxyproject/tools-iuc/issues>`__, who you can help you
-with missing features or bugs in the tool.
-
-Options
--------
-
-The first option you encounter is the **Fasta Sequence(s)**. This option
-now accepts multiple fasta files, allowing you to build JBrowse
-instances that contain data for multiple genomes or chrosomomes
-(generally known as "landmark features" in gff3 terminology.) Up to 30
-will be shown from the dropdown selector within JBrowse, this is a known
-issue.
-
-**Standalone Instances** enable you to have either a complete JBrowse instance
-in a dataset, or just the data directory without JBrowse (e.g. for Apollo).
-Currently Galaxy copies the entire JBrowse directory in order to have a
-complete, downloadable file that contains a ready-to-go JBrowse
-instance. This is obviously an anti-feature because users don't want a
-complete copy of JBrowse (12Mb) that's duplicated for every JBrowse
-dataset in their history, and admins don't want useless copies of
-JBrowse on disk. Unfortunately we have not come up with the perfect
-solution just yet, but we're working on it! In the meantime, users have
-been given the option to produce just the ``data/`` directory. For those
-unfamiliar with JBrowse, the ``data/`` directory contains processed data
-files, but no way to view them. This feature is additionally implemented
-for upcoming `Apollo <https://github.com/gmod/apollo>`__ integration.
-
-**Genetic Code** is a new feature in v0.4 of JiG / v1.12.0 of JBrowse,
-which allows users to specify a non standard genetic code, and have
-JBrowse highlight the correct start and stop codons.
-
-**Track Groups** represent a set of tracks in a single category. These
-can be used to let your users understand relationships between large
-groups of tracks.
-
-.. image:: sections.png
-
-Annotation Tracks
------------------
-
-Within Track Groups, you have one or more **Annotation Tracks**. Each
-Annotation Track is a groups of datasets which have similar styling.
-This allows you to rapidly build up JBrowse instances without having to
-configure tracks individually. A massive improvement over previous
-versions. For example, if you have five different GFF3 files from
-various gene callers that you wish to display, you can take advantage of
-this feature to style all of them similarly.
-
-There are a few different types of tracks supported, each with their own
-set of options:
-
-GFF3/BED
-~~~~~~~~
-
-These are your standard feature tracks. They usually highlight genes,
-mRNAs and other features of interest along a genomic region. The
-underlying tool and this help documentation focus primarily on GFF3
-data, and have not been tested extensively with other formats. Automatic
-min/max detection will fail under BED datasets.
-
-The data may be of a subclass we call **match/match part** data. This
-consists of top level ``match`` features, with a child ``match_part``
-feature, and is often used in displaying alignments. (See "Alignments"
-section on the `GFF3
-specification <https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md>`__ for more
-information). If the data is match/match part, you will need to specify
-the top level match feature name, as it can be one of a few different SO
-terms, and JiG does not yet have the ability to understand SO terms.
-
-Next up is the **Styling Options** section, which lets you control a few
-properties on how the track is styled. Most of these you will not need
-to configure and can safely leave on defaults. Occasionally you will
-want to change what information is shown in the end product.
-
-.. image:: styling.png
-
-In the above image you can see some black text, and some blue text. The
-source of the black text is configured with the **style.label** option,
-and the source of the blue text is configured with the
-**style.description** option.
-
-Feature Score Scaling & Colouring Options
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-First, you need to choose between ignoring the score attribute of GFF3
-files, or using it. If you choose to ignore it, all features will be
-coloured with a solid colour. If you choose to use it, features will
-have slightly different colours based on their scores.
-
-.. image:: opacity.png
-
-If you choose **Ignore score**, you may choose between automatically
-choosing a colour, or manually specifying one. The automatically chosen
-colours vary along a brewer palette and generally look quite nice with
-no human intervention required. The manual colour choice is somewhat
-self explanatory. Clicking on the small coloured square will bring up a
-colour palette.
-
-If you choose **Base on score**, you're faced with a dizzying array of
-options. First is the function to map the colour choices to colour
-values. JiG comes with a few functions built in such as linear scaling,
-logarithmic scaling, and blast scaling.
-
-The **linear scaling** method says "take these values, and they map
-directly to a range of output values". **Logarithmic scaling** says
-"please take the log of the score before mapping", and **Blast scaling**
-is further specialised to handle blast data more nicely. These are
-convenience functions to help transform the wide array of possible
-values in the GFF3 score attribute to more meaningful numbers. If you
-need more comprehensive score scaling, it is recommended that you
-pre-process your GFF3 files somehow.
-
-Once you've selected a scaling method, you can choose to manually
-specify the minimum and maximum expected values, or you can let JiG
-determine them for you automatically.
-
-Finally, opacity is the only mapping we currently provide. Future
-iterations will attempt to improve upon this and provide more colour
-scales. The Opacity option maps the highest scoring features to full
-opacity, and everything else to lower ones.
-
-BAM Pileups
-~~~~~~~~~~~
-
-We support BAM files and can automatically generate SNP tracks based on
-that bam data.
-
-.. image:: bam.png
-
-This is *strongly discouraged* for high coverage density datasets.
-Unfortunately there are no other configuration options exposed for bam
-files.
-
-BlastXML
-~~~~~~~~
-
-.. image:: blast.png
-
-JiG now supports both blastn and blastp datasets. JiG internally uses a
-blastXML to gapped GFF3 tool to convert your blastxml datasets into a
-format amenable to visualization in JBrowse. This tool is also
-available separately from the IUC on the toolshed.
-
-**Minimum Gap Size** reflects how long a gap must be before it becomes a
-real gap in the processed gff3 file. In the picture above, various sizes
-of gaps can be seen. If the minimum gap size was set much higher, say
-100nt, many of the smaller gaps would disappear, and the features on
-both sides would be merged into one, longer feature. This setting is
-inversely proportional to runtime and output file size. *Do not set this
-to a low value for large datasets*. By setting this number lower, you
-will have extremely large outputs and extremely long runtimes. The
-default was configured based off of the author's experience, but the
-author only works on small viruses. It is *strongly* recommended that
-you filter your blast results before display, e.g. picking out the top
-10 hits or so.
-
-**Protein blast search** option merely informs underlying tools that
-they should adjust feature locations by 3x.
-
-Styling Options
-^^^^^^^^^^^^^^^
-
-Please see the styling options for GFF3 datasets, they are identical.
-
-Feature Score Scaling & Coloring Options
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Please see the score scaling and colouring options for GFF3 datasets,
-they are identical. Remember to set your score scaling to "blast" method
-if you do use it.
-
-Bigwig XY
-~~~~~~~~~
-
-.. image:: bigwig.png
-
-**XYPlot**
-
-BigWig tracks can be displayed as a "density" plot which is continuous
-line which varies in colour, or as an "XYplot." XYplots are preferable
-for users to visually identify specific features in a bigwig track,
-however density tracks are more visually compact.
-
-**Variance Band** is an option available to XYPlots, and can be seen in
-the third and fourth tracks in the above picture. This overlays a mean
-line, and 1 and 2 standard deviation areas.
-
-**Track Scaling** is different from colour scaling, instead it
-configures how the track behaves inside of JBrowse. **Autoscaling
-globally** means that JBrowse will determine the minimum and maximum for
-the track, and fix the bounds of the viewport to that. E.g. if your
-track ranges from 1-1000, and the region you're currently zoomed to only
-goes from 0-50, then the viewport range will still show 1-1000. This is
-good for global genomic context. However you may wish to consider
-**autoscaling locally** instead. In the example of a region which varies
-from 0-50, autoscaling locally would cause the individual track's
-viewport to re-adjust and show just the 0-50 region. If neither of these
-options are palatable, you may manually hardcode the minimum and
-maximums for the track to scale to.
-
-Colour Options
-^^^^^^^^^^^^^^
-
-BigWig tracks have two colours in JBrowse, a positive and a negative
-colour.
-
-As always you may manually choose a colour, or let JiG choose for you.
-
-One of the more interesting options is the **Bicolor pivot**. This
-option allows you to control the point at which JBrowse switches from
-the positive colour to the negative. In the above graphic, you can see
-this has been configured to "mean" for the first two (orange and blue)
-tracks.
-
-VCFs/SNPs
-~~~~~~~~~
-
-These tracks do not support any special configuration.
-
-Known Issues
-------------
-
--  More than 30 landmark features cannot be listed in the manual
-   selector.
--  Non GFF3 likely has issue with automatically determined min/max
-   scores. Manually specify minimum and maximum score attributes, or do
-   not use varied colours based on scores to avoid this issue.
-
-@ATTRIBUTION@
-]]></help>
-  <expand macro="citations"/>
+        <expand macro="general_options"/>
+        <!-- Disable plugins until https://github.com/GMOD/jbrowse/issues/1288 is fixed -->
+        <section name="plugins" title="Plugins" expanded="false">
+
+            <param
+                    label="BlastView" name="BlastView" truevalue="True" falsevalue="" type="boolean" checked="true"
+                    help="A JBrowse plugin for viewing blast alignments. This plugin makes MANY assumptions about the format of your data, and may not work without those assumptions: 1) you use protein_match / match_part 2) your features have a Blast_qseq, Blast_mseq, and Blast_sseq attribute in their GFF3 representation."/>
+
+            <param
+                    label="Combo Track Selector" name="ComboTrackSelector" truevalue="True" falsevalue="" type="boolean"
+                    help="ComboTrackSelector is a plugin to allow the co-existence of the Hierarchical and Faceted Track selectors in JBrowse, built for/by the Arabidopsis Information Portal (Araport) project"/>
+            <!-- No way to disable now that it's built in jbrowse conda package -->
+            <!--param
+                label="Bookmarks" name="Bookmarks" truevalue="True" falsevalue="" type="boolean"
+                help="JBrowse plugin allowing users to manage a persistent list of bookmarks kept in localstorage" /-->
+
+            <param
+                    label="GC Content" name="GCContent" truevalue="True" falsevalue="" type="boolean"
+                    help="A JBrowse plugin for plotting GC Content and GC Skew. The plugin consists of a storeClass that automatically calculates the percentage of G/C bases in a region, a track type that derives from the Wiggle XY or density types, and a dialog box to adjust the sliding window size, window step size, and the calculation mode (content or skew)."/>
+
+            <!--param type="select" label="JBrowse Theme" name="theme">
+                <option value="" selected="True">Default</option>
+                <option value="Minimalist">Minimalist</option>
+                <option value="Dark">Dark</option>
+            </param-->
+        </section>
+        <param type="hidden" name="uglyTestingHack" value=""/>
+    </inputs>
+    <outputs>
+        <data format="html" name="output" label="JBrowse on $on_string - $standalone"/>
+    </outputs>
+    <help><![CDATA[ ]]></help>
 </tool>

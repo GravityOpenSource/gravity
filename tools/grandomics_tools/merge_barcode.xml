@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<tool id="merge_barcode" name="合并BARCODE" version="0.1.0">
+    <description>合并整理BARCODE拆分结果</description>
+    <command><![CDATA[
+        mkdir -p outputs && cd outputs && python $__tool_directory__/merge_barcode_fastq.py -n
+        #for $input_fastq in $input_fastqs
+            #if $input_fastq.is_collection
+                #for $fastq in $input_fastq
+                    $fastq.element_identifier
+                #end for
+            #else
+                $input_fastq.element_identifier
+            #end if
+        #end for
+        -i
+        #for $input_fastq in $input_fastqs
+            #if $input_fastq.is_collection
+                #for $fastq in $input_fastq
+                    $fastq
+                #end for
+            #else
+                $input_fastq
+            #end if
+        #end for
+    ]]></command>
+    <inputs>
+        <param name="input_fastqs" type="data_collection"  format="fastq" label="输入FASTQs"/>
+    </inputs>
+    <outputs>
+        <collection name="list_output" type="list" label="MERGED BARCODED FASTQs">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        </collection>
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+接受“拆分BARCODE”结果，按照BARCODE编号将统一编号的所有FASTQs文件进行合并整理。
+
+输入FASTQs:
+    FASTQs文件数据集合
+
+        ]]></help>
+</tool>

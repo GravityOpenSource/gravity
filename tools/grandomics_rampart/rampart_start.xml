@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tool id="rampart_start" name="新增" version="0.1.0">
-    <description>新增一个检测实例用以检测信息的cell数据</description>
+    <description>新增实时检测实例</description>
     <command detect_errors="exit_code"><![CDATA[
         python '$__tool_directory__/rampart_start.py'
         -g $genome
@@ -10,17 +10,31 @@
         -o $output
     ]]></command>
     <inputs>
-        <param name="cell" type="text" label="Cell名称" value="20190219-TEST-P1"/>
-        <param name="references" type="data" multiple="false" format="fasta" label="参考基因组(example: references.fasta)"/>
-        <param name="genome" type="data" multiple="false" format="json" label="基因组注释(example: genome.json)"/>
+        <param name="cell" type="text" label="Cell名称"/>
+        <param name="references" type="data" multiple="false" format="fasta" label="参考基因组序列(example: references.fasta)"/>
+        <param name="genome" type="data" multiple="false" format="json" label="参考基因组注释(example: genome.json)"/>
         <param name="primers" type="data" multiple="false" format="json" label="Primers(example: primers.json)"/>
     </inputs>
     <outputs>
         <data name="output" format="html" label="新增:实时检测结果"/>
     </outputs>
     <help><![CDATA[
-User' Guide
---------------
+说明
+-----
+
+在BASECALLED中选择一个测序中或测序完的CELL，并新增一个实时检测实例用以实时检测该CELL的病原信息。
+
+Cell 名称:
+    输入一个测序中或测序完的的CELL名称，其该CELL数据在在BASECALLED目录中。
+
+参考基因组序列:
+    待检测的病原参考基因组FASTA文件。例：https://github.com/artic-network/rampart/blob/master/example_protocols/EBOV/references.fasta
+
+参考基因组注释:
+    参考基因组主要版本的基因组结构注释JSON文件。例：https://github.com/artic-network/rampart/blob/master/example_protocols/EBOV/references.fasta
+
+Primers:
+    PRIMERSJSON文件。例：https://github.com/artic-network/rampart/blob/master/example_protocols/EBOV/primers.json
 
         ]]></help>
 </tool>
