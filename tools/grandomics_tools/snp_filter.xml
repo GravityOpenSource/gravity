@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<tool id="snp_filter" name="Snp filter" version="0.1.0">
+    <description>Filter snvs from medaka vcf</description>
+    <command><![CDATA[
+        python $__tool_directory__/medaka_vcf_filter.py --raw_vcf $raw_vcf --bam $input_bam --ref_prob $ref_prob --qual $qual --min_depth $min_depth --frequence $frequence --out_vcf $out_vcf 
+    ]]></command>
+    <inputs>
+        <param name="raw_vcf" type="data" format="vcf" label="输入vcf" />
+        <param name="input_bam" type="data" format="bam" label="输入bam" />
+        <param name="ref_prob" type="float" label=" 非变异概率" value="0.06" />
+        <param name="qual" type="integer" label="变异位点质量值" value="17" />
+        <param name="min_depth" type="integer" label="最低深度" value="15" />
+        <param name="frequence" type="float" label="变异位点最低频率" value="0.6" />
+    </inputs>
+    <outputs>
+        <data name="out_vcf" format="vcf" />
+    </outputs>
+    <help><![CDATA[
+User' Guide
+--------------
+
+usage: medaka_vcf_filter.py [-h] [--raw_vcf raw_vcf] [--ref_prob ref_prob]
+                            [--qual qual] [--min_depth min_depth]
+                            [--frequence frequence] [--out_vcf out_vcf]
+                            [--bam bam]
+
+filter SNVs from medaka vcf
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --raw_vcf raw_vcf     set the input raw vcf ,must be the result of medaka
+                        snp
+  --ref_prob ref_prob   set the max ref_prob of variation[0.06]
+  --qual qual           set the min qual of variation[17]
+  --min_depth min_depth
+                        set the min depth[15]
+  --frequence frequence
+                        set the min frequence[0.6]
+  --out_vcf out_vcf     set the output vcf
+  --bam bam             set the bam with path
+
+        ]]></help>
+</tool>
