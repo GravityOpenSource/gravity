@@ -1,11 +1,10 @@
 import argparse, os, docker
+from jinja2 import Template
 
 
 class Docker(object):
     def __init__(self):
         self._client = docker.from_env()
-        self._host_ip = os.getenv('GALAXY_IP')
-        if not self._host_ip: raise Exception("can not find $GALAXY_IP in Environment variables")
 
     @property
     def client(self):
@@ -21,21 +20,29 @@ class Docker(object):
             if port % 2 == 0: return port
         return None
 
-    def write_htmls(self, outdir):
-        if not os.path.isdir(outdir): os.makedirs(outdir)
+    def get_template(self, html):
+        html = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rampart_list.html')
+        fi = open(html)
+        tpl = Template(fi.read())
+        fi.close()
+        return tpl
+
+    def write_out(self, tpl, html):
+        containers = list()
         for container in self.containers:
-            cell = container.name.replace('rampart_', '')
-            port = self.get_port(container)
-            fo = open(os.path.join(outdir, '%s.html' % cell), 'w')
-            fo.write('<iframe src="http://%s:%d/" frameborder="0" width="%s" height="%s"></iframe>\n' % (
-                self._host_ip, port, '100%', '100%'
-            ))
-            fo.close()
+            containers.append({
+                'name': container.name.replace('rampart_', ''),
+                'port': self.get_port(container)
+            })
+        fo = open(args.out_html, 'w')
+        fo.write(tpl.render(containers=containers, host=os.getenv('GALAXY_IP', '159.138.147.148')))
+        fo.close()
 
 
 def main(args):
     docker = Docker()
-    docker.write_htmls(args.outdir)
+    tpl = docker.get_template(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rampart_list.html'))
+    docker.write_out(tpl, args.out_html)
 
 
 if __name__ == '__main__':
@@ -43,7 +50,7 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description='Author: Ying Zhu (zhuy@grandomics.com) from GrandOmics'
     )
-    parser.add_argument('-o', '--outdir', required=True, help='output dir')
+    parser.add_argument('-o', '--out_html', required=True, help='output html')
     parser.set_defaults(function=main)
     args = parser.parse_args()
     args.function(args)

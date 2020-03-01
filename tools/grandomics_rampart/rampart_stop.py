@@ -26,31 +26,35 @@ class Docker(object):
             if port % 2 == 0: return port
         return None
 
-    def get_template(self, html):
-        html = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rampart_list.html')
+    @property
+    def template(self):
+        html = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rampart_stop.html')
         fi = open(html)
         tpl = Template(fi.read())
         fi.close()
         return tpl
 
-    def write_out(self, tpl, html):
+    def close_cell(self, cell, out_html):
+        container = self.get_container(cell)
+        if container:
+            container.stop()
+            status = 1
+        else:
+            status = 0
         containers = list()
         for container in self.containers:
-            containers.append({
-                'name': container.name.replace('rampart_', ''),
-                'port': self.get_port(container)
-            })
-        fo = open(html, 'w')
-        fo.write(tpl.render(containers=containers, host=os.getenv('GALAXY_IP', '159.138.147.148')))
+            name = container.name.replace('rampart_', '')
+            port = self.get_port(container)
+            containers.append({'name': name, 'port': port})
+            if name == cell: status = -1
+        fo = open(out_html, 'w')
+        fo.write(self.template.render(cell=cell, status=status, containers=containers))
         fo.close()
 
 
 def main(args):
     docker = Docker()
-    container = docker.get_container(args.cell)
-    if container: container.stop()
-    tpl = docker.get_template(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rampart_list.html'))
-    docker.write_out(tpl, args.out_html)
+    docker.close_cell(args.cell, args.out_html)
 
 
 if __name__ == '__main__':

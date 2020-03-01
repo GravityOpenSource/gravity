@@ -8,7 +8,7 @@
         <param name="cell" type="text" label="Cell名称"/>
     </inputs>
     <outputs>
-        <data name="output" format="html" label="关闭:实时检测结果"/>
+        <data name="output" format="html" label="关闭:实时检测实例-$cell"/>
     </outputs>
     <help><![CDATA[
 说明

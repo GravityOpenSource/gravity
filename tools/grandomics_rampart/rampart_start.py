@@ -5,10 +5,14 @@ class Cell(object):
     def __init__(self, name):
         self._name = name
         self._ramdom = ''.join(random.sample(string.ascii_letters + string.digits, 8))
-        self._rampart_work_dir = os.getenv('RAMPART_WORK_DIR')
+        self._rampart_dir = os.getenv('RAMPART_WORK_DIR')
         self._basecalled_dir = os.getenv('BASECALLED_DIR')
-        if not self._rampart_work_dir: raise Exception("can not find $RAMPART_WORK_DIR in Environment variables")
+        self._rampart_image = os.getenv('RAMPART_IMAGE')
+        self._host_ip = os.getenv('GALAXY_IP')
+        if not self._rampart_dir: raise Exception("can not find $RAMPART_WORK_DIR in Environment variables")
         if not self._basecalled_dir: raise Exception("can not find $BASECALLED_DIR in Environment variables")
+        if not self._rampart_image: raise Exception("can not find $RAMPART_IMAGE in Environment variables")
+        if not self._host_ip: raise Exception("can not find $GALAXY_IP in Environment variables")
 
     @property
     def name(self):
@@ -16,7 +20,7 @@ class Cell(object):
 
     @property
     def rampart_work_cell_dir(self):
-        path = os.path.join(self._rampart_work_dir, self.name)
+        path = os.path.join(self._rampart_dir, self.name)
         if not os.path.isdir(path): os.makedirs(path)
         return path
 
@@ -35,13 +39,13 @@ class Cell(object):
                     if dirname == 'fastq_pass': return os.path.join(root, dirname)
         raise Exception('找不到该Cell目录或目录下没有fastq_pass目录: %s' % self._name)
 
-    def get_docker_params(self, image, port):
+    def get_docker_params(self, port):
         return {
-            'image': image,
+            'image': self._rampart_image,
             'ports': {'%d/tcp' % port: port, '%d/tcp' % (port + 1): port + 1},
             'command': 'run-rampart %s' % self.name,
             'environment': {
-                'GALAXY_RAMPART_WORK_DIR': self._rampart_work_dir,
+                'GALAXY_RAMPART_WORK_DIR': self._rampart_dir,
                 'GALAXY_RAMPART_PORT1': port,
                 'GALAXY_RAMPART_PORT2': port + 1,
                 'NODE_OPTIONS': '--max_old_space_size=%s' % (32 * 1024)
@@ -73,6 +77,12 @@ class Cell(object):
         fo.write(json.dumps(data, indent=4) + '\n')
         fo.close()
 
+    def write_html(self, out_html, port):
+        fo = open(out_html, 'w')
+        fo.write('<iframe src="http://%s:%d/" frameborder="0" width="%s" height="%s"></iframe>\n' % (
+            self._host_ip, port, '100%', '100%'
+        ))
+        fo.close()
 
 class Docker(object):
     def __init__(self):
@@ -104,7 +114,8 @@ class Docker(object):
         for container in self.containers:
             _port = self.get_port(container)
             if _port: ports.append(_port)
-        for _port in range(10000, 65534, 2):
+        start_port = int(os.getenv('RAMPART_START_PORT', 10000))
+        for _port in range(start_port, 65534, 2):
             if _port not in ports: return _port
         raise Exception('ERROR: there is no port avaliable between 3000 to 65532')
 
@@ -112,13 +123,7 @@ class Docker(object):
         self._client.containers.run(**kwargs)
 
 
-def write_html(out_html, port):
-    fo = open(out_html, 'w')
-    fo.write('<iframe src="http://%s:%d/" frameborder="0" width="%s" height="%s"></iframe>\n' % (
-        os.getenv('GALAXY_IP', '159.138.147.148'),
-        port, '100%', '100%'
-    ))
-    fo.close()
+
 
 
 def main(args):
@@ -129,9 +134,9 @@ def main(args):
     cell.create_protocol(genome_file=args.genome, references_file=args.references, primers_file=args.primers)
     cell.create_config()
     port = docker.port
-    docker_params = cell.get_docker_params(image=args.image, port=port)
+    docker_params = cell.get_docker_params(port=port)
     docker.create(**docker_params)
-    write_html(args.out_html, port)
+    cell.write_html(args.out_html, port)
 
 
 if __name__ == '__main__':
@@ -143,7 +148,6 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--references', required=True, help='references fastq file')
     parser.add_argument('-p', '--primers', required=True, help='primers json file')
     parser.add_argument('-c', '--cell', required=True, help='cell name')
-    parser.add_argument('-i', '--image', required=True, help='rampart iamge name')
     parser.add_argument('-o', '--out_html', required=True, help='output html')
     parser.set_defaults(function=main)
     args = parser.parse_args()

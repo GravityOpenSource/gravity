@@ -2,14 +2,12 @@
 <tool id="rampart_list" name="列表" version="0.1.0">
     <description>查询所有实时检测实例</description>
     <command detect_errors="exit_code"><![CDATA[
-        python '$__tool_directory__/rampart_list.py' -o outputs
+        python '$__tool_directory__/rampart_list.py' -o $output
     ]]></command>
     <inputs>
     </inputs>
     <outputs>
-        <collection name="list_output" type="list" label="列表:实时检测实例">
-            <discover_datasets pattern="__name_and_ext__" directory="outputs"/>
-        </collection>
+        <data name="output" format="html" label="列表:实时检测结果"/>
     </outputs>
     <help><![CDATA[
 说明

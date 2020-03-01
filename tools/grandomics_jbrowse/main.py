@@ -6,11 +6,13 @@ SOURCE_CODE_DIR = os.path.join(BASE_DIR, 'source_code', 'jbrowse')
 
 
 class Jbrowse(object):
-
     def __init__(self):
         self._ramdom = ''
         self._jbrowse_html_dir = os.getenv('JBROWSE_HTML_DIR')
+        self._host_ip = os.getenv('GALAXY_IP')
+        self._port = int(os.getenv('JBROWSE_POTR', 8081))
         if not self._jbrowse_html_dir: raise Exception("can not find $JBROWSE_HTML_DIR in Environment variables")
+        if not self._host_ip: raise Exception("can not find $GALAXY_IP in Environment variables")
 
     @property
     def outdir(self):
@@ -30,9 +32,7 @@ class Jbrowse(object):
         fo.close()
 
     def write_html(self, out_html):
-        host = os.getenv('GALAXY_IP', '159.138.147.148')
-        port = int(os.getenv('JBROWSE_POTR', 8081))
-        link = 'http://%s:%d/%s/index.html' % (host, port, self._ramdom)
+        link = 'http://%s:%d/%s/index.html' % (self._host_ip, self._port, self._ramdom)
         fo = open(out_html, 'w')
         fo.write('<iframe src="%s" frameborder="0" width="%s" height="%s"></iframe>\n' % (link, '100%', '100%'))
         fo.close()

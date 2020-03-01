@@ -195,3 +195,4 @@ bipython
 psycopg2-binary
 docker
 biopython
+jinja2
