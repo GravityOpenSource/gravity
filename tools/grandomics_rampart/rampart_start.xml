@@ -16,7 +16,7 @@
         <param name="primers" type="data" multiple="false" format="json" label="Primers(example: primers.json)"/>
     </inputs>
     <outputs>
-        <data name="output" format="html" label="新增:实时检测实例-$cell"/>
+        <data name="output" format="html" label="新增:实时检测实例($cell)"/>
     </outputs>
     <help><![CDATA[
 说明

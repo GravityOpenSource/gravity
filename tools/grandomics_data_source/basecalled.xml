@@ -11,7 +11,7 @@
         <param name="number" type="integer" label="合并文件都N个" value="10"/>
     </inputs>
     <outputs>
-        <collection name="list_output" type="list" label="BASECALLED FASTQs">
+        <collection name="list_output" type="list" label="BASECALLED FASTQs($cell)">
             <discover_datasets pattern="__name_and_ext__" directory="outputs"/>
         </collection>
     </outputs>
