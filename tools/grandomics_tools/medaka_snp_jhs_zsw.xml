@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<tool id="medaka_variant" name="Medaka" version="0.1.0" python_template_version="3.6">
+    <description> 变异检测</description>
+    <requirements>
+        <requirement type="package" version="0.11.1">medaka</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        ln -s '$inbam' infile &&
+        #if $inbam.is_of_type('bam'):
+            #if str( $inbam.metadata.bam_index ) != "None":
+                ln -s '${inbam.metadata.bam_index}' infile.bai &&
+            #else:
+                samtools index infile infile.bai &&
+            #end if
+        #end if
+        medaka consensus --threads $thread --model $model infile hdf &&
+        medaka snp $reference hdf $outvcf &&
+        rm hdf
+        ]]>
+    </command>
+    <inputs>
+        <param name="inbam" type="data" format="bam" label="输入比对后的BAM" />
+        <param name="thread" type="integer" label="线程数" value="4" />
+        <param name="reference" type="select" label="选择参考基因组" >
+            <options from_data_table="all_fasta">
+                <column name="name" index="0"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
+        <param name="model" type="select" format="text" label="数据模型">
+            <option value="r941_min_fast_g303">r941_min_fast_g303</option>
+            <option value="r941_min_high_g303">r941_min_high_g303</option>
+            <option value="r941_min_high_g330">r941_min_high_g330</option>
+            <option value="r941_prom_fast_g303">r941_prom_fast_g303</option>
+            <option value="r941_prom_high_g303">r941_prom_high_g303</option>
+            <option value="r941_prom_high_g330">r941_prom_high_g330</option>
+            <option value="r10_min_high_g303">r10_min_high_g303</option>
+            <option value="r10_min_high_g340">r10_min_high_g340</option>
+            <option value="r941_prom_diploid_snp">r941_prom_diploid_snp</option>
+            <option value="r941_min_high_g340_rle">r941_min_high_g340_rle</option>
+        </param>
+    </inputs>
+    <outputs>
+        <data name="outvcf" format="vcf" />
+    </outputs>
+    <help><![CDATA[
+User' Guide
+--------------
+usage: medaka consensus [-h] [--debug | --quiet] [--batch_size BATCH_SIZE]
+                        [--regions REGIONS [REGIONS ...]]
+                        [--chunk_len CHUNK_LEN] [--chunk_ovlp CHUNK_OVLP]
+                        [--read_fraction lower upper] [--model MODEL]
+                        [--disable_cudnn] [--threads THREADS] [--check_output]
+                        [--save_features] [--tag_name TAG_NAME]
+                        [--tag_value TAG_VALUE] [--tag_keep_missing]
+                        bam output
+
+positional arguments:
+  bam                   Input alignments.
+  output                Output file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --debug               Verbose logging of debug information. (default: 20)
+  --quiet               Minimal logging; warnings only). (default: 20)
+  --batch_size BATCH_SIZE
+                        Inference batch size. (default: 100)
+  --regions REGIONS [REGIONS ...]
+                        Genomic regions to analyse. (default: None)
+  --chunk_len CHUNK_LEN
+                        Chunk length of samples. (default: 10000)
+  --chunk_ovlp CHUNK_OVLP
+                        Overlap of chunks. (default: 1000)
+  --read_fraction lower upper
+                        Fraction of reads to keep (default: None)
+  --model MODEL         Model definition, default is equivalent to
+                        r941_min_high. {r941_min_fast, r941_min_high,
+                        r941_prom_fast, r941_prom_high, r10_min_high,
+                        r941_min_diploid_snp} (default:
+                        /opt/conda3/lib/python3.6/site-
+                        packages/medaka/data/r941_min_high_model.hdf5)
+  --disable_cudnn       Disable use of cuDNN model layers. (default: False)
+  --threads THREADS     Number of threads used by inference. (default: 1)
+  --check_output        Verify integrity of output file after inference.
+                        (default: False)
+  --save_features       Save features with consensus probabilities. (default:
+                        False)
+
+filter tag:
+  Filtering alignments by an integer valued tag.
+
+  --tag_name TAG_NAME   Two-letter tag name. (default: None)
+  --tag_value TAG_VALUE
+                        Value of tag. (default: None)
+  --tag_keep_missing    Keep alignments when tag is missing. (default: False)
+  
+--------------
+usage: medaka snp [-h] [--debug | --quiet] [--regions REGIONS [REGIONS ...]]
+                  [--threshold THRESHOLD] [--ref_vcf REF_VCF]
+                  ref_fasta inputs [inputs ...] output
+
+positional arguments:
+  ref_fasta             Reference sequence .fasta file.
+  inputs                Consensus .hdf files.
+  output                Output .vcf.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --debug               Verbose logging of debug information. (default: 20)
+  --quiet               Minimal logging; warnings only). (default: 20)
+  --regions REGIONS [REGIONS ...]
+                        Limit variant calling to these reference names
+                        (default: None)
+  --threshold THRESHOLD
+                        Threshold for considering secondary calls. A value of
+                        1 will result in haploid decoding. (default: 0.04)
+  --ref_vcf REF_VCF     Reference vcf. (default: None)
+
+        ]]></help>
+</tool>
+
