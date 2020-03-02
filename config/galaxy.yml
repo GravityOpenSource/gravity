@@ -426,7 +426,7 @@ galaxy:
   # Directory where data used by tools is located.  See the samples in
   # that directory and the Galaxy Community Hub for help:
   # https://galaxyproject.org/admin/data-integration
-  #tool_data_path: tool-data
+  tool_data_path: tool-data
 
   # Directory where Tool Data Table related files will be placed when
   # installed from a ToolShed. Defaults to tool_data_path.
