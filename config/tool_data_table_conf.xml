@@ -10,6 +10,11 @@
         <columns>value, dbkey, name, path</columns>
 	<file path="tool-data/fasta_indexes.loc" />
     </table>
+    <!-- Locations of primer fasta files under genome directory -->
+    <table name="primer_fasta" comment_char="#" allow_duplicate_entries="False">
+        <columns>value, dbkey, name, path</columns>
+	<file path="tool-data/primer_fasta.loc" />
+    </table>
     <!-- Locations of indexes in the BFAST mapper format -->
     <table name="bfast_indexes" comment_char="#" allow_duplicate_entries="False">
         <columns>value, dbkey, formats, name, path</columns>

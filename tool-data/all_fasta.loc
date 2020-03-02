@@ -8,7 +8,7 @@
 #
 #So, all_fasta.loc could look something like this:
 #
-MN994467.1	USA-CA1	Wuhan seafood market pneumonia virus isolate 2019-nCoV/USA-CA1/2020	/data/personal/helx/galaxy/database/tool-data/MN994467.1.fa
+MN994467.1	USA-CA1	Wuhan seafood market pneumonia virus isolate 2019-nCoV/USA-CA1/2020	/opt/galaxy/database/tool-data/MN994467.1.fa
 #EBOV	EBOV_v1	1405	/data/personal/helx/galaxy/references/references.fasta
 #apiMel3	apiMel3	Honeybee (Apis mellifera): apiMel3	/path/to/genome/apiMel3/apiMel3.fa
 #hg19canon	hg19	Human (Homo sapiens): hg19 Canonical	/path/to/genome/hg19/hg19canon.fa
