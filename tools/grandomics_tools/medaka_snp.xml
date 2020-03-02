@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<tool id="medaka_variant" name="变异检测" version="0.1.0" python_template_version="3.6">
+    <description> Medaka检测SNV及InDel</description>
+    <requirements>
+        <requirement type="package" version="0.11.1">medaka</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        ln -s '$inbam' infile &&
+        #if $inbam.is_of_type('bam'):
+            #if str( $inbam.metadata.bam_index ) != "None":
+                ln -s '${inbam.metadata.bam_index}' infile.bai &&
+            #else:
+                samtools index infile infile.bai &&
+            #end if
+        #end if
+        medaka consensus --threads $thread --model $model infile hdf &&
+        medaka snp $reference hdf $outvcf &&
+        rm hdf
+        ]]>
+    </command>
+    <inputs>
+        <param name="inbam" type="data" format="bam" label="输入BAM" />
+        <param name="reference" type="select" label="选择参考基因组" >
+            <options from_data_table="all_fasta">
+                <column name="name" index="0"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
+        <param name="thread" type="integer" label="线程数" value="4" />
+        <param name="model" type="select" format="text" label="数据模型">
+            <option value="r941_min_fast_g303">r941_min_fast_g303</option>
+            <option value="r941_min_high_g303">r941_min_high_g303</option>
+            <option value="r941_min_high_g330">r941_min_high_g330</option>
+            <option value="r941_prom_fast_g303">r941_prom_fast_g303</option>
+            <option value="r941_prom_high_g303">r941_prom_high_g303</option>
+            <option value="r941_prom_high_g330">r941_prom_high_g330</option>
+            <option value="r10_min_high_g303">r10_min_high_g303</option>
+            <option value="r10_min_high_g340">r10_min_high_g340</option>
+            <option value="r941_prom_diploid_snp">r941_prom_diploid_snp</option>
+            <option value="r941_min_high_g340_rle">r941_min_high_g340_rle</option>
+        </param>
+    </inputs>
+    <outputs>
+        <data name="outvcf" format="vcf" />
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+使用medaka对BAM文件检测SNV和InDel变异，medaka工具详情请参见：https://github.com/nanoporetech/medaka
+
+输入BAM：
+    比对后的BAM文件
+
+选择参考基因组：
+    可以从下拉菜单中选择需要比对的参考基因组
+
+线程数：
+    分析使用的线程数
+
+数据模型：
+    分析变异的数据模型，可选：
+    - r941_min_fast_g303
+    - r941_min_high_g303
+    - r941_min_high_g330
+    - r941_prom_fast_g303
+    - r941_prom_high_g303
+    - r941_prom_high_g330
+    - r10_min_high_g303
+    - r10_min_high_g340
+    - r941_prom_diploid_snp
+    - r941_min_high_g340_rle
+
+        ]]></help>
+</tool>
+

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<tool id="snp_filter" name="变异过滤" version="0.1.0">
+    <description> 过滤变异VCF结果</description>
+    <command><![CDATA[
+        python $__tool_directory__/medaka_vcf_filter.py --raw_vcf $raw_vcf --bam $input_bam --ref_prob $ref_prob --qual $qual --min_depth $min_depth --frequence $frequence --out_vcf $out_vcf 
+    ]]></command>
+    <inputs>
+        <param name="raw_vcf" type="data" format="vcf" label="输入VCF" />
+        <param name="input_bam" type="data" format="bam" label="输入BAM" />
+        <param name="ref_prob" type="float" label=" 非变异概率" value="0.06" />
+        <param name="qual" type="integer" label="变异位点质量值" value="17" />
+        <param name="min_depth" type="integer" label="最低深度" value="15" />
+        <param name="frequence" type="float" label="变异位点最低频率" value="0.6" />
+    </inputs>
+    <outputs>
+        <data name="out_vcf" format="vcf" />
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+使用medaka对BAM文件检测SNV和InDel变异，medaka工具详情请参见：https://github.com/nanoporetech/medaka
+
+输入VCF：
+    检测变异的vcf文件
+
+输入BAM：
+    比对后的BAM文件
+
+非变异概率：
+    非变异（ref）的概率，默认0.06
+
+变异位点质量值：
+    变异位点质量值过滤阈值，默认17
+
+最低深度：
+    变异位点深度过滤阈值，默认15
+
+变异位点最低频率：
+    位点的变异碱基深度与总深度的比值过滤阈值，默认0.6
+
+        ]]></help>
+</tool>
+
