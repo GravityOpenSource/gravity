@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<tool id="nanoplexer_zsw" name="Nanoplexer_zsw" version="0.1.0">
-    <description> Detect primers</description>
+<tool id="nanoplexer" name="Nanoplexer" version="0.1.0">
+    <description> 检测序列primer并过滤</description>
     <requirements>
         <requirement type="package" version="0.1">nanoplexer</requirement>
     </requirements>
