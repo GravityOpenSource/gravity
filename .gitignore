@@ -106,7 +106,7 @@ tool-data/shared/ucsc/manual_builds.txt
 tool-data/shared/ensembl/builds.txt
 tool-data/shared/ucsc/publicbuilds.txt
 tool-data/shared/ucsc/ucsc_build_sites.txt
-tool-data/*.loc
+#tool-data/*.loc
 tool-data/genome/*
 tool-data/*.sample
 tool-data/testtoolshed.g2.bx.psu.edu/
