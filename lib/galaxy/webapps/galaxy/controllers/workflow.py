@@ -60,35 +60,36 @@ class StoredWorkflowListGrid(grids.Grid):
 
     # Grid definition
     use_panels = True
-    title = "Saved Workflows"
+#     title = "Saved Workflows"
+    title = "保存的流程"
     model_class = model.StoredWorkflow
     default_filter = {"name": "All", "tags": "All"}
     default_sort_key = "-update_time"
     columns = [
-        grids.TextColumn("Name", key="name", attach_popup=True, filterable="advanced"),
-        grids.IndividualTagsColumn("Tags",
+        grids.TextColumn("名称", key="name", attach_popup=True, filterable="advanced"),
+        grids.IndividualTagsColumn("标签",
                                    "tags",
                                    model_tag_association_class=model.StoredWorkflowTagAssociation,
                                    filterable="advanced",
                                    grid_name="StoredWorkflowListGrid"),
-        StepsColumn("Steps"),
-        grids.GridColumn("Created", key="create_time", format=time_ago),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        StepsColumn("步骤"),
+        grids.GridColumn("创建时间", key="create_time", format=time_ago),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0], columns[1]],
             key="free-text-search", visible=False, filterable="standard"
         )
     )
     operations = [
-        grids.GridOperation("Edit", allow_multiple=False, condition=(lambda item: not item.deleted), async_compatible=False),
-        grids.GridOperation("Run", condition=(lambda item: not item.deleted), async_compatible=False),
-        grids.GridOperation("Copy", condition=(lambda item: not item.deleted), async_compatible=False),
-        grids.GridOperation("Rename", condition=(lambda item: not item.deleted), async_compatible=False),
-        grids.GridOperation("Sharing", condition=(lambda item: not item.deleted), async_compatible=False),
-        grids.GridOperation("Delete", condition=(lambda item: item.deleted), async_compatible=True),
+        grids.GridOperation("编辑", allow_multiple=False, condition=(lambda item: not item.deleted), async_compatible=False),
+        grids.GridOperation("运行", condition=(lambda item: not item.deleted), async_compatible=False),
+        grids.GridOperation("复制", condition=(lambda item: not item.deleted), async_compatible=False),
+        grids.GridOperation("重命名", condition=(lambda item: not item.deleted), async_compatible=False),
+        grids.GridOperation("分享", condition=(lambda item: not item.deleted), async_compatible=False),
+        grids.GridOperation("删除", condition=(lambda item: item.deleted), async_compatible=True),
     ]
 
     def apply_query_filter(self, trans, query, **kwargs):
@@ -96,45 +97,47 @@ class StoredWorkflowListGrid(grids.Grid):
 
 
 class StoredWorkflowAllPublishedGrid(grids.Grid):
-    title = "Published Workflows"
+#     title = "Published Workflows"
+    title = "已发布的流程"
     model_class = model.StoredWorkflow
     default_sort_key = "update_time"
     default_filter = dict(public_url="All", username="All", tags="All")
     columns = [
-        grids.PublicURLColumn("Name", key="name", filterable="advanced", attach_popup=True),
-        grids.OwnerAnnotationColumn("Annotation",
+        grids.PublicURLColumn("名称", key="name", filterable="advanced", attach_popup=True),
+        grids.OwnerAnnotationColumn("注释",
                                     key="annotation",
                                     model_annotation_association_class=model.StoredWorkflowAnnotationAssociation,
                                     filterable="advanced"),
-        grids.OwnerColumn("Owner", key="username", model_class=model.User, filterable="advanced"),
-        grids.CommunityRatingColumn("Community Rating", key="rating"),
-        grids.CommunityTagsColumn("Community Tags", key="tags",
+        grids.OwnerColumn("作者", key="username", model_class=model.User, filterable="advanced"),
+        grids.CommunityRatingColumn("社区评价", key="rating"),
+        grids.CommunityTagsColumn("社区标签", key="tags",
                                   model_tag_association_class=model.StoredWorkflowTagAssociation,
                                   filterable="advanced", grid_name="PublicWorkflowListGrid"),
-        grids.ReverseSortColumn("Last Updated", key="update_time", format=time_ago)
+        grids.ReverseSortColumn("最后更新时间", key="update_time", format=time_ago)
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search name, annotation, owner, and tags",
+#             "Search name, annotation, owner, and tags",
+            "搜索名称、注释、作者和标签",
             cols_to_filter=[columns[0], columns[1], columns[2], columns[4]],
             key="free-text-search", visible=False, filterable="standard"
         )
     )
     operations = [
         grids.GridOperation(
-            'Run',
+            '运行',
             condition=(lambda item: not item.deleted),
             allow_multiple=False,
             url_args=dict(controller='workflows', action="run")
         ),
         grids.GridOperation(
-            "Import",
+            "导入",
             condition=(lambda item: not item.deleted),
             allow_multiple=False,
             url_args=dict(action="imp")
         ),
         grids.GridOperation(
-            "Save as File",
+            "另存为文件",
             condition=(lambda item: not item.deleted),
             allow_multiple=False,
             url_args=dict(action="export_to_file")
@@ -297,14 +300,17 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
                                     .first()
             if not other:
                 mtype = "error"
-                msg = ("User '%s' does not exist" % escape(email))
+#                 msg = ("User '%s' does not exist" % escape(email))
+                msg = ("用户 '%s' 不存在" % escape(email))
             elif other == trans.get_user():
                 mtype = "error"
-                msg = ("You cannot share a workflow with yourself")
+#                 msg = ("You cannot share a workflow with yourself")
+                msg = ("您不能与自己分享流程")
             elif trans.sa_session.query(model.StoredWorkflowUserShareAssociation) \
                     .filter_by(user=other, stored_workflow=stored).count() > 0:
                 mtype = "error"
-                msg = ("Workflow already shared with '%s'" % escape(email))
+#                 msg = ("Workflow already shared with '%s'" % escape(email))
+                msg = ("流程已分享给 '%s'" % escape(email))
             else:
                 share = model.StoredWorkflowUserShareAssociation()
                 share.stored_workflow = stored
@@ -312,7 +318,8 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
                 session = trans.sa_session
                 session.add(share)
                 session.flush()
-                trans.set_message("Workflow '%s' shared with user '%s'" % (escape(stored.name), escape(other.email)))
+#                 trans.set_message("Workflow '%s' shared with user '%s'" % (escape(stored.name), escape(other.email)))
+                trans.set_message("流程 '%s' 已分享给用户 '%s'" % (escape(stored.name), escape(other.email)))
                 return trans.response.send_redirect(url_for(controller='workflow', action='sharing', id=id))
         return trans.fill_template("/ind_share_base.mako",
                                    message=msg,
@@ -356,7 +363,8 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
             elif 'unshare_user' in kwargs:
                 user = session.query(model.User).get(trans.security.decode_id(kwargs['unshare_user']))
                 if not user:
-                    error("User not found for provided id")
+#                     error("User not found for provided id")
+                    error("找不到所提供id的用户")
                 association = session.query(model.StoredWorkflowUserShareAssociation) \
                                      .filter_by(user=user, stored_workflow=stored).one()
                 session.delete(association)
@@ -389,21 +397,25 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
         # Set referer message.
         referer = trans.request.referer
         if referer:
-            referer_message = "<a href='%s'>return to the previous page</a>" % escape(referer)
+#             referer_message = "<a href='%s'>return to the previous page</a>" % escape(referer)
+            referer_message = "<a href='%s'>返回到上一页</a>" % escape(referer)
         else:
-            referer_message = "<a href='%s'>go to Galaxy's start page</a>" % url_for('/')
+#             referer_message = "<a href='%s'>go to Galaxy's start page</a>" % url_for('/')
+            referer_message = "<a href='%s'>进入系统首页</a>" % url_for('/')
 
         # Do import.
         stored = self.get_stored_workflow(trans, id, check_ownership=False)
         if stored.importable is False:
-            return trans.show_error_message("The owner of this workflow has disabled imports via this link.<br>You can %s" % referer_message, use_panels=True)
+#             return trans.show_error_message("The owner of this workflow has disabled imports via this link.<br>You can %s" % referer_message, use_panels=True)
+            return trans.show_error_message("此流程的所有者已禁用通过此链接的导入。<br>您可以 %s" % referer_message, use_panels=True)
         elif stored.deleted:
-            return trans.show_error_message("You can't import this workflow because it has been deleted.<br>You can %s" % referer_message, use_panels=True)
+#             return trans.show_error_message("You can't import this workflow because it has been deleted.<br>You can %s" % referer_message, use_panels=True)
+            return trans.show_error_message("您无法导入此工作流程，因为它已被删除。<br>您可以 %s" % referer_message, use_panels=True)
         self._import_shared_workflow(trans, stored)
 
         # Redirect to load galaxy frames.
         return trans.show_ok_message(
-            message="""Workflow "%s" has been imported. <br>You can <a href="%s">start using this workflow</a> or %s."""
+            message="""流程 "%s" 已导入。 <br>您可以 <a href="%s">开始使用此工作流</a> 或 %s."""
             % (stored.name, web.url_for('/workflows/list'), referer_message))
 
     @web.expose
@@ -490,7 +502,8 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
             svg = self._workflow_to_svg_canvas(trans, stored)
         except Exception:
             status = 'error'
-            message = 'Galaxy is unable to create the SVG image. Please check your workflow, there might be missing tools.'
+#             message = 'Galaxy is unable to create the SVG image. Please check your workflow, there might be missing tools.'
+            message = '系统无法创建SVG图像。请检查您的流程，可能缺少工具。'
             return trans.fill_template("/workflow/sharing.mako", use_panels=True, item=stored, status=status, message=message)
         trans.response.set_content_type("image/svg+xml")
         s = STANDALONE_SVG_TEMPLATE % svg.tostring()
@@ -507,7 +520,8 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
         else:
             if trans.sa_session.query(model.StoredWorkflowUserShareAssociation) \
                     .filter_by(user=user, stored_workflow=stored).count() == 0:
-                error("Workflow is not owned by or shared with current user")
+#                 error("Workflow is not owned by or shared with current user")
+                error("流程不属于当前用户或没有分享给当前用户")
             owner = False
 
         # Copy.
@@ -515,7 +529,7 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
         if (save_as_name):
             new_stored.name = '%s' % save_as_name
         else:
-            new_stored.name = "Copy of %s" % stored.name
+            new_stored.name = "%s 副本" % stored.name
         new_stored.latest_workflow = stored.latest_workflow
         # Copy annotation.
         annotation_obj = self.get_item_annotation_obj(trans.sa_session, stored.user, stored)
@@ -523,14 +537,14 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
             self.add_item_annotation(trans.sa_session, trans.get_user(), new_stored, annotation_obj.annotation)
         new_stored.copy_tags_from(trans.user, stored)
         if not owner:
-            new_stored.name += " shared by %s" % stored.user.email
+            new_stored.name += " 分享者: %s" % stored.user.email
         new_stored.user = user
         # Persist
         session = trans.sa_session
         session.add(new_stored)
         session.flush()
         # Display the management page
-        message = 'Created new workflow with name: %s' % escape(new_stored.name)
+        message = '已创建新流程： %s' % escape(new_stored.name)
         trans.set_message(message)
         return_url = url_for('/') + 'workflow?status=done&message=%s' % escape(message)
         trans.response.send_redirect(return_url)
@@ -538,23 +552,34 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
     @web.legacy_expose_api
     def create(self, trans, payload=None, **kwd):
         if trans.request.method == 'GET':
+#             return {
+#                 'title'  : 'Create Workflow',
+#                 'inputs' : [{
+#                     'name'  : 'workflow_name',
+#                     'label' : 'Name',
+#                     'value' : 'Unnamed workflow'
+#                 }, {
+#                     'name'  : 'workflow_annotation',
+#                     'label' : 'Annotation',
+#                     'help'  : 'A description of the workflow; annotation is shown alongside shared or published workflows.'
+#                 }]}
             return {
-                'title'  : 'Create Workflow',
+                'title'  : '创建流程',
                 'inputs' : [{
                     'name'  : 'workflow_name',
-                    'label' : 'Name',
-                    'value' : 'Unnamed workflow'
+                    'label' : '名称',
+                    'value' : '未命名流程'
                 }, {
                     'name'  : 'workflow_annotation',
-                    'label' : 'Annotation',
-                    'help'  : 'A description of the workflow; annotation is shown alongside shared or published workflows.'
+                    'label' : '注释',
+                    'help'  : '流程的描述和注释将与共享或发布的流程一起显示。'
                 }]}
         else:
             user = trans.get_user()
             workflow_name = payload.get('workflow_name')
             workflow_annotation = payload.get('workflow_annotation')
             if not workflow_name:
-                return self.message_exception(trans, 'Please provide a workflow name.')
+                return self.message_exception(trans, '请提供流程名称。')
             # Create the new stored workflow
             stored_workflow = model.StoredWorkflow()
             stored_workflow.name = workflow_name
@@ -572,7 +597,8 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
             session = trans.sa_session
             session.add(stored_workflow)
             session.flush()
-            return {'id': trans.security.encode_id(stored_workflow.id), 'message': 'Workflow %s has been created.' % workflow_name}
+#             return {'id': trans.security.encode_id(stored_workflow.id), 'message': 'Workflow %s has been created.' % workflow_name}
+            return {'id': trans.security.encode_id(stored_workflow.id), 'message': '流程 %s 已经创建。' % workflow_name}
 
     @web.json
     def save_workflow_as(self, trans, workflow_name, workflow_data, workflow_annotation=""):
@@ -609,8 +635,10 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
             except workflows.MissingToolsException as e:
                 return dict(
                     name=e.workflow.name,
-                    message=("This workflow includes missing or invalid tools. "
-                             "It cannot be saved until the following steps are removed or the missing tools are enabled."),
+#                     message=("This workflow includes missing or invalid tools. "
+#                              "It cannot be saved until the following steps are removed or the missing tools are enabled."),
+                    message=("此流程包括缺少或无效的工具。"
+                             "在删除以下步骤或启用缺少的工具之前，无法保存该文件。"),
                     errors=e.errors,
                 )
             return (trans.security.encode_id(stored_workflow.id))
@@ -644,7 +672,8 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
         rendered by `editor_canvas`.
         """
         if not id:
-            error("Invalid workflow id")
+#             error("Invalid workflow id")
+            error("无效的流程id")
         stored = self.get_stored_workflow(trans, id)
         # The following query loads all user-owned workflows,
         # So that they can be copied or inserted in the workflow editor.
@@ -720,16 +749,17 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
         parser = SingleTagContentsParser('id')
         parser.feed(response_data)
         myexp_workflow_id = parser.tag_content
-        workflow_list_str = " <br>Return to <a href='%s'>workflow list." % url_for(controller='workflows', action='list')
+        workflow_list_str = " <br>返回 <a href='%s'>流程列表。" % url_for(controller='workflows', action='list')
         if myexp_workflow_id:
             return trans.show_message(
-                """Workflow '%s' successfully exported to myExperiment. <br/>
-                <a href="http://%s/workflows/%s">Click here to view the workflow on myExperiment</a> %s
+                """流程 '%s' 已成功导出到 myExperiment。<br/>
+                <a href="http://%s/workflows/%s">点击此处在myExperiment上查看流程</a> %s
                 """ % (stored.name, myexp_url, myexp_workflow_id, workflow_list_str),
                 use_panels=True)
         else:
             return trans.show_error_message(
-                "Workflow '%s' could not be exported to myExperiment. Error: %s %s" %
+#                 "Workflow '%s' could not be exported to myExperiment. Error: %s %s" %
+                "流程 '%s' 无法导出到 myExperiment。错误信息： %s %s" %
                 (stored.name, response_data, workflow_list_str), use_panels=True)
 
     @web.json_pretty
@@ -764,7 +794,8 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
         if not stored_dict:
             # This workflow has a tool that's missing from the distribution
             trans.response.status = 400
-            return "Workflow cannot be exported due to missing tools."
+#             return "Workflow cannot be exported due to missing tools."
+            return "由于缺少工具，无法导出流程。"
         sname = stored.name
         sname = ''.join(c in FILENAME_VALID_CHARS and c or '_' for c in sname)[0:150]
         trans.response.headers["Content-Disposition"] = 'attachment; filename="Galaxy-Workflow-%s.ga"' % (sname)
@@ -776,7 +807,8 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
         user = trans.get_user()
         history = trans.get_history()
         if not user:
-            return trans.show_error_message("Must be logged in to create workflows")
+#             return trans.show_error_message("Must be logged in to create workflows")
+            return trans.show_error_message("必须登录才能创建流程")
         if (job_ids is None and dataset_ids is None) or workflow_name is None:
             jobs, warnings = summarize(trans)
             # Render
@@ -803,8 +835,12 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
             )
             # Index page with message
             workflow_id = trans.security.encode_id(stored_workflow.id)
-            return trans.show_message('Workflow "%s" created from current history. '
-                                      'You can <a href="%s" target="_parent">edit</a> or <a href="%s" target="_parent">run</a> the workflow.'
+#             return trans.show_message('Workflow "%s" created from current history. '
+#                                       'You can <a href="%s" target="_parent">edit</a> or <a href="%s" target="_parent">run</a> the workflow.'
+#                                       % (escape(workflow_name), url_for(controller='workflow', action='editor', id=workflow_id),
+#                                          url_for(controller='workflows', action='run', id=workflow_id)))
+            return trans.show_message('流程 "%s" 已从当前历史创建。 '
+                                      '您可以 <a href="%s" target="_parent">编辑</a> 或 <a href="%s" target="_parent">运行</a> 此流程。'
                                       % (escape(workflow_name), url_for(controller='workflow', action='editor', id=workflow_id),
                                          url_for(controller='workflows', action='run', id=workflow_id)))
 
@@ -818,16 +854,20 @@ class WorkflowController(BaseUIController, SharableMixin, UsesStoredWorkflowMixi
         if stored.user != user:
             if trans.sa_session.query(model.StoredWorkflowUserShareAssociation) \
                     .filter_by(user=user, stored_workflow=stored).count() == 0:
-                error("Workflow is not owned by or shared with current user")
+#                 error("Workflow is not owned by or shared with current user")
+                error("流程不属于当前用户或没有分享给当前用户")
         # Get the latest revision
         workflow = stored.latest_workflow
         # It is possible for a workflow to have 0 steps
         if len(workflow.steps) == 0:
-            error("Workflow cannot be tagged for outputs because it does not have any steps")
+#             error("Workflow cannot be tagged for outputs because it does not have any steps")
+            error("无法将流程标记为输出，因为它没有任何步骤")
         if workflow.has_cycles:
-            error("Workflow cannot be tagged for outputs because it contains cycles")
+#             error("Workflow cannot be tagged for outputs because it contains cycles")
+            error("无法将工作流标记为输出，因为它包含循环")
         if workflow.has_errors:
-            error("Workflow cannot be tagged for outputs because of validation errors in some steps")
+#             error("Workflow cannot be tagged for outputs because of validation errors in some steps")
+            error("由于某些步骤中存在验证错误，无法将工作流标记为输出")
         # Build the state for each step
         errors = {}
         has_upgrade_messages = False
@@ -899,9 +939,9 @@ def _build_workflow_on_str(instance_ds_names):
     if num_multi_inputs == 0:
         return ""
     elif num_multi_inputs == 1:
-        return " on %s" % instance_ds_names[0]
+        return " 在 %s" % instance_ds_names[0]
     else:
-        return " on %s and %s" % (", ".join(instance_ds_names[0:-1]), instance_ds_names[-1])
+        return " 在 %s 和 %s" % (", ".join(instance_ds_names[0:-1]), instance_ds_names[-1])
 
 
 def _expand_multiple_inputs(kwargs):
@@ -937,7 +977,8 @@ def _extend_with_matched_combos(single_inputs, multi_inputs):
         if multi_input_key == first_multi_input_key:
             continue
         if len(multi_input_values) != len(first_multi_value):
-            raise Exception("Failed to match up multi-select inputs, must select equal number of data files in each multiselect")
+#             raise Exception("Failed to match up multi-select inputs, must select equal number of data files in each multiselect")
+            raise Exception("未能匹配多选输入，必须在每次多选中选择相同数量的数据文件")
         for index, value in enumerate(multi_input_values):
             matched_multi_inputs[index][multi_input_key] = value
     return matched_multi_inputs

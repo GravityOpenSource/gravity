@@ -346,7 +346,7 @@ export function setWindowTitle(title) {
     // } else {
     //     window.document.title = `Galaxy ${Galaxy.config.brand ? ` | ${Galaxy.config.brand}` : ""}`;
     // }
-    window.document.title =  "GrandOmics";
+    window.document.title =  "希望组病原分析平台";
 }
 
 /**

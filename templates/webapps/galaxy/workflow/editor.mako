@@ -114,7 +114,7 @@
 </%def>
 
 <%def name="overlay(visible=False)">
-    ${parent.overlay( "Loading workflow editor...",
+    ${parent.overlay( "流程编辑器加载中...",
                       "<div class='progress progress-striped progress-info active'><div class='progress-bar' style='width: 100%;'></div></div>", self.overlay_visible )}
 </%def>
 
@@ -150,8 +150,8 @@
 
     <div class="unified-panel-controls">
         <div id="tool-search" class="search-input">
-            <input id="tool-search-query" class="search-query parent-width" name="query" placeholder="search tools" autocomplete="off" type="text">
-            <span id="search-clear-btn" aria-label="clear search" role="button" class="search-clear fa fa-times-circle" title="" data-original-title="clear search (esc)" />
+            <input id="tool-search-query" class="search-query parent-width" name="query" placeholder="搜索工具" autocomplete="off" type="text">
+            <span id="search-clear-btn" aria-label="clear search" role="button" class="search-clear fa fa-times-circle" title="" data-original-title="清除搜索 (esc键)" />
             <span id="search-spinner" class="search-loading fa fa-spinner fa-spin" />
         </div>
     </div>
@@ -198,7 +198,7 @@
                        <div>&nbsp;</div>
                        <div class="toolSectionWrapper">
                            <div class="toolSectionTitle" role="button" id="title___DATA_MANAGER_TOOLS__">
-                               <span>Data Manager Tools</span>
+                               <span>数据管理工具</span>
                            </div>
                            <div id="__DATA_MANAGER_TOOLS__" class="toolSectionBody">
                                <div class="toolSectionBg">
@@ -220,7 +220,8 @@
 
                 ## Feedback when search returns no results.
                 <div id="search-no-results" style="display: none; padding-top: 5px">
-                    <em><strong>Search did not match any tools.</strong></em>
+                    ## <em><strong>Search did not match any tools.</strong></em>
+                    <em><strong>搜索与任何工具都不匹配。</strong></em>
                 </div>
 
             </div>
@@ -233,22 +234,22 @@
     <div class="unified-panel-header" unselectable="on">
         <div class="unified-panel-header-inner">
             <div class="panel-header-buttons">
-                <a id="workflow-run-button" class="panel-header-button workflow-canvas-content" href="javascript:void(0)" role="button" title="Run" style="display: inline-block;" aria-label="Run">
+                <a id="workflow-run-button" class="panel-header-button workflow-canvas-content" href="javascript:void(0)" role="button" title="运行" style="display: inline-block;" aria-label="Run">
                     <span class="fa fa-play"></span>
                 </a>
-                <a id="workflow-save-button" class="panel-header-button workflow-canvas-content" href="javascript:void(0)" role="button" title="Save" style="display: inline-block;" aria-label="Save">
+                <a id="workflow-save-button" class="panel-header-button workflow-canvas-content" href="javascript:void(0)" role="button" title="保存" style="display: inline-block;" aria-label="Save">
                     <span class="fa fa-floppy-o"></span>
                 </a>
-                <a id="workflow-report-button" class="panel-header-button workflow-canvas-content" href="javascript:void(0)" role="button" title="Edit Report" aria-label="Edit Report">
+                <a id="workflow-report-button" class="panel-header-button workflow-canvas-content" href="javascript:void(0)" role="button" title="编辑报告" aria-label="Edit Report">
                     <span class="fa fa-edit"></span>
                 </a>
-                <a id="workflow-report-help-button" class="panel-header-button workflow-report-content" href="javascript:void(0)" role="button" title="Report Syntax Help" aria-label="Report Syntax Help">
+                <a id="workflow-report-help-button" class="panel-header-button workflow-report-content" href="javascript:void(0)" role="button" title="报告的语法帮助" aria-label="Report Syntax Help">
                     <span class="fa fa-question"></span>
                 </a>
-                <a id="workflow-canvas-button" class="panel-header-button workflow-report-content" href="javascript:void(0)" role="button" title="Edit Workflow" aria-label="Edit Workflow">
+                <a id="workflow-canvas-button" class="panel-header-button workflow-report-content" href="javascript:void(0)" role="button" title="编辑流程" aria-label="Edit Workflow">
                     <span class="fa fa-sitemap fa-rotate-270"></span>
                 </a>
-                <a id="workflow-options-button" class="panel-header-button workflow-canvas-content" href="javascript:void(0)" role="button" title="Workflow options" style="display: inline-block;" aria-label="Workflow options">
+                <a id="workflow-options-button" class="panel-header-button workflow-canvas-content" href="javascript:void(0)" role="button" title="流程选项" style="display: inline-block;" aria-label="Workflow options">
                     <span class="fa fa-cog"></span>
                 </a>
             </div>
@@ -264,7 +265,7 @@
         </div>
         <div id='workflow-parameters-box' style="display:none; position: absolute; right:0px; border: solid grey 1px; padding: 5px; background: #EEEEEE; z-index: 20000; overflow: auto; max-width: 300px; max-height: 300px;">
             <div style="margin-bottom:5px;">
-                <b>Workflow Parameters</b>
+                <b>流程参数</b>
             </div>
             <div id="workflow-parameters-container">
             </div>
@@ -284,46 +285,50 @@
 <%def name="right_panel()">
     <div class="unified-panel-header" unselectable="on">
         <div class="unified-panel-header-inner">
-            Details
+            详情
         </div>
     </div>
     <div class="unified-panel-body workflow-right" style="overflow: auto;">
         ## Div for elements to modify workflow attributes.
         <div id="edit-attributes" class="metadataForm right-content">
-            <div class="metadataFormTitle">Edit Workflow Attributes</div>
+            <div class="metadataFormTitle">编辑流程属性</div>
             <div class="metadataFormBody">
             ## Workflow name.
             <div id="workflow-name-area" class="form-row">
-                <label>Name:</label>
-                <span id="workflow-name" class="editable-text" title="Click to rename workflow">${h.to_unicode( stored.name ) | h}</span>
+                <label>名称:</label>
+                <span id="workflow-name" class="editable-text" title="点击重命名流程">${h.to_unicode( stored.name ) | h}</span>
             </div>
             <div id="workflow-version-area" class="form-row">
-                <label>Version:</label>
+                <label>版本:</label>
             </div>
-            <select id="workflow-version-switch">Select version</select>
+            <select id="workflow-version-switch">选择版本</select>
             ## Workflow tags.
             <%namespace file="/tagging_common.mako" import="render_individual_tagging_element" />
             <div class="form-row">
                 <label>
-                    Tags:
+                    标签:
                 </label>
                     <div style="float: left; width: 225px; margin-right: 10px; border-style: inset; border-width: 1px; margin-left: 2px">
                         ${render_individual_tagging_element(user=trans.get_user(), tagged_item=stored, elt_context="edit_attributes.mako", use_toggle_link=False)}
                     </div>
-                    <div class="toolParamHelp">Apply tags to make it easy to search for and find items with the same tag.</div>
+                    ## <div class="toolParamHelp">Apply tags to make it easy to search for and find items with the same tag.</div>
+                    <div class="toolParamHelp" style="clear: both;">利用标签可轻松搜索和查找具有相同标签的项目。</div>
                 </div>
                 ## Workflow annotation.
                 ## Annotation elt.
                 <div id="workflow-annotation-area" class="form-row">
-                    <label>Annotation / Notes:</label>
-                    <div id="workflow-annotation" class="editable-text" title="Click to edit annotation">
+                    ## <label>Annotation / Notes:</label>
+                    <label>注释 / 笔记:</label>
+                    <div id="workflow-annotation" class="editable-text" title="点击编辑注释">
                     %if annotation:
                         ${h.to_unicode( annotation ) | h}
                     %else:
-                        <em>Describe or add notes to workflow</em>
+                        ## <em>Describe or add notes to workflow</em>
+                        <em>描述或添加注释到流程</em>
                     %endif
                     </div>
-                    <div class="toolParamHelp">Add an annotation or notes to a workflow; annotations are available when a workflow is viewed.</div>
+                    ## <div class="toolParamHelp">Add an annotation or notes to a workflow; annotations are available when a workflow is viewed.</div>
+                    <div class="toolParamHelp">向流程添加注释或笔记；查看流程时可以使用注释。</div>
                 </div>
             </div>
         </div>
@@ -333,9 +338,10 @@
 
         ## Workflow output tagging
         <div style="display:none;" id="workflow-output-area" class="metadataForm right-content">
-            <div class="metadataFormTitle">Edit Workflow Outputs</div>
+            <div class="metadataFormTitle">编辑流程输出</div>
             <div class="metadataFormBody"><div class="form-row">
-                <div class="toolParamHelp">Tag step outputs to indicate the final dataset(s) to be generated by running this workflow.</div>
+                ## <div class="toolParamHelp">Tag step outputs to indicate the final dataset(s) to be generated by running this workflow.</div>
+                <div class="toolParamHelp">标记步骤输出以指示运行此流程将生成的最终数据集。</div>
                 <div id="output-fill-area"></div>
             </div></div>
         </div>

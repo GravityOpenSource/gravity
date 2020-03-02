@@ -183,7 +183,8 @@ export default Backbone.View.extend({
             <div class="upload-view-default">
                 <div class="upload-top">
                     <div class="upload-top-info">
-                        Tabular source data to extract collection files and metadata from
+<!--                        Tabular source data to extract collection files and metadata from-->
+                        表格源数据，可从中提取收集文件和元数据
                     </div>
                 </div>
                 <div class="upload-box" style="height: 335px;">

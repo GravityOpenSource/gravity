@@ -16,7 +16,7 @@ var $ = jQuery;
  */
 var CopyDialog = {
     // language related strings/fns
-    defaultName: _.template("Copy of '<%- name %>'"),
+    defaultName: _.template(" '<%- name %>' 的副本"),
     title: _.template(`${_l("Copying history")} "<%- name %>"`),
     submitLabel: _l("Copy"),
     errorMessage: _l("History could not be copied."),

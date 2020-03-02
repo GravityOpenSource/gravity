@@ -58,32 +58,34 @@ class PageListGrid(grids.Grid):
 
     # Grid definition
     use_panels = True
-    title = "Pages"
+#     title = "Pages"
+    title = "页面"
     model_class = model.Page
     default_filter = {"published": "All", "tags": "All", "title": "All", "sharing": "All"}
     default_sort_key = "-update_time"
     columns = [
-        grids.TextColumn("Title", key="title", attach_popup=True, filterable="advanced", link=(lambda item: dict(action="display_by_username_and_slug", username=item.user.username, slug=item.slug))),
-        URLColumn("Public URL"),
-        grids.OwnerAnnotationColumn("Annotation", key="annotation", model_annotation_association_class=model.PageAnnotationAssociation, filterable="advanced"),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.PageTagAssociation, filterable="advanced", grid_name="PageListGrid"),
-        grids.SharingStatusColumn("Sharing", key="sharing", filterable="advanced", sortable=False),
-        grids.GridColumn("Created", key="create_time", format=time_ago),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        grids.TextColumn("标题", key="title", attach_popup=True, filterable="advanced", link=(lambda item: dict(action="display_by_username_and_slug", username=item.user.username, slug=item.slug))),
+#         URLColumn("Public URL"),
+        URLColumn("公共的URL"),
+        grids.OwnerAnnotationColumn("注释", key="annotation", model_annotation_association_class=model.PageAnnotationAssociation, filterable="advanced"),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.PageTagAssociation, filterable="advanced", grid_name="PageListGrid"),
+        grids.SharingStatusColumn("分享", key="sharing", filterable="advanced", sortable=False),
+        grids.GridColumn("创建时间", key="create_time", format=time_ago),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
     ]
     columns.append(grids.MulticolFilterColumn(
-        "Search",
+        "搜索",
         cols_to_filter=[columns[0], columns[2]],
         key="free-text-search", visible=False, filterable="standard"))
     global_actions = [
-        grids.GridAction("Add new page", dict(controller="", action="pages/create"))
+        grids.GridAction("添加新页面", dict(controller="", action="pages/create"))
     ]
     operations = [
-        grids.DisplayByUsernameAndSlugGridOperation("View", allow_multiple=False),
-        grids.GridOperation("Edit content", allow_multiple=False, url_args=dict(action="edit_content")),
-        grids.GridOperation("Edit attributes", allow_multiple=False, url_args=dict(controller="", action="pages/edit")),
-        grids.GridOperation("Share or Publish", allow_multiple=False, condition=(lambda item: not item.deleted), url_args=dict(controller="", action="pages/sharing")),
-        grids.GridOperation("Delete", confirm="Are you sure you want to delete this page?"),
+        grids.DisplayByUsernameAndSlugGridOperation("视图", allow_multiple=False),
+        grids.GridOperation("编辑内容", allow_multiple=False, url_args=dict(action="edit_content")),
+        grids.GridOperation("编辑属性", allow_multiple=False, url_args=dict(controller="", action="pages/edit")),
+        grids.GridOperation("分享或发布", allow_multiple=False, condition=(lambda item: not item.deleted), url_args=dict(controller="", action="pages/sharing")),
+        grids.GridOperation("删除", confirm="您确定要删除此页面吗?"),
     ]
 
     def apply_query_filter(self, trans, query, **kwargs):
@@ -93,21 +95,23 @@ class PageListGrid(grids.Grid):
 class PageAllPublishedGrid(grids.Grid):
     # Grid definition
     use_panels = True
-    title = "Published Pages"
+#     title = "Published Pages"
+    title = "已发布的页面"
     model_class = model.Page
     default_sort_key = "update_time"
     default_filter = dict(title="All", username="All")
     columns = [
-        grids.PublicURLColumn("Title", key="title", filterable="advanced"),
-        grids.OwnerAnnotationColumn("Annotation", key="annotation", model_annotation_association_class=model.PageAnnotationAssociation, filterable="advanced"),
-        grids.OwnerColumn("Owner", key="username", model_class=model.User, filterable="advanced"),
-        grids.CommunityRatingColumn("Community Rating", key="rating"),
-        grids.CommunityTagsColumn("Community Tags", key="tags", model_tag_association_class=model.PageTagAssociation, filterable="advanced", grid_name="PageAllPublishedGrid"),
-        grids.ReverseSortColumn("Last Updated", key="update_time", format=time_ago)
+        grids.PublicURLColumn("标题", key="title", filterable="advanced"),
+        grids.OwnerAnnotationColumn("注释", key="annotation", model_annotation_association_class=model.PageAnnotationAssociation, filterable="advanced"),
+        grids.OwnerColumn("作者", key="username", model_class=model.User, filterable="advanced"),
+        grids.CommunityRatingColumn("社区评价", key="rating"),
+        grids.CommunityTagsColumn("社区标签", key="tags", model_tag_association_class=model.PageTagAssociation, filterable="advanced", grid_name="PageAllPublishedGrid"),
+        grids.ReverseSortColumn("最后更新时间", key="update_time", format=time_ago)
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search title, annotation, owner, and tags",
+#             "Search title, annotation, owner, and tags",
+            "搜索标题、注释、作者和标签",
             cols_to_filter=[columns[0], columns[1], columns[2], columns[4]],
             key="free-text-search", visible=False, filterable="standard")
     )
@@ -144,19 +148,20 @@ class ItemSelectionGrid(grids.Grid):
 class HistorySelectionGrid(ItemSelectionGrid):
     """ Grid for selecting histories. """
     # Grid definition.
-    title = "Saved Histories"
+#     title = "Saved Histories"
+    title = "保存的历史"
     model_class = model.History
     columns = [
-        ItemSelectionGrid.NameColumn("Name", key="name", filterable="advanced"),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.HistoryTagAssociation, filterable="advanced"),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        ItemSelectionGrid.NameColumn("名称", key="name", filterable="advanced"),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.HistoryTagAssociation, filterable="advanced"),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
         # Columns that are valid for filtering but are not visible.
-        grids.DeletedColumn("Deleted", key="deleted", visible=False, filterable="advanced"),
-        grids.SharingStatusColumn("Sharing", key="sharing", filterable="advanced", sortable=False, visible=False),
+        grids.DeletedColumn("删除", key="deleted", visible=False, filterable="advanced"),
+        grids.SharingStatusColumn("分享", key="sharing", filterable="advanced", sortable=False, visible=False),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0], columns[1]],
             key="free-text-search", visible=False, filterable="standard")
     )
@@ -168,19 +173,20 @@ class HistorySelectionGrid(ItemSelectionGrid):
 class HistoryDatasetAssociationSelectionGrid(ItemSelectionGrid):
     """ Grid for selecting HDAs. """
     # Grid definition.
-    title = "Saved Datasets"
+#     title = "Saved Datasets"
+    title = "保存的数据集"
     model_class = model.HistoryDatasetAssociation
     columns = [
-        ItemSelectionGrid.NameColumn("Name", key="name", filterable="advanced"),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.HistoryDatasetAssociationTagAssociation, filterable="advanced"),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        ItemSelectionGrid.NameColumn("名称", key="name", filterable="advanced"),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.HistoryDatasetAssociationTagAssociation, filterable="advanced"),
+        grids.GridColumn("做后更新时间", key="update_time", format=time_ago),
         # Columns that are valid for filtering but are not visible.
-        grids.DeletedColumn("Deleted", key="deleted", visible=False, filterable="advanced"),
-        grids.SharingStatusColumn("Sharing", key="sharing", filterable="advanced", sortable=False, visible=False),
+        grids.DeletedColumn("删除", key="deleted", visible=False, filterable="advanced"),
+        grids.SharingStatusColumn("分享", key="sharing", filterable="advanced", sortable=False, visible=False),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0], columns[1]],
             key="free-text-search", visible=False, filterable="standard")
     )
@@ -194,19 +200,20 @@ class HistoryDatasetAssociationSelectionGrid(ItemSelectionGrid):
 class WorkflowSelectionGrid(ItemSelectionGrid):
     """ Grid for selecting workflows. """
     # Grid definition.
-    title = "Saved Workflows"
+#     title = "Saved Workflows"
+    title = "保存的流程"
     model_class = model.StoredWorkflow
     columns = [
-        ItemSelectionGrid.NameColumn("Name", key="name", filterable="advanced"),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.StoredWorkflowTagAssociation, filterable="advanced"),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        ItemSelectionGrid.NameColumn("名称", key="name", filterable="advanced"),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.StoredWorkflowTagAssociation, filterable="advanced"),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
         # Columns that are valid for filtering but are not visible.
-        grids.DeletedColumn("Deleted", key="deleted", visible=False, filterable="advanced"),
-        grids.SharingStatusColumn("Sharing", key="sharing", filterable="advanced", sortable=False, visible=False),
+        grids.DeletedColumn("删除", key="deleted", visible=False, filterable="advanced"),
+        grids.SharingStatusColumn("分享", key="sharing", filterable="advanced", sortable=False, visible=False),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0], columns[1]],
             key="free-text-search", visible=False, filterable="standard")
     )
@@ -215,19 +222,20 @@ class WorkflowSelectionGrid(ItemSelectionGrid):
 class PageSelectionGrid(ItemSelectionGrid):
     """ Grid for selecting pages. """
     # Grid definition.
-    title = "Saved Pages"
+#     title = "Saved Pages"
+    title = "保存的页面"
     model_class = model.Page
     columns = [
-        grids.TextColumn("Title", key="title", filterable="advanced"),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.PageTagAssociation, filterable="advanced"),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        grids.TextColumn("标题", key="title", filterable="advanced"),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.PageTagAssociation, filterable="advanced"),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
         # Columns that are valid for filtering but are not visible.
-        grids.DeletedColumn("Deleted", key="deleted", visible=False, filterable="advanced"),
-        grids.SharingStatusColumn("Sharing", key="sharing", filterable="advanced", sortable=False, visible=False),
+        grids.DeletedColumn("删除", key="deleted", visible=False, filterable="advanced"),
+        grids.SharingStatusColumn("分享", key="sharing", filterable="advanced", sortable=False, visible=False),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0], columns[1]],
             key="free-text-search", visible=False, filterable="standard")
     )
@@ -236,18 +244,19 @@ class PageSelectionGrid(ItemSelectionGrid):
 class VisualizationSelectionGrid(ItemSelectionGrid):
     """ Grid for selecting visualizations. """
     # Grid definition.
-    title = "Saved Visualizations"
+#     title = "Saved Visualizations"
+    title = "保存的可视化"
     model_class = model.Visualization
     columns = [
-        grids.TextColumn("Title", key="title", filterable="advanced"),
-        grids.TextColumn("Type", key="type"),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.VisualizationTagAssociation, filterable="advanced", grid_name="VisualizationListGrid"),
-        grids.SharingStatusColumn("Sharing", key="sharing", filterable="advanced", sortable=False),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        grids.TextColumn("标题", key="title", filterable="advanced"),
+        grids.TextColumn("类型", key="type"),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.VisualizationTagAssociation, filterable="advanced", grid_name="VisualizationListGrid"),
+        grids.SharingStatusColumn("分享", key="sharing", filterable="advanced", sortable=False),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0], columns[2]],
             key="free-text-search", visible=False, filterable="standard")
     )
@@ -321,18 +330,20 @@ class PageController(BaseUIController, SharableMixin,
         """
         if trans.request.method == 'GET':
             return {
-                'title'  : 'Create a new page',
+                'title'  : '创建新页面',
                 'inputs' : [{
                     'name'      : 'title',
-                    'label'     : 'Name'
+                    'label'     : '名称'
                 }, {
                     'name'      : 'slug',
-                    'label'     : 'Identifier',
-                    'help'      : 'A unique identifier that will be used for public links to this page. This field can only contain lowercase letters, numbers, and dashes (-).'
+                    'label'     : '标识符',
+#                     'help'      : 'A unique identifier that will be used for public links to this page. This field can only contain lowercase letters, numbers, and dashes (-).'
+                    'help'      : '将用于指向此页面的公共链接的唯一标识符。该字段只能包含小写字母、数字和破折号(-)。'
                 }, {
                     'name'      : 'annotation',
-                    'label'     : 'Annotation',
-                    'help'      : 'A description of the page. The annotation is shown alongside published pages.'
+                    'label'     : '注释',
+#                     'help'      : 'A description of the page. The annotation is shown alongside published pages.'
+                    'help'      : '页面的描述和注释将显示在已发布的页面旁边。'
                 }]
             }
         else:
@@ -350,7 +361,8 @@ class PageController(BaseUIController, SharableMixin,
         """
         id = kwd.get('id')
         if not id:
-            return self.message_exception(trans, 'No page id received for editing.')
+#             return self.message_exception(trans, 'No page id received for editing.')
+            return self.message_exception(trans, '没有收到用于编辑的页面id。')
         decoded_id = self.decode_id(id)
         user = trans.get_user()
         p = trans.sa_session.query(model.Page).get(decoded_id)
@@ -358,21 +370,24 @@ class PageController(BaseUIController, SharableMixin,
             if p.slug is None:
                 self.create_item_slug(trans.sa_session, p)
             return {
-                'title'  : 'Edit page attributes',
+#                 'title'  : 'Edit page attributes',
+                'title'  : '编辑页面属性',
                 'inputs' : [{
                     'name'      : 'title',
-                    'label'     : 'Name',
+                    'label'     : '名称',
                     'value'     : p.title
                 }, {
                     'name'      : 'slug',
-                    'label'     : 'Identifier',
+                    'label'     : '标识符',
                     'value'     : p.slug,
-                    'help'      : 'A unique identifier that will be used for public links to this page. This field can only contain lowercase letters, numbers, and dashes (-).'
+#                     'help'      : 'A unique identifier that will be used for public links to this page. This field can only contain lowercase letters, numbers, and dashes (-).'
+                    'help'      : '将用于指向此页面的公共链接的唯一标识符。该字段只能包含小写字母、数字和破折号(-)。'
                 }, {
                     'name'      : 'annotation',
-                    'label'     : 'Annotation',
+                    'label'     : '注释',
                     'value'     : self.get_item_annotation_str(trans.sa_session, user, p),
-                    'help'      : 'A description of the page. The annotation is shown alongside published pages.'
+#                     'help'      : 'A description of the page. The annotation is shown alongside published pages.'
+                    'help'      : '页面的描述和注释将显示在已发布的页面旁边。'
                 }]
             }
         else:
@@ -380,13 +395,17 @@ class PageController(BaseUIController, SharableMixin,
             p_slug = payload.get('slug')
             p_annotation = payload.get('annotation')
             if not p_title:
-                return self.message_exception(trans, 'Please provide a page name is required.')
+#                 return self.message_exception(trans, 'Please provide a page name is required.')
+                return self.message_exception(trans, '请提供页面名称，此项为必填项。')
             elif not p_slug:
-                return self.message_exception(trans, 'Please provide a unique identifier.')
+#                 return self.message_exception(trans, 'Please provide a unique identifier.')
+                return self.message_exception(trans, '请提供唯一的标识符。')
             elif not self._is_valid_slug(p_slug):
-                return self.message_exception(trans, 'Page identifier can only contain lowercase letters, numbers, and dashes (-).')
+#                 return self.message_exception(trans, 'Page identifier can only contain lowercase letters, numbers, and dashes (-).')
+                return self.message_exception(trans, '页面标识符只能包含小写字母、数字和破折号(-)。')
             elif p_slug != p.slug and trans.sa_session.query(model.Page).filter_by(user=p.user, slug=p_slug, deleted=False).first():
-                return self.message_exception(trans, 'Page id must be unique.')
+#                 return self.message_exception(trans, 'Page id must be unique.')
+                return self.message_exception(trans, '页面id必须是唯一的。')
             else:
                 p.title = p_title
                 p.slug = p_slug
@@ -395,7 +414,8 @@ class PageController(BaseUIController, SharableMixin,
                     self.add_item_annotation(trans.sa_session, user, p, p_annotation)
                 trans.sa_session.add(p)
                 trans.sa_session.flush()
-            return {'message': 'Attributes of \'%s\' successfully saved.' % p.title, 'status': 'success'}
+#             return {'message': 'Attributes of \'%s\' successfully saved.' % p.title, 'status': 'success'}
+            return {'message': '成功保存 \'%s\' 的属性。' % p.title, 'status': 'success'}
 
     @web.expose
     @web.require_login("edit pages")
@@ -421,14 +441,17 @@ class PageController(BaseUIController, SharableMixin,
                                     .first()
             if not other:
                 mtype = "error"
-                msg = ("User '%s' does not exist" % escape(email))
+#                 msg = ("User '%s' does not exist" % escape(email))
+                msg = ("用户 '%s' 不存在" % escape(email))
             elif other == trans.get_user():
                 mtype = "error"
-                msg = ("You cannot share a page with yourself")
+#                 msg = ("You cannot share a page with yourself")
+                msg = ("您不能与自己共享页面")
             elif trans.sa_session.query(model.PageUserShareAssociation) \
                     .filter_by(user=other, page=page).count() > 0:
                 mtype = "error"
-                msg = ("Page already shared with '%s'" % escape(email))
+#                 msg = ("Page already shared with '%s'" % escape(email))
+                msg = ("页面已分享给 '%s'" % escape(email))
             else:
                 share = model.PageUserShareAssociation()
                 share.page = page
@@ -439,7 +462,8 @@ class PageController(BaseUIController, SharableMixin,
                 session.flush()
                 page_title = escape(page.title)
                 other_email = escape(other.email)
-                trans.set_message("Page '%s' shared with user '%s'" % (page_title, other_email))
+#                 trans.set_message("Page '%s' shared with user '%s'" % (page_title, other_email))
+                trans.set_message("页面 '%s' 已分享给用户 '%s'" % (page_title, other_email))
                 return trans.response.send_redirect(url_for("/pages/sharing?id=%s" % id))
         return trans.fill_template("/ind_share_base.mako",
                                    message=msg,

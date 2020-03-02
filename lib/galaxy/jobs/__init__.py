@@ -1242,7 +1242,8 @@ class JobWrapper(HasResourceParameters):
                 self.__update_output(job, dataset)
                 # Pause any dependent jobs (and those jobs' outputs)
                 for dep_job_assoc in dataset.dependent_jobs:
-                    self.pause(dep_job_assoc.job, "Execution of this dataset's job is paused because its input datasets are in an error state.")
+#                     self.pause(dep_job_assoc.job, "Execution of this dataset's job is paused because its input datasets are in an error state.")
+                    self.pause(dep_job_assoc.job, "此数据集的执行将暂停，因为其输入数据集处于错误状态。")
                 self.sa_session.add(dataset)
                 self.sa_session.flush()
             job.set_final_state(job.states.ERROR)
@@ -1610,7 +1611,8 @@ class JobWrapper(HasResourceParameters):
                 dataset_assoc.dataset.dataset.state = model.Dataset.states.ERROR
                 # Pause any dependent jobs (and those jobs' outputs)
                 for dep_job_assoc in dataset_assoc.dataset.dependent_jobs:
-                    self.pause(dep_job_assoc.job, "Execution of this dataset's job is paused because its input datasets are in an error state.")
+#                     self.pause(dep_job_assoc.job, "Execution of this dataset's job is paused because its input datasets are in an error state.")
+                    self.pause(dep_job_assoc.job, "此数据集的任务执行将暂停，因为其输入数据集处于错误状态。")
             else:
                 dataset_assoc.dataset.dataset.state = model.Dataset.states.OK
             # If any of the rest of the finish method below raises an

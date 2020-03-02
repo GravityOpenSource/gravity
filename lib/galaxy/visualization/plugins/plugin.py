@@ -55,6 +55,9 @@ class ServesTemplatesPluginMixin(object):
             template_lookup_paths = [template_lookup_paths] + additional_template_paths
         return mako.lookup.TemplateLookup(
             directories=template_lookup_paths,
+            input_encoding='utf-8',
+            output_encoding='utf-8',
+            default_filters=['decode.utf8'],
             module_directory=template_cache_dir,
             collection_size=collection_size)
 

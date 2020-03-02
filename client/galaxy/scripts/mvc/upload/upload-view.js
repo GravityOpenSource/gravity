@@ -40,7 +40,8 @@ export default Backbone.View.extend({
             onunload: () => {
                 var percentage = this.ui_button.model.get("percentage", 0);
                 if (percentage > 0 && percentage < 100) {
-                    return "Several uploads are queued.";
+                    // return "Several uploads are queued.";
+                    return "上传正在排队。";
                 }
             }
         });

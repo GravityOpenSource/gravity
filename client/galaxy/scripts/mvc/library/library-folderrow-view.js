@@ -230,7 +230,8 @@ var FolderRowView = Backbone.View.extend({
                 success: function(folder) {
                     row_view.options.edit_mode = false;
                     row_view.repaint(folder);
-                    Toast.success("Changes to folder saved.");
+                    // Toast.success("Changes to folder saved.");
+                    Toast.success("已保存对文件夹的修改。");
                 },
                 error: function(model, response) {
                     if (typeof response.responseJSON !== "undefined") {
@@ -421,9 +422,9 @@ var FolderRowView = Backbone.View.extend({
                     <span data-toggle="tooltip" data-placement="top"
                         title="标记删除" class="fa fa-ban"></span>
                     <button data-toggle="tooltip" data-placement="top"
-                        title="恢复删除 '<%- content_item.get("name") %>'"
+                        title="撤消删除 '<%- content_item.get("name") %>'"
                         class="primary-button btn-sm undelete_dataset_btn" type="button" style="margin-left:1em;">
-                        <span class="fa fa-unlock"></span> 恢复删除
+                        <span class="fa fa-unlock"></span> 撤消删除
                     </button>
                 </td>
             </tr>`
@@ -454,7 +455,7 @@ var FolderRowView = Backbone.View.extend({
                 <% } %>
                 <td></td>
                 <td>
-                    folder
+                    文件夹
                 </td>
                 <td></td>
                 <td>
@@ -465,9 +466,9 @@ var FolderRowView = Backbone.View.extend({
                     <span data-toggle="tooltip" data-placement="top"
                         title="标记删除" class="fa fa-ban"></span>
                     <button data-toggle="tooltip" data-placement="top"
-                        title="恢复删除 '<%- content_item.get("name") %>'"
+                        title="撤消删除 '<%- content_item.get("name") %>'"
                         class="primary-button btn-sm undelete_folder_btn" type="button" style="margin-left:1em;">
-                        <span class="fa fa-unlock"></span> 恢复删除
+                        <span class="fa fa-unlock"></span> 撤消删除
                     </button>
                 </td>
             </tr>`

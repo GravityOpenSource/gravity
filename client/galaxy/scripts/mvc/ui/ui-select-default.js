@@ -16,8 +16,10 @@ var View = Backbone.View.extend({
             new Backbone.Model({
                 id: Utils.uid(),
                 cls: "ui-select",
-                error_text: "No options available",
-                empty_text: "Nothing selected",
+                // error_text: "No options available",
+                error_text: "没有可用的选项",
+                // empty_text: "Nothing selected",
+                empty_text: "没有选择",
                 visible: true,
                 wait: false,
                 multiple: false,

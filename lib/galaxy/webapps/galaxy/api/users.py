@@ -817,11 +817,14 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
         len_type = payload.get('len|type')
         len_value = payload.get('len|value')
         if len_type not in ['file', 'fasta', 'text'] or not len_value:
-            raise exceptions.RequestParameterInvalidException('Please specify a valid data source type.')
+#             raise exceptions.RequestParameterInvalidException('Please specify a valid data source type.')
+            raise exceptions.RequestParameterInvalidException('请指定有效的数据源类型。')
         if not name or not key:
-            raise exceptions.RequestParameterMissingException('You must specify values for all the fields.')
+#             raise exceptions.RequestParameterMissingException('You must specify values for all the fields.')
+            raise exceptions.RequestParameterMissingException('您必须为所有字段指定值。')
         elif key in dbkeys:
-            raise exceptions.DuplicatedIdentifierException('There is already a custom build with that key. Delete it first if you want to replace it.')
+#             raise exceptions.DuplicatedIdentifierException('There is already a custom build with that key. Delete it first if you want to replace it.')
+            raise exceptions.DuplicatedIdentifierException('已经有一个具有该密钥的自定义生成。如果要替换它，请先删除它。')
         else:
             # Have everything needed; create new build.
             build_dict = {'name': name}
@@ -836,7 +839,8 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
                 try:
                     trans.app.object_store.create(new_len.dataset)
                 except ObjectInvalid:
-                    raise exceptions.InternalServerError('Unable to create output dataset: object store is full.')
+#                     raise exceptions.InternalServerError('Unable to create output dataset: object store is full.')
+                    raise exceptions.InternalServerError('无法创建输出数据集：对象存储已满。')
                 trans.sa_session.flush()
                 counter = 0
                 lines_skipped = 0

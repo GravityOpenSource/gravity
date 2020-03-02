@@ -9,11 +9,13 @@ export default Backbone.View.extend({
         parameters: [
             {
                 id: "space_to_tab",
-                title: "Convert spaces to tabs"
+                // title: "Convert spaces to tabs"
+                title: "将空格转换为制表符"
             },
             {
                 id: "to_posix_lines",
-                title: "Use POSIX standard"
+                // title: "Use POSIX standard"
+                title: "使用POSIX标准"
             }
         ]
     },

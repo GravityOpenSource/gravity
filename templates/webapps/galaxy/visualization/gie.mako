@@ -17,7 +17,9 @@
         <div class="page-container" style="padding: 10px;">
             <div class="col-md-8 col-md-offset 2 col-xs-12">
                 <div class="row">
-                    <h1>Galaxy Interactive Environment Launcher</h1>
+                    ## <h1>Interactive Environment Launcher</h1>
+                    <h1>交互式环境启动程序</h1>
+                    <%doc>
                     <p>
                         Galaxy Interactive Environments (GIEs) launch embedded,
                         dockerized versions of popular data analysis suites such as
@@ -27,6 +29,14 @@
                         to get your work done!
                         <br />
                         <a href="https://docs.galaxyproject.org/en/master/admin/interactive_environments.html">Admin Docs</a>
+                    </p>
+                    </%doc>
+                    <p>
+                        Galaxy互动环境（GIE）可以直接在Galaxy内部启动流行数据分析套件（如Jupyter和RStudio）的嵌入式，docker化版本。
+                        它们使您可以直接在服务器上与数据动态交互。
+                        无需为了完成工作而在各种平台之间进行任何上载和下载！
+                        <br />
+                        <a href="https://docs.galaxyproject.org/en/master/admin/interactive_environments.html">管理文档</a>
                     </p>
                     <form id='launcher' action="NONE" method="GET">
 
@@ -38,7 +48,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Image: </td>
+                                <td>图片: </td>
                                 <td>
                                     <span id="image_tag" style="width:400px" />
                                     <input id="image_tag_hidden" type="hidden" name="image_tag" value="NONE" />
@@ -47,7 +57,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Datasets: </td>
+                                <td>数据集: </td>
                                 <td>
                                     <span id="additional_datasets" style="width:400px"></span>
                                     <input id="dataset_id" name="dataset_id" type="hidden">
@@ -55,7 +65,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <input type="submit" class="button" value="Launch" disabled="">
+                        <input type="submit" class="button" value="启动" disabled="">
                     </form>
                 </div>
             </div>
@@ -124,7 +134,7 @@ $(document).ready(function(){
     }
 
     $('#image_name').select2({
-        placeholder: "Select Image",
+        placeholder: "选择图片",
         data: images
     }).on('change', function(e){
         // Get the versions for this image name
@@ -138,7 +148,7 @@ $(document).ready(function(){
 
         // Create our select2 appropriately
         image_tags = $("#image_tag").select2({
-            placholder: "Image Version",
+            placholder: "图片版本",
             formatResult: formatter,
             formatSelection: formatter,
             escapeMarkup: function(m) { return m; },

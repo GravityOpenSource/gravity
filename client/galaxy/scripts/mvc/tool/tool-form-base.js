@@ -115,8 +115,8 @@ export default FormBase.extend({
         const in_favorites = Galaxy.user.getFavorites().tools.indexOf(options.id) >= 0;
         var favorite_button = new Ui.Button({
             icon: "fa-star-o",
-            title: options.narrow ? null : "Favorite",
-            tooltip: "Add to favorites",
+            title: options.narrow ? null : "收藏",
+            tooltip: "添加到收藏夹",
             visible: !Galaxy.user.isAnonymous() && !in_favorites,
             onclick: () => {
                 axios
@@ -131,8 +131,9 @@ export default FormBase.extend({
 
         var remove_favorite_button = new Ui.Button({
             icon: "fa-star",
-            title: options.narrow ? null : "Added",
-            tooltip: "Remove from favorites",
+            title: options.narrow ? null : "添加",
+            // tooltip: "Remove from favorites",
+            tooltip: "移出收藏夹",
             visible: !Galaxy.user.isAnonymous() && in_favorites,
             onclick: () => {
                 axios
@@ -179,15 +180,17 @@ export default FormBase.extend({
         var menu_button = new Ui.ButtonMenu({
             id: "options",
             icon: "fa-caret-down",
-            title: options.narrow ? null : "Options",
-            tooltip: "View available options"
+            title: options.narrow ? null : "选项",
+            // tooltip: "View available options"
+            tooltip: "查看可用选项"
         });
         menu_button.addMenu({
             icon: "fa-share",
             title: _l("Share"),
             onclick: function() {
                 prompt(
-                    "Copy to clipboard: Ctrl+C, Enter",
+                    // "Copy to clipboard: Ctrl+C, Enter",
+                    "复制到剪贴板:Ctrl+C，然后按Enter键",
                     `${window.location.origin + getAppRoot()}root?tool_id=${options.id}`
                 );
             }

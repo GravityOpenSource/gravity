@@ -33,31 +33,40 @@ var View = Backbone.View.extend({
             onchange: function() {
                 self.installed_builds.value(null);
             },
-            empty_text: "List of available builds:",
-            error_text: "No system installed builds available."
+            // empty_text: "List of available builds:",
+            empty_text: "可用版本列表:",
+            // error_text: "No system installed builds available."
+            error_text: "没有可用的系统安装版本。"
         });
         this.table = new Table.View({ cls: "grid", selectable: false });
-        this.table.addHeader("Name");
-        this.table.addHeader("Key");
-        this.table.addHeader("Number of chroms/contigs");
+        // this.table.addHeader("Name");
+        this.table.addHeader("名称");
+        // this.table.addHeader("Key");
+        this.table.addHeader("密钥");
+        // this.table.addHeader("Number of chroms/contigs");
+        this.table.addHeader("染色体/重叠群数量");
         this.table.addHeader("");
         this.table.appendHeader();
         this.setElement(
             $("<div/>")
-                .append($("<h4/>").text("Current Custom Builds"))
+                // .append($("<h4/>").text("Current Custom Builds"))
+                .append($("<h4/>").text("当前自定义构建"))
                 .append(this.table.$el)
                 .append(
                     (this.$installed = $("<div/>")
                         .append(
                             $("<h4/>")
-                                .text("System Installed Builds")
+                                // .text("System Installed Builds")
+                                // .text("System Installed Builds")
+                                .text("系统安装构建")
                                 .addClass("mt-1")
                         )
                         .append(this.installed_builds.$el))
                 )
                 .append(
                     $("<h4/>")
-                        .text("Add a Custom Build")
+                        // .text("Add a Custom Build")
+                        .text("添加自定义构建")
                         .addClass("mt-4")
                 )
                 .append(
@@ -117,36 +126,41 @@ var View = Backbone.View.extend({
                 {
                     type: "text",
                     name: "name",
-                    label: "Name",
-                    help: "Specify a build name e.g. Hamster."
+                    label: "名称",
+                    // help: "Specify a build name e.g. Hamster."
+                    help: "指定构建名称，例如:Test。"
                 },
                 {
                     type: "text",
                     name: "id",
-                    label: "Key",
-                    help: "Specify a build key e.g. hamster_v1."
+                    label: "密钥",
+                    // help: "Specify a build key e.g. hamster_v1."
+                    help: "指定构建密钥，例如Test_v1。"
                 },
                 {
                     name: "len",
                     type: "conditional",
                     test_param: {
                         name: "type",
-                        label: "Definition",
+                        label: "定义",
                         help: _l("Provide the data source."),
                         type: "select",
                         value: initial_type,
                         data: [
                             {
                                 value: "fasta",
-                                label: "FASTA-file from history"
+                                // label: "FASTA-file from history"
+                                label: "历史中的FASTA文件"
                             },
                             {
                                 value: "file",
-                                label: "Len-file from disk"
+                                // label: "Len-file from disk"
+                                label: "硬盘上的Len文件"
                             },
                             {
                                 value: "text",
-                                label: "Len-file by copy/paste"
+                                // label: "Len-file by copy/paste"
+                                label: "复制/粘贴Len文件"
                             }
                         ]
                     },
@@ -157,7 +171,7 @@ var View = Backbone.View.extend({
                                 {
                                     type: "select",
                                     name: "value",
-                                    label: "FASTA-file",
+                                    label: "FASTA-文件",
                                     data: this.model.get("fasta_hdas")
                                 }
                             ]
@@ -168,7 +182,7 @@ var View = Backbone.View.extend({
                                 {
                                     type: "upload",
                                     name: "value",
-                                    label: "Len-file",
+                                    label: "Len文件",
                                     data: this.model.get("len_hdas")
                                 }
                             ]
@@ -180,7 +194,7 @@ var View = Backbone.View.extend({
                                     type: "text",
                                     area: true,
                                     name: "value",
-                                    label: "Edit/Paste"
+                                    label: "编辑/粘贴"
                                 }
                             ]
                         }
@@ -197,7 +211,8 @@ var View = Backbone.View.extend({
                         var data = form.data.create();
                         if (!data.id || !data.name) {
                             self.message.update({
-                                message: "All inputs are required.",
+                                // message: "All inputs are required.",
+                                message: "所有输入都是必填项。",
                                 status: "danger"
                             });
                         } else {
@@ -211,7 +226,8 @@ var View = Backbone.View.extend({
                                         });
                                     } else {
                                         self.message.update({
-                                            message: "Successfully added a new custom build.",
+                                            // message: "Successfully added a new custom build.",
+                                            message: "成功添加了新的自定义构建。",
                                             status: "success"
                                         });
                                     }
@@ -219,7 +235,8 @@ var View = Backbone.View.extend({
                                 error: function(response, err) {
                                     var message = err && err.responseJSON && err.responseJSON.err_msg;
                                     self.message.update({
-                                        message: message || "Failed to create custom build.",
+                                        // message: message || "Failed to create custom build.",
+                                        message: message || "未能创建自定义构建。",
                                         status: "danger"
                                     });
                                 }
@@ -256,13 +273,17 @@ var View = Backbone.View.extend({
 
     _templateLen: function() {
         return (
-            "<h4>Length Format</h4>" +
+            // "<h4>Length Format</h4>" +
+            "<h4>长度格式</h4>" +
             "<p>" +
-            "The length format is two-column, separated by whitespace, of the form:" +
-            "<pre>chrom/contig   length of chrom/contig</pre>" +
+            // "The length format is two-column, separated by whitespace, of the form:" +
+            "长度格式为两列，以空格分隔，形式为：" +
+            // "<pre>chrom/contig   length of chrom/contig</pre>" +
+            "<pre>染色体/重叠群长度   染色体/重叠群长度</pre>" +
             "</p>" +
             "<p>" +
-            "For example, the first few entries of <em>mm9.len</em> are as follows:" +
+            // "For example, the first few entries of <em>mm9.len</em> are as follows:" +
+            "例如，<em>mm9.len</em> 的前几个条目如下：" +
             "<pre>" +
             "chr1    197195432\n" +
             "chr2    181748087\n" +
@@ -271,22 +292,29 @@ var View = Backbone.View.extend({
             "chr5    152537259" +
             "</pre>" +
             "</p>" +
-            "<p>Trackster uses this information to populate the select box for chrom/contig, and" +
-            "to set the maximum basepair of the track browser. You may either upload a .len file" +
-            "of this format (Len File option), or directly enter the information into the box " +
-            "(Len Entry option).</p>"
+            // "<p>Trackster uses this information to populate the select box for chrom/contig, and" +
+            // "to set the maximum basepair of the track browser. You may either upload a .len file" +
+            // "of this format (Len File option), or directly enter the information into the box " +
+            // "(Len Entry option).</p>"
+            "<p>Trackster使用此信息填充染色体/重叠群的选择框，" +
+            "并设置跟踪浏览器的最大碱基对。" +
+            "您可以上传这种格式的.len文件（“ Len 文件”选项），" +
+            "也可以直接在框中输入信息（“ Len 输入”选项）。</p>"
         );
     },
 
     _templateFasta: function() {
         return (
-            "<h4>FASTA format</h4>" +
+            // "<h4>FASTA format</h4>" +
+            "<h4>FASTA 格式</h4>" +
             "<p>" +
-            "This is a multi-fasta file from your current history that provides the genome" +
-            "sequences for each chromosome/contig in your build." +
+            // "This is a multi-fasta file from your current history that provides the genome" +
+            // "sequences for each chromosome/contig in your build." +
+            "这是一个来自您当前历史的多fasta文件，它为您构建中的每个染色体/重叠群提供了基因组序列。" +
             "</p>" +
             "<p>" +
-            "Here is a snippet from an example multi-fasta file:" +
+            // "Here is a snippet from an example multi-fasta file:" +
+            "下面是一个示例多fasta文件的片段：" +
             "<pre>" +
             ">chr1\n" +
             "ATTATATATAAGACCACAGAGAGAATATTTTGCCCGG...\n\n" +

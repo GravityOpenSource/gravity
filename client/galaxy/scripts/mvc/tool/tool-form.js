@@ -126,7 +126,7 @@ const View = Backbone.View.extend({
         // build execute button
         const execute_button = new Ui.Button({
             icon: "fa-check",
-            tooltip: `Execute: ${options.name} (${options.version})`,
+            tooltip: `执行: ${options.name} (${options.version})`,
             title: _l("Execute"),
             cls: "btn btn-primary",
             wait_cls: "btn btn-info",
@@ -386,9 +386,12 @@ const View = Backbone.View.extend({
             const inputs = this._getInputs(job_def);
             const ninputs = inputs.length;
             const noutputs = response.outputs.length;
-            const njobsText = njobs > 1 ? `${njobs} jobs` : `1 job`;
-            const ninputsText = ninputs > 1 ? `${ninputs} inputs` : `this input`;
-            const noutputsText = noutputs > 1 ? `${noutputs} outputs` : `this output`;
+            // const njobsText = njobs > 1 ? `${njobs} jobs` : `1 job`;
+            const njobsText = `${njobs} 个任务`;
+            // const ninputsText = ninputs > 1 ? `${ninputs} inputs` : `this input`;
+            const ninputsText = `${ninputs} 个输入`;
+            // const noutputsText = noutputs > 1 ? `${noutputs} outputs` : `this output`;
+            const noutputsText = `${noutputs} 个输出`;
             const tool_name = this.form.model.get("name");
             return `<div class="donemessagelarge">
                         <p>
@@ -398,15 +401,15 @@ const View = Backbone.View.extend({
 <!--                        ${this._templateRow(inputs, `The tool uses ${ninputsText}`)}-->
                         ${this._templateRow(inputs, `该工具使用${ninputsText}`)}
 <!--                        ${this._templateRow(response.outputs, `It produces ${noutputsText}`)}-->
-                        ${this._templateRow(response.outputs, `It produces ${noutputsText}`)}
+                        ${this._templateRow(response.outputs, `它产生 ${noutputsText}`)}
                         <p>
 <!--                            You can check the status of queued jobs and view the resulting data by refreshing the History panel. When the job has been run the status will change from 'running' to 'finished' if completed successfully or 'error' if problems were encountered.-->
-                             您可以通过刷新“历史记录”面板来检查排队作业的状态并查看结果数据。 运行作业后，如果成功完成，状态将从“正在运行”更改为“完成”，如果遇到问题，则状态将会变为“错误”。
+                             您可以通过刷新“历史”面板来检查排队任务的状态并查看结果数据。 运行任务后，如果成功完成，状态将从“正在运行”更改为“完成”，如果遇到问题，则状态将会变为“错误”。
                         </p>
                     </div>`;
         } else {
             // return this._templateError(response, "Invalid success response. No jobs found.");
-            return this._templateError(response, "无效的成功响应。找不到作业。");
+            return this._templateError(response, "无效的成功响应。找不到任务。");
         }
     },
 
