@@ -65,27 +65,28 @@ class HistoryDatasetAssociationListGrid(grids.Grid):
             return accepted_filters
 
     # Grid definition
-    title = "Saved Datasets"
+#     title = "Saved Datasets"
+    title = "已发布的数据集"
     model_class = model.HistoryDatasetAssociation
     default_sort_key = "-update_time"
     columns = [
-        grids.TextColumn("Name", key="name",
+        grids.TextColumn("名称", key="name",
                          # Link name to dataset's history.
                          link=(lambda item: iff(item.history.deleted, None, dict(operation="switch", id=item.id))), filterable="advanced", attach_popup=True),
-        HistoryColumn("History", key="history", sortable=False,
+        HistoryColumn("历史", key="history", sortable=False,
                       link=(lambda item: iff(item.history.deleted, None, dict(operation="switch_history", id=item.id)))),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.HistoryDatasetAssociationTagAssociation, filterable="advanced", grid_name="HistoryDatasetAssocationListGrid"),
-        StatusColumn("Status", key="deleted", attach_popup=False),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.HistoryDatasetAssociationTagAssociation, filterable="advanced", grid_name="HistoryDatasetAssocationListGrid"),
+        StatusColumn("状态", key="deleted", attach_popup=False),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0], columns[2]],
             key="free-text-search", visible=False, filterable="standard")
     )
     operations = [
-        grids.GridOperation("Copy to current history", condition=(lambda item: not item.deleted), async_compatible=True),
+        grids.GridOperation("复制到当前历史", condition=(lambda item: not item.deleted), async_compatible=True),
     ]
     standard_filters = []
     default_filter = dict(name="All", deleted="False", tags="All")
@@ -144,7 +145,8 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
             job = self._get_job_for_dataset(trans, dataset_id)
             stdout = job.stdout
         except Exception:
-            stdout = "Invalid dataset ID or you are not allowed to access this dataset"
+#             stdout = "Invalid dataset ID or you are not allowed to access this dataset"
+            stdout = "无效的数据集ID或不允许您访问此数据集"
         return smart_str(stdout)
 
     @web.expose
@@ -156,7 +158,8 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
             job = self._get_job_for_dataset(trans, dataset_id)
             stderr = job.stderr
         except Exception:
-            stderr = "Invalid dataset ID or you are not allowed to access this dataset"
+#             stderr = "Invalid dataset ID or you are not allowed to access this dataset"
+            stderr = "无效的数据集ID或不允许您访问此数据集"
         return smart_str(stderr)
 
     @web.expose
@@ -167,19 +170,22 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
             job = self._get_job_for_dataset(trans, dataset_id)
             exit_code = job.exit_code
         except Exception:
-            exit_code = "Invalid dataset ID or you are not allowed to access this dataset"
+#             exit_code = "Invalid dataset ID or you are not allowed to access this dataset"
+            exit_code = "无效的数据集ID或不允许您访问此数据集"
         return exit_code
 
     @web.expose
     def default(self, trans, dataset_id=None, **kwd):
-        return 'This link may not be followed from within Galaxy.'
+#         return 'This link may not be followed from within Galaxy.'
+        return '可能无法从系统内跟踪此链接。'
 
     @web.expose
     def get_metadata_file(self, trans, hda_id, metadata_name):
         """ Allows the downloading of metadata files associated with datasets (eg. bai index for bam files) """
         data = trans.sa_session.query(trans.app.model.HistoryDatasetAssociation).get(self.decode_id(hda_id))
         if not data or not self._can_access_dataset(trans, data):
-            return trans.show_error_message("You are not allowed to access this dataset")
+#             return trans.show_error_message("You are not allowed to access this dataset")
+            return trans.show_error_message("您无权访问此数据集")
 
         fname = ''.join(c in util.FILENAME_VALID_CHARS and c or '_' for c in data.name)[0:150]
 
@@ -193,22 +199,28 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
         try:
             data = trans.sa_session.query(trans.app.model.HistoryDatasetAssociation).get(self.decode_id(hda_id))
             if data is None:
-                raise ValueError('Invalid reference dataset id: %s.' % hda_id)
+#                 raise ValueError('Invalid reference dataset id: %s.' % hda_id)
+                raise ValueError('无效的引用数据集id: %s 。' % hda_id)
         except Exception:
             try:
                 data = trans.sa_session.query(trans.app.model.HistoryDatasetAssociation).get(int(hda_id))
             except Exception:
                 data = None
         if not data:
-            raise paste.httpexceptions.HTTPRequestRangeNotSatisfiable("Invalid reference dataset id: %s." % str(hda_id))
+#             raise paste.httpexceptions.HTTPRequestRangeNotSatisfiable("Invalid reference dataset id: %s." % str(hda_id))
+            raise paste.httpexceptions.HTTPRequestRangeNotSatisfiable("无效的引用数据集id: %s 。" % str(hda_id))
         if not self._can_access_dataset(trans, data):
-            return trans.show_error_message("You are not allowed to access this dataset")
+#             return trans.show_error_message("You are not allowed to access this dataset")
+            return trans.show_error_message("您无权访问此数据集")
         if data.purged:
-            return trans.show_error_message("The dataset you are attempting to view has been purged.")
+#             return trans.show_error_message("The dataset you are attempting to view has been purged.")
+            return trans.show_error_message("您试图查看的数据集已被清除。")
         if data.deleted and not (trans.user_is_admin or (data.history and trans.get_user() == data.history.user)):
-            return trans.show_error_message("The dataset you are attempting to view has been deleted.")
+#             return trans.show_error_message("The dataset you are attempting to view has been deleted.")
+            return trans.show_error_message("您试图查看的数据集已被删除。")
         if data.state == trans.model.Dataset.states.UPLOAD:
-            return trans.show_error_message("Please wait until this dataset finishes uploading before attempting to view it.")
+#             return trans.show_error_message("Please wait until this dataset finishes uploading before attempting to view it.")
+            return trans.show_error_message("请等待此数据集完成上载，然后再尝试查看它。")
         return data
 
     @web.expose
@@ -260,7 +272,8 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
 
         if self._can_access_dataset(trans, data):
             if data.state == trans.model.Dataset.states.UPLOAD:
-                return self.message_exception(trans, 'Please wait until this dataset finishes uploading before attempting to edit its metadata.')
+#                 return self.message_exception(trans, 'Please wait until this dataset finishes uploading before attempting to edit its metadata.')
+                return self.message_exception(trans, '请等待此数据集完成上载，然后再尝试编辑其元数据。')
             # let's not overwrite the imported datatypes module with the variable datatypes?
             # the built-in 'id' is overwritten in lots of places as well
             ldatatypes = [(dtype_name, dtype_name) for dtype_name, dtype_value in trans.app.datatypes_registry.datatypes_by_extension.items() if dtype_value.allow_datatype_change]
@@ -273,21 +286,22 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
             attribute_inputs = [{
                 'name' : 'name',
                 'type' : 'text',
-                'label': 'Name',
+                'label': '名称',
                 'value': data.get_display_name()
             }, {
                 'name' : 'info',
                 'type' : 'text',
                 'area' : True,
-                'label': 'Info',
+                'label': '信息',
                 'value': data.info
             }, {
                 'name' : 'annotation',
                 'type' : 'text',
                 'area' : True,
-                'label': 'Annotation',
+                'label': '注释',
                 'value': self.get_item_annotation_str(trans.sa_session, trans.user, data),
-                'help' : 'Add an annotation or notes to a dataset; annotations are available when a history is viewed.'
+#                 'help' : 'Add an annotation or notes to a dataset; annotations are available when a history is viewed.'
+                'help' : '向数据集添加注释或笔记；查看历史时可以使用注释。'
             }]
             for name, spec in data_metadata:
                 if spec.visible:
@@ -311,7 +325,8 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
                             'readonly'  : spec.get('readonly')
                         })
             if data.missing_meta():
-                message = 'Required metadata values are missing. Some of these values may not be editable by the user. Selecting "Auto-detect" will attempt to fix these values.'
+#                 message = 'Required metadata values are missing. Some of these values may not be editable by the user. Selecting "Auto-detect" will attempt to fix these values.'
+                message = '缺少必需的元数据值。其中一些值可能无法由用户编辑。选择“自动检测”将尝试修复这些值。'
                 status = 'warning'
             # datatype conversion
             conversion_options = [(convert_name, convert_id) for convert_id, convert_name in converters_collection]
@@ -319,8 +334,9 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
             conversion_inputs = [{
                 'type'      : 'select',
                 'name'      : 'target_type',
-                'label'     : 'Name',
-                'help'      : 'This will create a new dataset with the contents of this dataset converted to a new format.',
+                'label'     : '名称',
+#                 'help'      : 'This will create a new dataset with the contents of this dataset converted to a new format.',
+                'help'      : '这将创建一个新数据集，并将此数据集的内容转换为新格式。',
                 'options'   : conversion_options
             }]
             # datatype changeing
@@ -329,10 +345,11 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
             datatype_inputs = [{
                 'type'      : 'select',
                 'name'      : 'datatype',
-                'label'     : 'New Type',
+                'label'     : '新类型',
                 'options'   : datatype_options,
                 'value'     : [ext_id for ext_id, ext_name in ldatatypes if ext_id == data.ext],
-                'help'      : 'This will change the datatype of the existing dataset but not modify its contents. Use this if Galaxy has incorrectly guessed the type of your dataset.',
+#                 'help'      : 'This will change the datatype of the existing dataset but not modify its contents. Use this if Galaxy has incorrectly guessed the type of your dataset.',
+                'help'      : '这将更改现有数据集的数据类型，但不会修改其内容。如果系统错误地预测了数据集的类型，请使用此选项。',
             }]
             # permissions
             permission_disable = True
@@ -344,7 +361,8 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
                         in_roles[action.action] = [trans.security.encode_id(role.id) for role in roles]
                     for index, action in trans.app.model.Dataset.permitted_actions.items():
                         if action == trans.app.security_agent.permitted_actions.DATASET_ACCESS:
-                            help_text = action.description + '<br/>NOTE: Users must have every role associated with this dataset in order to access it.'
+#                             help_text = action.description + '<br/>NOTE: Users must have every role associated with this dataset in order to access it.'
+                            help_text = action.description + '<br/>注意：用户必须拥有与此数据集关联的每个角色才能访问它。'
                         else:
                             help_text = action.description
                         permission_inputs.append({
@@ -387,7 +405,8 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
                 'permission_disable': permission_disable
             }
         else:
-            return self.message_exception(trans, 'You do not have permission to edit this dataset\'s ( id: %s ) information.' % str(dataset_id))
+#             return self.message_exception(trans, 'You do not have permission to edit this dataset\'s ( id: %s ) information.' % str(dataset_id))
+            return self.message_exception(trans, '您没有权限编辑此数据集( id: %s ) 的信息。' % str(dataset_id))
 
     @web.legacy_expose_api_anonymous
     def set_edit(self, trans, payload=None, **kwd):
@@ -419,9 +438,11 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
                 # if setting metadata previously failed and all required elements have now been set, clear the failed state.
                 if data._state == trans.model.Dataset.states.FAILED_METADATA and not data.missing_meta():
                     data._state = None
-                message = 'Attributes updated. %s' % message if message else 'Attributes updated.'
+#                 message = 'Attributes updated. %s' % message if message else 'Attributes updated.'
+                message = '属性已更新。 %s' % message if message else '属性已更新。'
             else:
-                message = 'Attributes updated, but metadata could not be changed because this dataset is currently being used as input or output. You must cancel or wait for these jobs to complete before changing metadata.'
+#                 message = 'Attributes updated, but metadata could not be changed because this dataset is currently being used as input or output. You must cancel or wait for these jobs to complete before changing metadata.'
+                message = '属性已更新，但是无法更改元数据，因为该数据集当前正在用作输入或输出。 在更改元数据之前，您必须取消或等待这些任务完成。'
                 status = 'warning'
             trans.sa_session.flush()
         elif operation == 'datatype':
@@ -430,20 +451,24 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
             if data.datatype.allow_datatype_change and trans.app.datatypes_registry.get_datatype_by_extension(datatype).allow_datatype_change:
                 # prevent modifying datatype when dataset is queued or running as input/output
                 if not __ok_to_edit_metadata(data.id):
-                    return self.message_exception(trans, 'This dataset is currently being used as input or output.  You cannot change datatype until the jobs have completed or you have canceled them.')
+#                     return self.message_exception(trans, 'This dataset is currently being used as input or output.  You cannot change datatype until the jobs have completed or you have canceled them.')
+                    return self.message_exception(trans, '此数据集当前正用作输入或输出。在任务完成或取消之前，不能更改数据类型。')
                 else:
                     trans.app.datatypes_registry.change_datatype(data, datatype)
                     trans.sa_session.flush()
                     trans.app.datatypes_registry.set_external_metadata_tool.tool_action.execute(trans.app.datatypes_registry.set_external_metadata_tool, trans, incoming={'input1': data}, overwrite=False)  # overwrite is False as per existing behavior
-                    message = 'Changed the type to %s.' % datatype
+#                     message = 'Changed the type to %s.' % datatype
+                    message = '已将类型更改为 %s 。' % datatype
             else:
-                return self.message_exception(trans, 'You are unable to change datatypes in this manner. Changing %s to %s is not allowed.' % (data.extension, datatype))
+#                 return self.message_exception(trans, 'You are unable to change datatypes in this manner. Changing %s to %s is not allowed.' % (data.extension, datatype))
+                return self.message_exception(trans, '您无法以这种方式更改数据类型。不允许将 %s 更改为 %s 。' % (data.extension, datatype))
         elif operation == 'datatype_detect':
             # The user clicked the 'Detect datatype' button on the 'Change data type' form
             if data.datatype.allow_datatype_change:
                 # prevent modifying datatype when dataset is queued or running as input/output
                 if not __ok_to_edit_metadata(data.id):
-                    return self.message_exception(trans, 'This dataset is currently being used as input or output.  You cannot change datatype until the jobs have completed or you have canceled them.')
+#                     return self.message_exception(trans, 'This dataset is currently being used as input or output.  You cannot change datatype until the jobs have completed or you have canceled them.')
+                    return self.message_exception(trans, '此数据集当前正用作输入或输出。在任务完成或取消之前，不能更改数据类型。')
                 else:
                     path = data.dataset.file_name
                     is_binary = check_binary(path)
@@ -453,9 +478,11 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
                     trans.app.datatypes_registry.set_external_metadata_tool.tool_action.execute(
                         trans.app.datatypes_registry.set_external_metadata_tool, trans, incoming={'input1': data},
                         overwrite=False)  # overwrite is False as per existing behavior
-                    message = 'Detection was finished and changed the datatype to %s.' % datatype
+#                     message = 'Detection was finished and changed the datatype to %s.' % datatype
+                    message = '检测已完成，并将数据类型更改为%s 。' % datatype
             else:
-                return self.message_exception(trans, 'Changing datatype "%s" is not allowed.' % (data.extension))
+#                 return self.message_exception(trans, 'Changing datatype "%s" is not allowed.' % (data.extension))
+                return self.message_exception(trans, '不允许更改数据类型 "%s" 。' % (data.extension))
         elif operation == 'autodetect':
             # The user clicked the Auto-detect button on the 'Edit Attributes' form
             try:
@@ -471,7 +498,8 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
                     return self.message_exception(trans, util.unicodify(e))
         elif operation == 'permission':
             if not trans.user:
-                return self.message_exception(trans, 'You must be logged in if you want to change permissions.')
+#                 return self.message_exception(trans, 'You must be logged in if you want to change permissions.')
+                return self.message_exception(trans, '您必须登录才能更改权限。')
             if trans.app.security_agent.can_manage_dataset(trans.get_current_user_roles(), data.dataset):
                 payload_permissions = {}
                 for action in trans.app.model.Dataset.permitted_actions.keys():
@@ -492,12 +520,15 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
                     if error:
                         return self.message_exception(trans, error)
                     else:
-                        message = 'Your changes completed successfully.'
+#                         message = 'Your changes completed successfully.'
+                        message = '已成功完成您的修改。'
             else:
-                return self.message_exception(trans, 'You are not authorized to change this dataset\'s permissions.')
+#                 return self.message_exception(trans, 'You are not authorized to change this dataset\'s permissions.')
+                return self.message_exception(trans, '您无权更改此数据集的权限。')
         else:
-            return self.message_exception(trans, 'Invalid operation identifier (%s).' % operation)
-        return {'status': status, 'message': sanitize_text(message)}
+#             return self.message_exception(trans, 'Invalid operation identifier (%s).' % operation)
+            return self.message_exception(trans, '无效的操作标识符(%s)。' % operation)
+        return {'status': status, 'message': util.unicodify(message)}
 
     def _get_dataset_for_edit(self, trans, dataset_id):
         if dataset_id is not None:
@@ -1053,7 +1084,8 @@ class DatasetInterface(BaseUIController, UsesAnnotations, UsesItemRatings, UsesE
         if not hda:
             raise paste.httpexceptions.HTTPRequestRangeNotSatisfiable("Invalid reference dataset id: %s." % escape(str(dataset_id)))
         if not self._can_access_dataset(trans, hda):
-            return trans.show_error_message("You are not allowed to access this dataset")
+#             return trans.show_error_message("You are not allowed to access this dataset")
+            return trans.show_error_message("您无权访问此数据集")
 
         # Get the associated job, if any. If this hda was copied from another,
         # we need to find the job that created the origial dataset association.

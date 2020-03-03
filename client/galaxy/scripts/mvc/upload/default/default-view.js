@@ -65,7 +65,7 @@ export default Backbone.View.extend({
         });
         this.btnCreate = new Ui.Button({
             id: "btn-new",
-            title: "Paste/Fetch data",
+            title: _l("Paste/Fetch data"),
             onclick: function() {
                 self._eventCreate();
             },
@@ -207,15 +207,20 @@ export default Backbone.View.extend({
                 message = "&nbsp;";
             } else {
                 message =
-                    "Browser does not support Drag & Drop. Try Firefox 4+, Chrome 7+, IE 10+, Opera 12+ or Safari 6+.";
+                    // "Browser does not support Drag & Drop. Try Firefox 4+, Chrome 7+, IE 10+, Opera 12+ or Safari 6+.";
+                    "浏览器不支持拖放。尝试使用Firefox 4，Chrome 7，IE 10，Opera 12或Safari 6以上版本。";
             }
         } else {
             if (this.counter.running === 0) {
-                message = `You added ${
+                // message = `You added ${
+                //     this.counter.announce
+                // } file(s) to the queue. Add more files or click 'Start' to proceed.`;
+                message = `您向队列添加了 ${
                     this.counter.announce
-                } file(s) to the queue. Add more files or click 'Start' to proceed.`;
+                } 个文件。 添加更多文件或单击“开始”继续。`;
             } else {
-                message = `Please wait...${this.counter.announce} out of ${this.counter.running} remaining.`;
+                // message = `Please wait...${this.counter.announce} out of ${this.counter.running} remaining.`;
+                message = `请稍后...${this.counter.announce} 个剩余 ${this.counter.running}个。`;
             }
         }
         this.$(".upload-top-info").html(message);
@@ -386,7 +391,8 @@ export default Backbone.View.extend({
     _eventStop: function() {
         if (this.counter.running > 0) {
             this.ui_button.model.set("status", "info");
-            $(".upload-top-info").html("Queue will pause after completing the current file...");
+            // $(".upload-top-info").html("Queue will pause after completing the current file...");
+            $(".upload-top-info").html("完成当前文件后，队列将暂停...");
             this.uploadbox.stop();
         }
     },
@@ -471,7 +477,7 @@ export default Backbone.View.extend({
                     </div>
                     <div class="upload-box">
                         <div class="upload-helper">
-                            <i class="fa fa-files-o"/>将文件拖到这里
+                            <i class="fa fa-files-o"/>将文件拖放到这里
                         </div>
                         <table class="upload-table ui-table-striped" style="display: none;">
                             <thead>

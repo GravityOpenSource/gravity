@@ -116,7 +116,8 @@ def legacy_expose_api(func, to_json=True, user_required=True):
         if trans.error_message:
             return trans.error_message
         if user_required and trans.anonymous:
-            error_message = "API Authentication Required for this request"
+#             error_message = "API Authentication Required for this request"
+            error_message = "此请求需要API身份验证"
             return error
         if trans.request.body:
             try:
@@ -235,11 +236,13 @@ def expose_api(func, to_json=True, user_required=True, user_or_session_required=
             # error if anon and user required
             if user_required:
                 return __api_error_response(trans, status_code=403, err_code=error_codes.USER_NO_API_KEY,
-                                            err_msg="API authentication required for this request")
+#                                             err_msg="API authentication required for this request")
+                                            err_msg="此请求需要API身份验证")
             # error if anon and no session
             if not trans.galaxy_session and user_or_session_required:
                 return __api_error_response(trans, status_code=403, err_code=error_codes.USER_NO_API_KEY,
-                                            err_msg="API authentication required for this request")
+#                                             err_msg="API authentication required for this request")
+                                            err_msg="此请求需要API身份验证")
 
         if trans.request.body:
             try:

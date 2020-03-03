@@ -99,6 +99,9 @@ class WebApplication(base.WebApplication):
         paths.append(template_path)
         # Create TemplateLookup with a small cache
         return mako.lookup.TemplateLookup(directories=paths,
+                                          input_encoding='utf-8',
+                                          output_encoding='utf-8',
+                                          default_filters=['decode.utf8'],
                                           module_directory=galaxy_app.config.template_cache,
                                           collection_size=500)
 

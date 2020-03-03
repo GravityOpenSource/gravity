@@ -165,7 +165,7 @@ export default Backbone.View.extend({
         this.urls = (options && options.urls) || {};
         var workflow_index = self.urls.workflow_index;
         var save_current_workflow = (eventObj, success_callback) => {
-            show_message("Saving workflow", "progress");
+            show_message("保存流程", "progress");
             self.workflow.check_changes_in_active_form();
             if (!self.workflow.has_changes) {
                 hide_modal();
@@ -200,7 +200,7 @@ export default Backbone.View.extend({
                     self.showWorkflowParameters();
                     self.build_version_select();
                     if (data.errors) {
-                        show_modal("Saving workflow", body, {
+                        show_modal("保存流程", body, {
                             Ok: hide_modal
                         });
                     } else {
@@ -211,7 +211,7 @@ export default Backbone.View.extend({
                     }
                 },
                 error: function(response) {
-                    show_modal("Saving workflow failed.", response.err_msg, { Ok: hide_modal });
+                    show_modal("保存流程失败。", response.err_msg, { Ok: hide_modal });
                 }
             });
         };
@@ -461,12 +461,13 @@ export default Backbone.View.extend({
             $("#workflow-report-help-button").click(() => show_report_help());
             $("#workflow-canvas-button").click(() => edit_canvas());
             make_popupmenu($("#workflow-options-button"), {
-                "Save As": workflow_save_as,
-                "Edit Attributes": function() {
+                "另存为": workflow_save_as,
+                "编辑属性": function() {
                     self.workflow.clear_active_node();
                 },
-                "Auto Re-layout": layout_editor,
-                Download: {
+                // "Auto Re-layout": layout_editor,
+                "自动重新布局": layout_editor,
+                "下载": {
                     url: `${getAppRoot()}api/workflows/${self.options.id}/download?format=json-download`,
                     action: function() {}
                 }

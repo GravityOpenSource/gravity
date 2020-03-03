@@ -12,75 +12,75 @@ selectors:
         donelarge: '.donemessagelarge'
         infolarge: '.infomessagelarge'
 
-    frames: 
+    frames:
         main: 'galaxy_main'
-    masthead: 
+    masthead:
         id: '#masthead'
-        userMenu: 
+        userMenu:
             userEmail_xpath: '//a[contains(text(), "Logged in as")]'
 
         user: '//ul[@id="user"]'
         workflow: '//ul[@id="workflow"]'
         shared_data: '//ul[@id="shared"]'
 
-    toolMenu: 
+    toolMenu:
         container: '.toolMenuContainer'
-    
-    historyPanel: 
+
+    historyPanel:
         current: '#current-history-panel'
-    
-    loginPage: 
+
+    loginPage:
         form: 'form#login'
         submit_xpath: "//input[@value='Login']"
         url_regex: /\/user\/login/
-    
-    registrationPage: 
+
+    registrationPage:
         form: 'registration'
         submit_xpath: "//input[@value='Submit']"
         returnLink: '//a[contains(text(),"Return to the home page")]'
-    
-    tools: 
-        general: 
+
+    tools:
+        general:
             form: 'form#tool_form'
             executeButton_xpath: '//input[@value="Execute"]'
-        
-        upload: 
+
+        upload:
             fileInput: 'files_0|file_data'
 
     workflows:
         new_button: '#new-workflow'
         import_button: '#import-workflow'
 
-labels: 
-    masthead: 
-        menus: 
+labels:
+    masthead:
+        menus:
             analyze: 'Analyze Data'
             workflow: 'Workflow'
             shared_data: 'Shared Data'
             visualization: 'Visualization'
             help: 'Help'
             user: 'User'
-        
-        userMenu: 
+
+        userMenu:
             register: 'Register'
             login: 'Login'
             logout: 'Logout'
 
         sharedMenu:
             libraries: 'Data Libraries'
-    
-    tools: 
-        upload: 
+
+    tools:
+        upload:
             panelLabel : 'Upload File'
 
-text: 
-    registrationPage: 
+text:
+    registrationPage:
         badEmailError: 'Enter a real email address'
-    
-    upload: 
+
+    upload:
         success: 'Your upload has been queued'
-    
-    tool: 
+
+    tool:
         success: 'The following job has been successfully added to the queue'
 
 historyPanel:

@@ -208,21 +208,21 @@ export default Backbone.View.extend({
                             <tr>
                                 <th/>
                                 <th/>
-                                <th>Description</th>
-                                <th>Name</th>
-                                <th>Size</th>
-                                <th>Settings</th>
-                                <th>Status</th>
+                                <th>描述</th>
+                                <th>名称</th>
+                                <th>大小</th>
+                                <th>设置</th>
+                                <th>状态</th>
                             </tr>
                         </thead>
                         <tbody/>
                     </table>
                 </div>
                 <div class="upload-footer">
-                    <span class="upload-footer-title">Composite Type:</span>
+                    <span class="upload-footer-title">集合类型:</span>
                     <span class="upload-footer-extension"/>
                     <span class="upload-footer-extension-info upload-icon-button fa fa-search"/>
-                    <span class="upload-footer-title">Genome/Build:</span>
+                    <span class="upload-footer-title">基因组/构建:</span>
                     <span class="upload-footer-genome"/>
                 </div>
                 <div class="upload-buttons"/>

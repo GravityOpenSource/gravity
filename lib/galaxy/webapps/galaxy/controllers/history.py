@@ -77,50 +77,53 @@ class HistoryListGrid(grids.Grid):
         return query
 
     # Grid definition
-    title = "Saved Histories"
+#     title = "Saved Histories"
+    title = "已发布的历史"
     model_class = model.History
     default_sort_key = "-update_time"
     columns = [
-        HistoryListNameColumn("Name", key="name", attach_popup=True, filterable="advanced"),
-        ItemCountColumn("Items", key="item_count", sortable=False),
-        grids.GridColumn("Datasets", key="datasets_by_state", sortable=False, nowrap=True, delayed=True),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.HistoryTagAssociation,
+        HistoryListNameColumn("名称", key="name", attach_popup=True, filterable="advanced"),
+        ItemCountColumn("项目", key="item_count", sortable=False),
+        grids.GridColumn("数据集", key="datasets_by_state", sortable=False, nowrap=True, delayed=True),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.HistoryTagAssociation,
                                    filterable="advanced", grid_name="HistoryListGrid"),
-        grids.SharingStatusColumn("Sharing", key="sharing", filterable="advanced", sortable=False, use_shared_with_count=True),
-        grids.GridColumn("Size on Disk", key="disk_size", sortable=False, delayed=True),
-        grids.GridColumn("Created", key="create_time", format=time_ago),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
-        DeletedColumn("Status", key="deleted", filterable="advanced")
+        grids.SharingStatusColumn("分享", key="sharing", filterable="advanced", sortable=False, use_shared_with_count=True),
+        grids.GridColumn("占用空间", key="disk_size", sortable=False, delayed=True),
+        grids.GridColumn("创建时间", key="create_time", format=time_ago),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
+        DeletedColumn("状态", key="deleted", filterable="advanced")
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "search history names and tags",
+#             "search history names and tags",
+            "搜索历史名称和标签",
             cols_to_filter=[columns[0], columns[3]],
             key="free-text-search", visible=False, filterable="standard")
     )
     global_actions = [
-        grids.GridAction("Import from file", dict(controller="", action="histories/import"))
+        grids.GridAction("从文件导入", dict(controller="", action="histories/import"))
     ]
     operations = [
-        grids.GridOperation("Switch", allow_multiple=False, condition=(lambda item: not item.deleted), async_compatible=True),
-        grids.GridOperation("View", allow_multiple=False, url_args=dict(controller="", action="histories/view")),
-        grids.GridOperation("Share or Publish", allow_multiple=False, condition=(lambda item: not item.deleted), url_args=dict(controller="", action="histories/sharing")),
-        grids.GridOperation("Change Permissions", allow_multiple=False, condition=(lambda item: not item.deleted), url_args=dict(controller="", action="histories/permissions")),
-        grids.GridOperation("Copy", allow_multiple=False, condition=(lambda item: not item.deleted), async_compatible=False),
-        grids.GridOperation("Rename", condition=(lambda item: not item.deleted), url_args=dict(controller="", action="histories/rename"), target="top"),
-        grids.GridOperation("Delete", condition=(lambda item: not item.deleted), async_compatible=True),
-        grids.GridOperation("Delete Permanently", condition=(lambda item: not item.purged), confirm="History contents will be removed from disk, this cannot be undone.  Continue?", async_compatible=True),
-        grids.GridOperation("Undelete", condition=(lambda item: item.deleted and not item.purged), async_compatible=True),
+        grids.GridOperation("切换", allow_multiple=False, condition=(lambda item: not item.deleted), async_compatible=True),
+        grids.GridOperation("视图", allow_multiple=False, url_args=dict(controller="", action="histories/view")),
+        grids.GridOperation("分享或发布", allow_multiple=False, condition=(lambda item: not item.deleted), url_args=dict(controller="", action="histories/sharing")),
+        grids.GridOperation("修改权限", allow_multiple=False, condition=(lambda item: not item.deleted), url_args=dict(controller="", action="histories/permissions")),
+        grids.GridOperation("复制", allow_multiple=False, condition=(lambda item: not item.deleted), async_compatible=False),
+        grids.GridOperation("重命名", condition=(lambda item: not item.deleted), url_args=dict(controller="", action="histories/rename"), target="top"),
+        grids.GridOperation("删除", condition=(lambda item: not item.deleted), async_compatible=True),
+        grids.GridOperation("永久删除", condition=(lambda item: not item.purged), confirm="历史内容将从磁盘中删除，无法撤消。继续吗?", async_compatible=True),
+        grids.GridOperation("撤消删除", condition=(lambda item: item.deleted and not item.purged), async_compatible=True),
     ]
     standard_filters = [
-        grids.GridColumnFilter("Active", args=dict(deleted=False)),
-        grids.GridColumnFilter("Deleted", args=dict(deleted=True)),
-        grids.GridColumnFilter("All", args=dict(deleted='All')),
+        grids.GridColumnFilter("有效的", args=dict(deleted=False)),
+        grids.GridColumnFilter("删除的", args=dict(deleted=True)),
+        grids.GridColumnFilter("全部的", args=dict(deleted='All')),
     ]
     default_filter = dict(name="All", deleted="False", tags="All", sharing="All")
     num_rows_per_page = 15
     use_paging = True
-    info_text = "Histories that have been deleted for more than a time period specified by the Galaxy administrator(s) may be permanently deleted."
+#     info_text = "Histories that have been deleted for more than a time period specified by the Galaxy administrator(s) may be permanently deleted."
+    info_text = "被删除时间超过系统管理员指定的时间范围的历史可能会被永久删除。"
 
     def get_current_item(self, trans, **kwargs):
         return trans.get_history()
@@ -146,21 +149,22 @@ class SharedHistoryListGrid(grids.Grid):
             return escape(history.user.email)
 
     # Grid definition
-    title = "Histories shared with you by others"
+#     title = "Histories shared with you by others"
+    title = "别人与您分享的历史"
     model_class = model.History
     default_sort_key = "-update_time"
     default_filter = {}
     columns = [
-        grids.GridColumn("Name", key="name", attach_popup=True),
-        DatasetsByStateColumn("Datasets", sortable=False),
-        grids.GridColumn("Created", key="create_time", format=time_ago),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
-        SharedByColumn("Shared by", key="user_id")
+        grids.GridColumn("名称", key="name", attach_popup=True),
+        DatasetsByStateColumn("数据集", sortable=False),
+        grids.GridColumn("创建时间", key="create_time", format=time_ago),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
+        SharedByColumn("分享者", key="user_id")
     ]
     operations = [
-        grids.GridOperation("View", allow_multiple=False, url_args=dict(controller="", action="histories/view")),
-        grids.GridOperation("Copy", allow_multiple=False),
-        grids.GridOperation("Unshare", allow_multiple=False)
+        grids.GridOperation("视图", allow_multiple=False, url_args=dict(controller="", action="histories/view")),
+        grids.GridOperation("复制", allow_multiple=False),
+        grids.GridOperation("取消分享", allow_multiple=False)
     ]
     standard_filters = []
 
@@ -175,23 +179,25 @@ class HistoryAllPublishedGrid(grids.Grid):
     class NameURLColumn(grids.PublicURLColumn, NameColumn):
         pass
 
-    title = "Published Histories"
+#     title = "Published Histories"
+    title = "已发布的历史"
     model_class = model.History
     default_sort_key = "update_time"
     default_filter = dict(public_url="All", username="All", tags="All")
     use_paging = True
     num_rows_per_page = 50
     columns = [
-        NameURLColumn("Name", key="name", filterable="advanced"),
-        grids.OwnerAnnotationColumn("Annotation", key="annotation", model_annotation_association_class=model.HistoryAnnotationAssociation, filterable="advanced"),
-        grids.OwnerColumn("Owner", key="username", model_class=model.User, filterable="advanced"),
-        grids.CommunityRatingColumn("Community Rating", key="rating"),
-        grids.CommunityTagsColumn("Community Tags", key="tags", model_tag_association_class=model.HistoryTagAssociation, filterable="advanced", grid_name="PublicHistoryListGrid"),
-        grids.ReverseSortColumn("Last Updated", key="update_time", format=time_ago)
+        NameURLColumn("名称", key="name", filterable="advanced"),
+        grids.OwnerAnnotationColumn("注释", key="annotation", model_annotation_association_class=model.HistoryAnnotationAssociation, filterable="advanced"),
+        grids.OwnerColumn("作者", key="username", model_class=model.User, filterable="advanced"),
+        grids.CommunityRatingColumn("社区评价", key="rating"),
+        grids.CommunityTagsColumn("社区标签", key="tags", model_tag_association_class=model.HistoryTagAssociation, filterable="advanced", grid_name="PublicHistoryListGrid"),
+        grids.ReverseSortColumn("最后更新时间", key="update_time", format=time_ago)
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search name, annotation, owner, and tags",
+#             "Search name, annotation, owner, and tags",
+            "搜索名称、注释、作者和标签",
             cols_to_filter=[columns[0], columns[1], columns[2], columns[4]],
             key="free-text-search", visible=False, filterable="standard")
     )
@@ -1215,7 +1221,8 @@ class HistoryController(BaseUIController, SharableMixin, UsesAnnotations, UsesIt
     def rename(self, trans, payload=None, **kwd):
         id = kwd.get('id')
         if not id:
-            return self.message_exception(trans, 'No history id received for renaming.')
+#             return self.message_exception(trans, 'No history id received for renaming.')
+            return self.message_exception(trans, '没有收到重命名的历史id。')
         user = trans.get_user()
         id = listify(id)
         histories = []
@@ -1225,10 +1232,11 @@ class HistoryController(BaseUIController, SharableMixin, UsesAnnotations, UsesIt
                 histories.append(history)
         if trans.request.method == 'GET':
             return {
-                'title'  : 'Change history name(s)',
+#                 'title'  : 'Change history name(s)',
+                'title'  : '修改历史名称',
                 'inputs' : [{
                     'name'  : 'name_%i' % i,
-                    'label' : 'Current: %s' % h.name,
+                    'label' : '当前名称: %s' % h.name,
                     'value' : h.name
                 } for i, h in enumerate(histories)]
             }
@@ -1239,18 +1247,23 @@ class HistoryController(BaseUIController, SharableMixin, UsesAnnotations, UsesIt
                 new_name = payload.get('name_%i' % i)
                 # validate name is empty
                 if not isinstance(new_name, string_types) or not new_name.strip():
-                    messages.append('You must specify a valid name for History \'%s\'.' % cur_name)
+#                     messages.append('You must specify a valid name for History \'%s\'.' % cur_name)
+                    messages.append('您必须为历史\'%s\'指定一个有效的名称。' % cur_name)
                 # skip if not the owner
                 elif h.user_id != user.id:
-                    messages.append('History \'%s\' does not appear to belong to you.' % cur_name)
+#                     messages.append('History \'%s\' does not appear to belong to you.' % cur_name)
+                    messages.append('历史 \'%s\' 似乎不属于您。' % cur_name)
                 # skip if it wouldn't be a change
                 elif new_name != cur_name:
                     h.name = new_name
                     trans.sa_session.add(h)
                     trans.sa_session.flush()
-                    trans.log_event('History renamed: id: %s, renamed to: %s' % (str(h.id), new_name))
-                    messages.append('History \'' + cur_name + '\' renamed to \'' + new_name + '\'.')
-            message = sanitize_text(' '.join(messages)) if messages else 'History names remain unchanged.'
+#                     trans.log_event('History renamed: id: %s, renamed to: %s' % (str(h.id), new_name))
+                    trans.log_event('历史记录已重命名：id：%s，重命名为：%s' % (str(h.id), new_name))
+#                     messages.append('History \'' + cur_name + '\' renamed to \'' + new_name + '\'.')
+                    messages.append('历史 \'' + cur_name + '\' 重命名为 \'' + new_name + '\'.')
+#             message = sanitize_text(' '.join(messages)) if messages else 'History names remain unchanged.'
+            message = sanitize_text(' '.join(messages)) if messages else '历史名称保持不变。'
             return {'message': message, 'status': 'success'}
 
     # ------------------------------------------------------------------------- current history

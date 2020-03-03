@@ -280,7 +280,8 @@ export default Backbone.View.extend({
                             <input class="upload-title ml-2 border rounded"/>
                             <div class="upload-text">
                                 <div class="upload-text-info">
-                                    Download data from the web by entering URLs (one per line) or directly paste content.
+<!--                                    Download data from the web by entering URLs (one per line) or directly paste content.-->
+                                    通过输入URL（每行一个）或直接粘贴内容从web下载数据。
                                 </div>
                                 <textarea class="upload-text-content form-control"/>
                             </div>

@@ -79,7 +79,7 @@
 <%def name="render_item_header( item )">
     <h3>${get_item_name( item )| h}</h3>
     %if hasattr( item, "annotation") and item.annotation is not None:
-        <div class="annotation">Annotation: ${item.annotation}</div>
+        <div class="annotation">注释: ${item.annotation}</div>
     %endif
     <hr/>
 </%def>
@@ -132,7 +132,7 @@
     %>
     <div class="unified-panel-header" unselectable="on">
         <div class="unified-panel-header-inner">
-            About this ${get_class_display_name( item.__class__ )}
+            关于这个 ${get_class_display_name( item.__class__ )}
             ${self.render_item_links( item )}
         </div>
     </div>
@@ -140,25 +140,29 @@
         <div style="overflow: auto; height: 100%;">
             <div class="p-3">
                 <div style="float: right;"><img src="https://secure.gravatar.com/avatar/${h.md5(item.user.email)}?d=identicon"></div>
-                <h4>Author</h4>
+                <h4>作者</h4>
                 <p>${item.user.username | h}</p>
                 ## Related items.
-                <h4>Related ${item_plural}</h4>
+                <h4>相关的 ${item_plural}</h4>
                 <p>
-                    <a href="${href_to_all_items}">All published ${item_plural.lower()}</a><br>
-                    <a href="${href_to_user_items}">Published ${item_plural.lower()} by ${item.user.username | h}</a>
+                    ## <a href="${href_to_all_items}">All published ${item_plural.lower()}</a><br>
+                    <a href="${href_to_all_items}">所有发布的 ${item_plural.lower()}</a><br>
+                    ## <a href="${href_to_user_items}">Published ${item_plural.lower()} by ${item.user.username | h}</a>
+                    <a href="${href_to_user_items}">${item.user.username | h} 发布的 ${item_plural.lower()}</a>
                 ## Rating.
-                <h4>Rating</h4>
+                <h4>评级</h4>
                 <%
                     label = "ratings"
                     if num_ratings == 1:
                         label = "rating"
                 %>
                 <div style="padding-bottom: 0.75em; float: left">
-                    Community<br>
+                    社区<br>
                     <span style="font-size:80%">
-                        (<span id="num_ratings">${num_ratings}</span> ${label},
-                         <span id="ave_rating">${"%.1f" % ave_item_rating}</span> average)
+                        ## (<span id="num_ratings">${num_ratings}</span> ${label},
+                        (<span id="num_ratings">${num_ratings}</span> 评级,
+                        ##  <span id="ave_rating">${"%.1f" % ave_item_rating}</span> average)
+                        平均 <span id="ave_rating">${"%.1f" % ave_item_rating}</span>)
                     <span>
                 </div>
                 <div style="float: right">
@@ -191,7 +195,7 @@
                 <div style="clear: both;"></div>
                 %if trans.get_user():
                     <div style="float: left">
-                        Yours<br><span id="rating_feedback" style="font-size:80%; display: none">(thanks!)</span>
+                        您的<br><span id="rating_feedback" style="font-size:80%; display: none">(谢谢!)</span>
                     </div>
                     <div style="float: right">
                         <input name="star2" type="radio" class="user_rating_star" value="1"
@@ -223,15 +227,15 @@
                 %endif
                 <div style="clear: both;"></div>
                 ## Tags.
-                <h4>Tags</h4>
+                <h4>标签</h4>
                 <p>
                 ## Community tags.
                 <div>
-                    Community:
+                    社区:
                     ${render_community_tagging_element(
-                        tagged_item=item, 
-                        tag_click_fn='community_tag_click', 
-                        use_toggle_link=False 
+                        tagged_item=item,
+                        tag_click_fn='community_tag_click',
+                        use_toggle_link=False
                     )}
                     %if len ( item.tags ) == 0:
                         none
@@ -241,12 +245,12 @@
                 %if trans.get_user():
                     <p>
                     <div>
-                        Yours:
+                        您的:
                         ${render_individual_tagging_element(
-                            user=trans.get_user(), 
-                            tagged_item=item, 
-                            elt_context='view.mako', 
-                            use_toggle_link=False, 
+                            user=trans.get_user(),
+                            tagged_item=item,
+                            elt_context='view.mako',
+                            use_toggle_link=False,
                             tag_click_fn='community_tag_click'
                         )}
                     </div>

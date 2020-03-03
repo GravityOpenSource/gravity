@@ -505,9 +505,11 @@ class WorkflowContentsManager(UsesAnnotations):
         Builds workflow dictionary used by run workflow form
         """
         if len(workflow.steps) == 0:
-            raise exceptions.MessageException('Workflow cannot be run because it does not have any steps.')
+#             raise exceptions.MessageException('Workflow cannot be run because it does not have any steps.')
+            raise exceptions.MessageException('无法运行流程，因为它没有任何步骤。')
         if attach_ordered_steps(workflow, workflow.steps):
-            raise exceptions.MessageException('Workflow cannot be run because it contains cycles.')
+#             raise exceptions.MessageException('Workflow cannot be run because it contains cycles.')
+            raise exceptions.MessageException('无法运行流程，因为它包含循环。')
         trans.workflow_building_mode = workflow_building_modes.USE_HISTORY
         module_injector = WorkflowModuleInjector(trans)
         has_upgrade_messages = False

@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 
         <title>
-            GrandOmics
+            希望组病原分析平台
         </title>
 
         ## relative href for site root

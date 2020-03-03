@@ -63,20 +63,21 @@ class HistoryDatasetsSelectionGrid(grids.Grid):
             return grids.GridColumn.sort(self, trans, query, ascending, column_name="history_id")
 
     available_tracks = None
-    title = "Add Datasets"
+#     title = "Add Datasets"
+    title = "添加数据集"
     model_class = model.HistoryDatasetAssociation
     default_filter = {"deleted": "False", "shared": "All"}
     default_sort_key = "-hid"
     columns = [
         grids.GridColumn("Id", key="hid"),
-        grids.TextColumn("Name", key="name", model_class=model.HistoryDatasetAssociation),
-        grids.TextColumn("Type", key="extension", model_class=model.HistoryDatasetAssociation),
-        grids.TextColumn("history_id", key="history_id", model_class=model.HistoryDatasetAssociation, visible=False),
-        HistoryColumn("History", key="history", visible=True),
-        DbKeyColumn("Build", key="dbkey", model_class=model.HistoryDatasetAssociation, visible=True, sortable=False)
+        grids.TextColumn("名称", key="name", model_class=model.HistoryDatasetAssociation),
+        grids.TextColumn("类型", key="extension", model_class=model.HistoryDatasetAssociation),
+        grids.TextColumn("历史的ID", key="history_id", model_class=model.HistoryDatasetAssociation, visible=False),
+        HistoryColumn("历史", key="history", visible=True),
+        DbKeyColumn("构建", key="dbkey", model_class=model.HistoryDatasetAssociation, visible=True, sortable=False)
     ]
     columns.append(
-        grids.MulticolFilterColumn("Search name and filetype", cols_to_filter=[columns[1], columns[2]],
+        grids.MulticolFilterColumn("搜索名称和文件类型", cols_to_filter=[columns[1], columns[2]],
                                    key="free-text-search", visible=False, filterable="standard")
     )
 
@@ -95,17 +96,18 @@ class HistoryDatasetsSelectionGrid(grids.Grid):
 
 class LibraryDatasetsSelectionGrid(grids.Grid):
     available_tracks = None
-    title = "Add Datasets"
+#     title = "Add Datasets"
+    title = "添加数据集"
     model_class = model.LibraryDatasetDatasetAssociation
     default_filter = {"deleted": "False"}
     default_sort_key = "-id"
     columns = [
         grids.GridColumn("Id", key="id"),
-        grids.TextColumn("Name", key="name", model_class=model.LibraryDatasetDatasetAssociation),
-        grids.TextColumn("Type", key="extension", model_class=model.LibraryDatasetDatasetAssociation),
+        grids.TextColumn("名称", key="name", model_class=model.LibraryDatasetDatasetAssociation),
+        grids.TextColumn("类型", key="extension", model_class=model.LibraryDatasetDatasetAssociation),
     ]
     columns.append(
-        grids.MulticolFilterColumn("Search name and filetype", cols_to_filter=[columns[1], columns[2]],
+        grids.MulticolFilterColumn("搜索名称和文件类型", cols_to_filter=[columns[1], columns[2]],
                                    key="free-text-search", visible=False, filterable="standard")
     )
 
@@ -123,15 +125,16 @@ class LibraryDatasetsSelectionGrid(grids.Grid):
 
 
 class TracksterSelectionGrid(grids.Grid):
-    title = "Insert into visualization"
+#     title = "Insert into visualization"
+    title = "插入可视化"
     model_class = model.Visualization
     default_sort_key = "-update_time"
     use_paging = False
     show_item_checkboxes = True
     columns = [
-        grids.TextColumn("Title", key="title", model_class=model.Visualization, filterable="standard"),
-        grids.TextColumn("Build", key="dbkey", model_class=model.Visualization),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago)
+        grids.TextColumn("标题", key="title", model_class=model.Visualization, filterable="standard"),
+        grids.TextColumn("构建", key="dbkey", model_class=model.Visualization),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago)
     ]
 
     def build_initial_query(self, trans, **kwargs):
@@ -166,31 +169,32 @@ class VisualizationListGrid(grids.Grid):
         return item.type
 
     # Grid definition
-    title = "Saved Visualizations"
+#     title = "Saved Visualizations"
+    title = "保存的可视化"
     model_class = model.Visualization
     default_sort_key = "-update_time"
     default_filter = dict(title="All", deleted="False", tags="All", sharing="All")
     columns = [
-        grids.TextColumn("Title", key="title", attach_popup=True, link=get_url_args),
-        grids.TextColumn("Type", method='get_display_name'),
-        grids.TextColumn("Build", key="dbkey"),
-        grids.IndividualTagsColumn("Tags", key="tags", model_tag_association_class=model.VisualizationTagAssociation, filterable="advanced", grid_name="VisualizationListGrid"),
-        grids.SharingStatusColumn("Sharing", key="sharing", filterable="advanced", sortable=False),
-        grids.GridColumn("Created", key="create_time", format=time_ago),
-        grids.GridColumn("Last Updated", key="update_time", format=time_ago),
+        grids.TextColumn("标题", key="title", attach_popup=True, link=get_url_args),
+        grids.TextColumn("类型", method='get_display_name'),
+        grids.TextColumn("构建", key="dbkey"),
+        grids.IndividualTagsColumn("标签", key="tags", model_tag_association_class=model.VisualizationTagAssociation, filterable="advanced", grid_name="VisualizationListGrid"),
+        grids.SharingStatusColumn("分享", key="sharing", filterable="advanced", sortable=False),
+        grids.GridColumn("创建时间", key="create_time", format=time_ago),
+        grids.GridColumn("最后更新时间", key="update_time", format=time_ago),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0], columns[2]],
             key="free-text-search", visible=False, filterable="standard")
     )
     operations = [
-        grids.GridOperation("Open", allow_multiple=False, url_args=get_url_args),
-        grids.GridOperation("Edit Attributes", allow_multiple=False, url_args=dict(controller="", action='visualizations/edit')),
-        grids.GridOperation("Copy", allow_multiple=False, condition=(lambda item: not item.deleted)),
-        grids.GridOperation("Share or Publish", allow_multiple=False, condition=(lambda item: not item.deleted), url_args=dict(controller="", action="visualizations/sharing")),
-        grids.GridOperation("Delete", condition=(lambda item: not item.deleted), confirm="Are you sure you want to delete this visualization?"),
+        grids.GridOperation("打开", allow_multiple=False, url_args=get_url_args),
+        grids.GridOperation("编辑属性", allow_multiple=False, url_args=dict(controller="", action='visualizations/edit')),
+        grids.GridOperation("复制", allow_multiple=False, condition=(lambda item: not item.deleted)),
+        grids.GridOperation("分享或发布", allow_multiple=False, condition=(lambda item: not item.deleted), url_args=dict(controller="", action="visualizations/sharing")),
+        grids.GridOperation("删除", condition=(lambda item: not item.deleted), confirm="您确定要删除这个可视化吗?"),
     ]
 
     def apply_query_filter(self, trans, query, **kwargs):
@@ -200,21 +204,23 @@ class VisualizationListGrid(grids.Grid):
 class VisualizationAllPublishedGrid(grids.Grid):
     # Grid definition
     use_panels = True
-    title = "Published Visualizations"
+#     title = "Published Visualizations"
+    title = "已发布的可视化"
     model_class = model.Visualization
     default_sort_key = "update_time"
     default_filter = dict(title="All", username="All")
     columns = [
-        grids.PublicURLColumn("Title", key="title", filterable="advanced"),
-        grids.OwnerAnnotationColumn("Annotation", key="annotation", model_annotation_association_class=model.VisualizationAnnotationAssociation, filterable="advanced"),
-        grids.OwnerColumn("Owner", key="username", model_class=model.User, filterable="advanced"),
-        grids.CommunityRatingColumn("Community Rating", key="rating"),
-        grids.CommunityTagsColumn("Community Tags", key="tags", model_tag_association_class=model.VisualizationTagAssociation, filterable="advanced", grid_name="VisualizationAllPublishedGrid"),
-        grids.ReverseSortColumn("Last Updated", key="update_time", format=time_ago)
+        grids.PublicURLColumn("标题", key="title", filterable="advanced"),
+        grids.OwnerAnnotationColumn("注释", key="annotation", model_annotation_association_class=model.VisualizationAnnotationAssociation, filterable="advanced"),
+        grids.OwnerColumn("作者", key="username", model_class=model.User, filterable="advanced"),
+        grids.CommunityRatingColumn("社区评价", key="rating"),
+        grids.CommunityTagsColumn("社区标签", key="tags", model_tag_association_class=model.VisualizationTagAssociation, filterable="advanced", grid_name="VisualizationAllPublishedGrid"),
+        grids.ReverseSortColumn("最后更新时间", key="update_time", format=time_ago)
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search title, annotation, owner, and tags",
+#             "Search title, annotation, owner, and tags",
+            "搜索标题、注释、作者和标签",
             cols_to_filter=[columns[0], columns[1], columns[2], columns[4]],
             key="free-text-search", visible=False, filterable="standard")
     )
@@ -331,9 +337,11 @@ class VisualizationController(BaseUIController, SharableMixin, UsesVisualization
         visualization = self.get_visualization(trans, id, check_ownership=False)
         user = trans.get_user()
         owner = (visualization.user == user)
-        new_title = "Copy of '%s'" % visualization.title
+#         new_title = "Copy of '%s'" % visualization.title
+        new_title = " '%s' 的副本" % visualization.title
         if not owner:
-            new_title += " shared by %s" % visualization.user.email
+#             new_title += " shared by %s" % visualization.user.email
+            new_title += " '%s' 的共享" % visualization.user.email
 
         copied_viz = visualization.copy(user=trans.user, title=new_title)
 
@@ -343,7 +351,7 @@ class VisualizationController(BaseUIController, SharableMixin, UsesVisualization
         session.flush()
 
         # Display the management page
-        trans.set_message('Created new visualization with name "%s"' % copied_viz.title)
+        trans.set_message('用 "%s" 的名字创建了新的可视化 ' % copied_viz.title)
         return
 
     @web.expose
@@ -371,7 +379,8 @@ class VisualizationController(BaseUIController, SharableMixin, UsesVisualization
 
         visualization = self.get_visualization(trans, id, check_ownership=False, check_accessible=True)
         if not visualization:
-            return trans.show_error_message("The specified visualization does not exist.")
+#             return trans.show_error_message("The specified visualization does not exist.")
+            return trans.show_error_message("指定的可视化不存在。")
 
         # Rate visualization.
         self.rate_item(trans.sa_session, trans.get_user(), visualization, rating)
@@ -385,17 +394,21 @@ class VisualizationController(BaseUIController, SharableMixin, UsesVisualization
         # Set referer message.
         referer = trans.request.referer
         if referer:
-            referer_message = "<a href='%s'>return to the previous page</a>" % escape(referer)
+#             referer_message = "<a href='%s'>return to the previous page</a>" % escape(referer)
+            referer_message = "<a href='%s'>返回上一页</a>" % escape(referer)
         else:
-            referer_message = "<a href='%s'>go to Galaxy's start page</a>" % web.url_for('/')
+#             referer_message = "<a href='%s'>go to Galaxy's start page</a>" % web.url_for('/')
+            referer_message = "<a href='%s'>前往首页</a>" % web.url_for('/')
 
         # Do import.
         session = trans.sa_session
         visualization = self.get_visualization(trans, id, check_ownership=False)
         if visualization.importable is False:
-            return trans.show_error_message("The owner of this visualization has disabled imports via this link.<br>You can %s" % referer_message, use_panels=True)
+#             return trans.show_error_message("The owner of this visualization has disabled imports via this link.<br>You can %s" % referer_message, use_panels=True)
+            return trans.show_error_message("这个可视化的作者已经禁止通过这个链接导入。<br>您可以 %s" % referer_message, use_panels=True)
         elif visualization.deleted:
-            return trans.show_error_message("You can't import this visualization because it has been deleted.<br>You can %s" % referer_message, use_panels=True)
+#             return trans.show_error_message("You can't import this visualization because it has been deleted.<br>You can %s" % referer_message, use_panels=True)
+            return trans.show_error_message("您无法导入此可视化，因为它已被删除。<br>您可以 %s" % referer_message, use_panels=True)
         else:
             # Create imported visualization via copy.
             #   TODO: need to handle custom db keys.
@@ -409,7 +422,8 @@ class VisualizationController(BaseUIController, SharableMixin, UsesVisualization
 
             # Redirect to load galaxy frames.
             return trans.show_ok_message(
-                message="""Visualization "%s" has been imported. <br>You can <a href="%s">start using this visualization</a> or %s."""
+#                 message="""Visualization "%s" has been imported. <br>You can <a href="%s">start using this visualization</a> or %s."""
+                message="""已导入可视化 "%s"。 <br>您可以 <a href="%s">开始使用这个可视化</a> 或 %s."""
                 % (visualization.title, web.url_for('/visualizations/list'), referer_message), use_panels=True)
 
     @web.expose
@@ -425,14 +439,17 @@ class VisualizationController(BaseUIController, SharableMixin, UsesVisualization
                                     .first()
             if not other:
                 mtype = "error"
-                msg = ("User '%s' does not exist" % escape(email))
+#                 msg = ("User '%s' does not exist" % escape(email))
+                msg = ("用户 '%s' 不存在" % escape(email))
             elif other == trans.get_user():
                 mtype = "error"
-                msg = ("You cannot share a visualization with yourself")
+#                 msg = ("You cannot share a visualization with yourself")
+                msg = ("您不能与自己共享可视化。")
             elif trans.sa_session.query(model.VisualizationUserShareAssociation) \
                     .filter_by(user=other, visualization=visualization).count() > 0:
                 mtype = "error"
-                msg = ("Visualization already shared with '%s'" % escape(email))
+#                 msg = ("Visualization already shared with '%s'" % escape(email))
+                msg = ("可视化已共享给 '%s'" % escape(email))
             else:
                 share = model.VisualizationUserShareAssociation()
                 share.visualization = visualization
@@ -443,7 +460,8 @@ class VisualizationController(BaseUIController, SharableMixin, UsesVisualization
                 session.flush()
                 viz_title = escape(visualization.title)
                 other_email = escape(other.email)
-                trans.set_message("Visualization '%s' shared with user '%s'" % (viz_title, other_email))
+#                 trans.set_message("Visualization '%s' shared with user '%s'" % (viz_title, other_email))
+                trans.set_message("可视化 '%s' 已于用户 '%s' 共享" % (viz_title, other_email))
                 return trans.response.send_redirect(web.url_for("/visualizations/sharing?id=%s" % id))
         return trans.fill_template("/ind_share_base.mako",
                                    message=msg,
@@ -543,13 +561,15 @@ class VisualizationController(BaseUIController, SharableMixin, UsesVisualization
         """
         id = kwd.get('id')
         if not id:
-            return self.message_exception(trans, 'No visualization id received for editing.')
+#             return self.message_exception(trans, 'No visualization id received for editing.')
+            return self.message_exception(trans, '没有接收到要编辑的可视化id。')
         v = self.get_visualization(trans, id, check_ownership=True)
         if trans.request.method == 'GET':
             if v.slug is None:
                 self.create_item_slug(trans.sa_session, v)
             return {
-                'title'  : 'Edit visualization attributes',
+#                 'title'  : 'Edit visualization attributes',
+                'title'  : '编辑可视化属性',
                 'inputs' : [{
                     'name'      : 'title',
                     'label'     : 'Name',

@@ -6,6 +6,7 @@ import { getAppRoot } from "onload/loadConfig";
 import { getGalaxyInstance } from "app";
 import GridView from "mvc/grid/grid-view";
 import LoadingIndicator from "ui/loading-indicator";
+import _l from "utils/localization";
 
 var View = Backbone.View.extend({
     initialize: function(options) {
@@ -35,14 +36,15 @@ var View = Backbone.View.extend({
 
     _templateShared: function() {
         var self = this;
-        var $tmpl = $(`<div><br/><h2>${this.model.get("plural")} shared with you by others</h2></div>`);
+        // var $tmpl = $(`<div><br/><h2>${this.model.get("plural")} shared with you by others</h2></div>`);
+        var $tmpl = $(`<div><br/><h2>其他人与您共享的:${_l(this.model.get("plural"))}</h2></div>`);
         var options = this.model.attributes;
         if (options.shared_by_others && options.shared_by_others.length > 0) {
             var $table = $(
                 '<table class="colored" border="0" cellspacing="0" cellpadding="0" width="100%">' +
                     '<tr class="header">' +
-                    "<th>Title</th>" +
-                    "<th>Owner</th>" +
+                    "<th>标题</th>" +
+                    "<th>作者</th>" +
                     "</tr>" +
                     "</table>"
             );
@@ -58,7 +60,8 @@ var View = Backbone.View.extend({
             });
             $tmpl.append($table);
         } else {
-            $tmpl.append(`No ${this.model.get("plural").toLowerCase()} have been shared with you.`);
+            // $tmpl.append(`No ${this.model.get("plural").toLowerCase()} have been shared with you.`);
+            $tmpl.append(`没有与您共享的: ${_l(this.model.get("plural"))}。`);
         }
         return $tmpl;
     }

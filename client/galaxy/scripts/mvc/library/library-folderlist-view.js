@@ -80,13 +80,14 @@ var FolderListView = Backbone.View.extend({
             error: function(model, response) {
                 const Galaxy = getGalaxyInstance();
                 if (typeof response.responseJSON !== "undefined") {
-                    Toast.error(`${response.responseJSON.err_msg} Click this to go back.`, "", {
+                    Toast.error(`${response.responseJSON.err_msg} 单击此处返回。`, "", {
                         onclick: function() {
                             Galaxy.libraries.library_router.back();
                         }
                     });
                 } else {
-                    Toast.error("An error occurred. Click this to go back.", "", {
+                    // Toast.error("An error occurred. Click this to go back.", "", {
+                    Toast.error("发生一个错误。单击此处返回。", "", {
                         onclick: function() {
                             Galaxy.libraries.library_router.back();
                         }
@@ -129,7 +130,8 @@ var FolderListView = Backbone.View.extend({
             if (row) {
                 row.showDatasetDetails();
             } else {
-                Toast.error("Requested dataset not found. Showing folder instead.");
+                // Toast.error("Requested dataset not found. Showing folder instead.");
+                Toast.error("找不到请求的数据集。改为显示文件夹。");
             }
         } else {
             if (this.options.show_page === null || this.options.show_page < 1) {
@@ -412,7 +414,8 @@ var FolderListView = Backbone.View.extend({
 
             folder.save(folderDetails, {
                 success: folder => {
-                    Toast.success("Folder created.");
+                    // Toast.success("Folder created.");
+                    Toast.success("文件夹已创建。");
                     folder.set({ type: "folder" });
                     this.$el.find("tr.new-row").remove();
                     Galaxy.libraries.folderListView.collection.add(folder);
@@ -428,12 +431,14 @@ var FolderListView = Backbone.View.extend({
                     if (typeof response.responseJSON !== "undefined") {
                         Toast.error(response.responseJSON.err_msg);
                     } else {
-                        Toast.error("An error occurred.");
+                        // Toast.error("An error occurred.");
+                        Toast.error("发生一个错误。");
                     }
                 }
             });
         } else {
-            Toast.error("Folder's name is missing.");
+            // Toast.error("Folder's name is missing.");
+            Toast.error("缺少文件夹名称。");
         }
         return false;
     },
@@ -442,27 +447,27 @@ var FolderListView = Backbone.View.extend({
         return _.template(
             `<tr class="new-row">
                 <td class="mid">
-                    <span title="Folder" class="fa fa-folder-o"></span>
+                    <span title="文件夹" class="fa fa-folder-o"></span>
                 </td>
                 <td></td>
                 <td>
-                    <textarea name="input_folder_name" rows="4" class="form-control input_folder_name" placeholder="name" ></textarea>
+                    <textarea name="input_folder_name" rows="4" class="form-control input_folder_name" placeholder="名称" ></textarea>
                 </td>
                 <td>
-                    <textarea rows="4" class="form-control input_folder_description" placeholder="description" ></textarea>
+                    <textarea rows="4" class="form-control input_folder_description" placeholder="描述" ></textarea>
                 </td>
-                <td>folder</td>
+                <td>文件夹</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td class="right-center">
-                    <button data-toggle="tooltip" data-placement="left" title="Save changes"
+                    <button data-toggle="tooltip" data-placement="left" title="保存修改"
                         class="btn btn-secondary btn-sm save_folder_btn" type="button">
-                        <span class="fa fa-floppy-o"></span> Save
+                        <span class="fa fa-floppy-o"></span> 保存
                     </button>
-                    <button data-toggle="tooltip" data-placement="left" title="Discard changes"
+                    <button data-toggle="tooltip" data-placement="left" title="取消修改"
                         class="btn btn-secondary btn-sm cancel_folder_btn" type="button">
-                        <span class="fa fa-times"></span> Cancel
+                        <span class="fa fa-times"></span> 关闭
                     </button>
                 </td>
             </tr>`
@@ -473,18 +478,21 @@ var FolderListView = Backbone.View.extend({
         return _.template(
             `<ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a title="Return to the list of libraries" href="#">Libraries</a>
+<!--                    <a title="Return to the list of libraries" href="#">Libraries</a>-->
+                    <a title="返回到库列表" href="#">库</a>
                 </li>
                 <% _.each(path, function(path_item) { %>
                     <% if (path_item[0] != id) { %>
                         <li class="breadcrumb-item">
-                            <a title="Return to this folder" href="#/folders/<%- path_item[0] %>">
+<!--                            <a title="Return to this folder" href="#/folders/<%- path_item[0] %>">-->
+                            <a title="返回此文件夹" href="#/folders/<%- path_item[0] %>">
                                 <%- path_item[1] %>
                             </a>
                         </li>
                     <% } else { %>
                         <li class="breadcrumb-item active">
-                            <span title="You are in this folder">
+<!--                            <span title="You are in this folder">-->
+                            <span title="您在这个文件夹里">
                                 <%- path_item[1] %>
                             </span>
                         </li>
@@ -497,35 +505,35 @@ var FolderListView = Backbone.View.extend({
                 <thead>
                     <th class="button_heading"></th>
                     <th class="mid" style="width: 20px;"
-                        title="Check to select all datasets">
+                        title="选中以选择所有数据集">
                         <input id="select-all-checkboxes" style="margin: 0;" type="checkbox">
                     </th>
                     <th>
-                        <a class="sort-folder-name" title="Click to reverse order" href="javascript:void(0)" role="button">Name</a>
-                        <span title="Sorted by Name" class="sort-icon-name fa fa-sort-alpha-<%- order %>"></span>
+                        <a class="sort-folder-name" title="点击转换排序" href="javascript:void(0)" role="button">名称</a>
+                        <span title="按名称排序" class="sort-icon-name fa fa-sort-alpha-<%- order %>"></span>
                     </th>
                     <th style="width:20%;">
-                        <a class="sort-folder-message" title="Click to reverse order" href="javascript:void(0)" role="button">Description</a>
-                        <span title="Sorted by Desc." class="sort-icon-message fa"></span>
+                        <a class="sort-folder-message" title="点击转换排序" href="javascript:void(0)" role="button">描述</a>
+                        <span title="按描述排序" class="sort-icon-message fa"></span>
                     </th>
                     <th style="width:5%;">
-                        <span>Tags</span>
+                        <span>标签</span>
                     </th>
                     <th style="width:5%;">
-                        <a class="sort-folder-file_ext" title="Click to reverse order" href="javascript:void(0)" role="button">Data Type</a>
-                        <span title="Sorted by Type" class="sort-icon-file_ext fa"></span>
+                        <a class="sort-folder-file_ext" title="点击转换排序" href="javascript:void(0)" role="button">数据类型</a>
+                        <span title="按类型排序" class="sort-icon-file_ext fa"></span>
                     </th>
                     <th style="width:10%;">
-                        <a class="sort-folder-raw_size" title="Click to reverse order" href="javascript:void(0)" role="button">Size</a>
-                        <span title="Sorted by Size" class="sort-icon-raw_size fa"></span>
+                        <a class="sort-folder-raw_size" title="点击转换排序" href="javascript:void(0)" role="button">大小</a>
+                        <span title="按大小排序" class="sort-icon-raw_size fa"></span>
                     </th>
                     <th style="width:160px;">
-                        <a class="sort-folder-update_time" title="Click to reverse order" href=href="javascript:void(0)" role="button">Date Updated (UTC)</a>
-                        <span title="Sorted by Date" class="sort-icon-update_time fa"></span>
+                        <a class="sort-folder-update_time" title="点击转换排序" href=href="javascript:void(0)" role="button">更新日期（UTC）</a>
+                        <span title="按日期排序" class="sort-icon-update_time fa"></span>
                     </th>
                     <th style="width:5%;">
-                        <a class="sort-folder-state" title="Click to reverse order" href="javascript:void(0)">State</a>
-                        <span title="Sorted by State" class="sort-icon-state fa"></span>
+                        <a class="sort-folder-state" title="点击转换排序" href="javascript:void(0)">状态</a>
+                        <span title="按状态排序" class="sort-icon-state fa"></span>
                     </th>
                     <th style="width:160px;"></th>
                 </thead>
@@ -533,7 +541,7 @@ var FolderListView = Backbone.View.extend({
                     <tr id="first_folder_item">
                         <td>
                             <a href="#<% if (upper_folder_id !== 0){ print("folders/" + upper_folder_id)} %>"
-                                title="Go to parent folder" class="btn_open_folder btn btn-secondary btn-sm">..<a>
+                                title="回到父文件夹" class="btn_open_folder btn btn-secondary btn-sm">..<a>
                         </td>
                         <td></td>
                         <td></td>
@@ -547,11 +555,13 @@ var FolderListView = Backbone.View.extend({
                 </tbody>
             </table>
             <div class="empty-folder-message" style="display:none;">
-                This folder is either empty or you do not have proper access permissions to see the contents.
-                If you expected something to show up please consult the
-                <a href="https://galaxyproject.org/data-libraries/#permissions" target="_blank">
-                    library security wikipage
-                </a>.
+<!--                This folder is either empty or you do not have proper access permissions to see the contents.-->
+<!--                If you expected something to show up please consult the-->
+<!--                <a href="https://galaxyproject.org/data-libraries/#permissions" target="_blank">-->
+<!--                    library security wikipage-->
+<!--                </a>.-->
+                此文件夹或为空，或您没有查看内容的适当访问权限。
+                如果您想显示某些内容，请联系管理员。
             </div>`
         );
     }

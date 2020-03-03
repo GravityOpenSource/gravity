@@ -22,7 +22,7 @@
                 <% index = repeat_values[i]['__index__'] %>
                 <div class="form-row"><b>${input.title} ${i + 1}</b></div>
                 ${do_inputs( input.inputs, repeat_values[ i ], prefix + input.name + "_" + str(index) + "|", step, other_values )}
-            </div> 
+            </div>
           %endfor
       </div>
     %elif input.type == "conditional":
@@ -78,28 +78,29 @@
     <a
         href="${h.url_for( controller='/workflow', action='imp', id=trans.security.encode_id(workflow.id) )}"
         class="btn btn-secondary fa fa-plus float-right"
-        title="Import workflow"></a>
+        title="导入流程"></a>
     <a
         href="${h.url_for( controller='/workflow', action='export_to_file', id=trans.security.encode_id(workflow.id) )}"
         class="btn btn-secondary fa fa-download float-right mr-2"
-        title="Save workflow"></a>
+        title="保存流程"></a>
     %endif
 </%def>
 
 <%def name="render_item( workflow, steps, outer_workflow=True )">
     <%
         # HACK: Rendering workflow steps requires that trans have a history; however, if its user's first visit to Galaxy is here, he won't have a history
-        # and an error will occur. To prevent this error, make sure user has a history. 
+        # and an error will occur. To prevent this error, make sure user has a history.
         trans.get_history( most_recent=True, create=True )
     %>
     %if outer_workflow:
     <table class="annotated-item">
-        <tr><th>Step</th><th class="annotation">Annotation</th></tr>
+        ## <tr><th>Step</th><th class="annotation">Annotation</th></tr>
+        <tr><th>步骤</th><th class="annotation">注释</th></tr>
     %endif
         %for i, step in enumerate( steps ):
             <tr><td>
             %if step.type == 'tool' or step.type is None:
-              <% 
+              <%
                 tool = trans.app.toolbox.get_tool( step.tool_id )
               %>
               <div class="card mt-3 mr-3">
@@ -118,7 +119,8 @@
                   <% errors = step.module.get_errors() %>
                   %if errors:
                     <div class="card-body">
-                      <b>Error in Subworkflow:</b>
+                      ## <b>Error in Subworkflow:</b>
+                      <b>子流程中的错误：</b>
                       <ul>
                         %for error in errors:
                           <li>${error}</li>
@@ -145,7 +147,7 @@
             <td class="annotation">
                 %if hasattr( step, "annotation") and step.annotation is not None:
                     ${step.annotation}
-                %endif                
+                %endif
             </td>
             </tr>
         %endfor

@@ -31,25 +31,26 @@ class EntryPointLinkColumn(grids.GridColumn):
 class InteractiveToolEntryPointListGrid(grids.Grid):
 
     use_panels = True
-    title = "Available InteractiveTools"
+#     title = "Available InteractiveTools"
+    title = "可用的交互工具"
     model_class = model.InteractiveToolEntryPoint
     default_filter = {"name": "All"}
     default_sort_key = "-update_time"
     columns = [
-        EntryPointLinkColumn("Name", filterable="advanced"),
-        JobStatusColumn("Job Info", key="job_state", model_class=model.Job),
-        grids.GridColumn("Created", key="created_time", format=time_ago),
-        grids.GridColumn("Last Updated", key="modified_time", format=time_ago),
+        EntryPointLinkColumn("名称", filterable="advanced"),
+        JobStatusColumn("工作信息", key="job_state", model_class=model.Job),
+        grids.GridColumn("创建时间", key="created_time", format=time_ago),
+        grids.GridColumn("最后更新时间", key="modified_time", format=time_ago),
     ]
     columns.append(
         grids.MulticolFilterColumn(
-            "Search",
+            "搜索",
             cols_to_filter=[columns[0]],
             key="free-text-search", visible=False, filterable="standard"
         )
     )
     operations = [
-        grids.GridOperation("Stop", condition=(lambda item: item.active), async_compatible=False),
+        grids.GridOperation("停止", condition=(lambda item: item.active), async_compatible=False),
     ]
 
     def build_initial_query(self, trans, **kwargs):

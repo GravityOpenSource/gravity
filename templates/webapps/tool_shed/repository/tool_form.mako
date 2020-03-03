@@ -12,7 +12,7 @@
 <html>
     <head>
         <title>
-            GrandOmics
+            希望组病原分析平台
         </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         ${h.css( "base" )}

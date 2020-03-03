@@ -326,10 +326,10 @@ var LibraryRowView = Backbone.View.extend({
                         style="color:grey; <% if(button_config.undelete_library_btn === false) { print("display:none;") } %>"
                         class="fa fa-ban fa-lg">
                     </span>
-                    <button data-toggle="tooltip" data-placement="left" title="恢复删除 '<%- library.get("name") %>' "
+                    <button data-toggle="tooltip" data-placement="left" title="撤消删除 '<%- library.get("name") %>' "
                         class="btn btn-secondary btn-sm undelete_library_btn" type="button"
                         style="<% if(button_config.undelete_library_btn === false) { print("display:none;") } %>">
-                        <span class="fa fa-unlock"></span> 恢复删除
+                        <span class="fa fa-unlock"></span> 撤消删除
                     </button>
                 </td>
             </tr>`

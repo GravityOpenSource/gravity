@@ -181,7 +181,8 @@ CollectionView.prototype.templates = (() => {
             <div class="tags-display"></div>
             <div class="actions">
                 <a class="download-btn icon-btn" href="${view.downloadUrl}"
-                   title="" download="" data-original-title="Download Collection">
+                   title="" download="" data-original-title="下载收藏">
+<!--                   title="" download="" data-original-title="Download Collection">-->
                    <span class="fa fa-floppy-o"></span>
                 </a>
             </div>

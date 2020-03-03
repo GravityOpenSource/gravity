@@ -15,12 +15,18 @@ class Action(object):
 class RBACAgent(object):
     """Class that handles galaxy security"""
     permitted_actions = Bunch(
-        DATASET_MANAGE_PERMISSIONS=Action("manage permissions", "Users having associated role can manage the roles associated with permissions on this dataset.", "grant"),
-        DATASET_ACCESS=Action("access", "Users having associated role can import this dataset into their history for analysis.", "restrict"),
-        LIBRARY_ACCESS=Action("access library", "Restrict access to this library to only users having associated role", "restrict"),
-        LIBRARY_ADD=Action("add library item", "Users having associated role can add library items to this library item", "grant"),
-        LIBRARY_MODIFY=Action("modify library item", "Users having associated role can modify this library item", "grant"),
-        LIBRARY_MANAGE=Action("manage library permissions", "Users having associated role can manage roles associated with permissions on this library item", "grant")
+#         DATASET_MANAGE_PERMISSIONS=Action("manage permissions", "Users having associated role can manage the roles associated with permissions on this dataset.", "grant"),
+        DATASET_MANAGE_PERMISSIONS=Action("管理权限", "具有关联角色的用户可以管理与此数据集的权限关联的角色。", "grant"),
+#         DATASET_ACCESS=Action("access", "Users having associated role can import this dataset into their history for analysis.", "restrict"),
+        DATASET_ACCESS=Action("访问", "具有关联角色的用户可以将此数据集导入其历史以进行分析。", "restrict"),
+#         LIBRARY_ACCESS=Action("access library", "Restrict access to this library to only users having associated role", "restrict"),
+        LIBRARY_ACCESS=Action("访问库", "仅限具有关联角色的用户访问此库。", "restrict"),
+#         LIBRARY_ADD=Action("add library item", "Users having associated role can add library items to this library item", "grant"),
+        LIBRARY_ADD=Action("添加库项目", "具有关联角色的用户可以将库项目添加到该库项目。", "grant"),
+#         LIBRARY_MODIFY=Action("modify library item", "Users having associated role can modify this library item", "grant"),
+        LIBRARY_MODIFY=Action("修改库项目", "具有关联角色的用户可以修改此库项目。", "grant"),
+#         LIBRARY_MANAGE=Action("manage library permissions", "Users having associated role can manage roles associated with permissions on this library item", "grant")
+        LIBRARY_MANAGE=Action("管理库权限", "具有关联角色的用户可以管理与此库项目的权限关联的角色。", "grant")
     )
 
     def get_action(self, name, default=None):

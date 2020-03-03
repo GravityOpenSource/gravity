@@ -88,11 +88,11 @@ const WorkflowItemView = Backbone.View.extend({
         const Galaxy = getGalaxyInstance();
         const oldName = this.model.get("name");
         $.getJSON(`${this.model.urlRoot}/${this.model.id}/download`, wfJson => {
-            let newName = `Copy of ${oldName}`;
+            let newName = `${oldName}的副本`;
             const currentOwner = this.model.get("owner");
             if (currentOwner != Galaxy.user.attributes.username) {
               // newName += ` shared by user ${currentOwner}`;
-              newName += `由用户${currentOwner}共享`;
+              newName += `由用户${currentOwner}分享`;
             }
             wfJson.name = newName;
             this.collection.create(wfJson, {

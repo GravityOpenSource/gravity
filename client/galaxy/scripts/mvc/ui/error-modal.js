@@ -42,7 +42,7 @@ function _errorModal(message, title, details) {
         body: message,
         closing_events: true,
         buttons: {
-            Ok: function() {
+            "好的": function() {
                 Galaxy.modal.hide();
             }
         }

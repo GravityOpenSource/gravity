@@ -5,7 +5,8 @@ import Utils from "utils/utils";
 var View = Backbone.View.extend({
     initialize: function(options) {
         this.options = Utils.merge(options, {
-            content: "No content available.",
+            // content: "No content available.",
+            content: "没有可以显示的数据。",
             onchange: null,
             ondblclick: null,
             onconfirm: null,

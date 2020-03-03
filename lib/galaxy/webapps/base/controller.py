@@ -36,6 +36,7 @@ from galaxy.model import (
 from galaxy.model.item_attrs import UsesAnnotations
 from galaxy.util.dictifiable import Dictifiable
 from galaxy.util.sanitize_html import sanitize_html
+from galaxy.util import unicodify
 from galaxy.web import (
     error,
     url_for

@@ -148,7 +148,8 @@ var ButtonCheck = Backbone.View.extend({
             (options && options.model) ||
             new Backbone.Model({
                 id: Utils.uid(),
-                title: "Select/Unselect all",
+                // title: "Select/Unselect all",
+                title: "选择/取消选择所有",
                 icons: ["fa-square-o", "fa-minus-square-o", "fa-check-square-o"],
                 value: 0,
                 visible: true,

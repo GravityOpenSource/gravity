@@ -83,7 +83,7 @@ export default Backbone.View.extend({
         }
         this.button_menu.addMenu({
             icon: "fa-edit",
-            title: "Paste/Fetch data",
+            title: _l("Paste/Fetch data"),
             onclick: function() {
                 self.model.reset({
                     file_mode: "new",
@@ -94,7 +94,7 @@ export default Backbone.View.extend({
 
         // add ftp file viewer
         this.ftp = new Popover({
-            title: "Select a file",
+            title: _l("Select a file"),
             container: this.$source.find(".dropdown"),
             placement: "right"
         });
@@ -290,7 +290,8 @@ export default Backbone.View.extend({
                     <div class="upload-source"/>
                     <div class="upload-text-column">
                         <div class="upload-text">
-                            <div class="upload-text-info">Download data from the web by entering a URL (one per line) or directly paste content.</div>
+<!--                            <div class="upload-text-info">Download data from the web by entering a URL (one per line) or directly paste content.</div>-->
+                            <div class="upload-text-info">通过输入URL（每行一个）或直接粘贴内容从web下载数据。</div>
                             <textarea class="upload-text-content form-control"/>
                         </div>
                     </div>

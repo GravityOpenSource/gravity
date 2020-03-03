@@ -37,14 +37,22 @@ define({
     "Create Visualization": "创建可视化",
     Datasets: "数据集",
     "Histories shared with me": "与我分享的历史",
-    "Active InteractiveTools": "活动的交互工具",
+    "Active InteractiveTools": "可用的交互工具",
     Tools: "工具",
     "Show favorites": "显示收藏夹",
     "All workflows": "所有流程",
     "clear search (esc)": "清除搜索 (esc键)",
     "Using ": "使用 ",
     Details: "详情",
+    Favorite: "收藏",
+    Options: "选项",
+    Share: "分享",
+    Execute: "执行",
+    "Tool request failed": "工具请求失败",
+    "Job submission failed": "任务提交失败",
     "(empty)": "(空)",
+    "Back to ": "返回",
+    "Click to rename collection": "单击以重命名集合",
 
     //Tooltip
     "Account and saved data": "账号及数据保存",
@@ -129,8 +137,8 @@ define({
     "hide hidden": "收起隐藏",
     "hidden": "隐藏",
     "Edit history tags": "编辑历史标签",
-    "Edit history annotation": "编辑历史备注",
-    "Edit history Annotation": "编辑历史备注", //大写
+    "Edit history annotation": "编辑历史注释",
+    "Edit history Annotation": "编辑历史注释", //大写
     "Unnamed history": "未命名的历史",
     "Click to rename history": "单击要重命名的历史",
     "Drag datasets here to copy them to the current history": "将数据集拖到此处以将其复制到当前历史记录",
@@ -138,6 +146,15 @@ define({
     "search histories": "搜索历史记录",
     "search all datasets": "搜索所有数据集",
     "Operations on multiple datasets": "编辑多个数据集",
+    "This history has been purged and deleted": "此历史已被清除和删除",
+    "This history has been deleted": "此历史已被删除",
+    "This history has been purged": "此历史已清除",
+    "Click to open and select a page. Begin typing a page number to select it": "单击以打开并选择一个页面。 开始输入页码进行选择",
+    "Exclude deleted": "除去已删除",
+    "Include deleted": "包括已删除",
+    "Exclude hidden": "除去已隐藏",
+    "Include hidden": "包括已隐藏",
+    "Show structure": "显示结构",
     "Create new": "新增",
     "Hide datasets": "隐藏数据集",
     "Unhide datasets": "显示数据集",
@@ -149,10 +166,46 @@ define({
     "Build List of Dataset Pairs": "建立数据集对列表",
     "Build Collection from Rules": "从规则中构建集合",
     "This will permanently remove the data in your datasets. Are you sure?": "这将永久在您的数据集删除数据。您确定吗？",
+    "This will permanently remove the data. Are you sure?": "这将永久删除数据。你确定吗?",
+    "loading all histories for search": "加载所有搜索历史记录",
+    of: "在",
+    searching: "搜索",
+    "Order histories by": "订阅的历史:",
+    "most recent first": "时间降序",
+    "least recent first": "时间升序",
+    "name, a to z": "名称升序",
+    "name, z to a": "名称降序",
+    "size, large to small": "大小降序",
+    "size, small to large": "大小升序",
+    "Include deleted histories": "包括已删除的历史记录",
+    "Include deleted datasets": "包括已删除的数据集",
+    "Include hidden datasets": "包括隐藏的数据集",
+    "Collection Only": "仅收藏",
+    "Delete Datasets": "删除数据集",
+    "Permanently Delete Datasets": "永久删除数据集",
 
-    // ---- history-view-annotated
+  // ---- history-copy
+    "Copying history": "复制历史:",
+    "History could not be copied.": "历史无法复制",
+    "Copy only the active, non-deleted datasets": "仅复制可用的、未删除的数据集",
+    "Copy all datasets including deleted ones": "复制所有数据集，包括已删除的数据集",
+    "As an anonymous user, unless you login or register, you will lose your current history ": "作为匿名用户，除非您登录或注册，否则将丢失当前历史",
+    "after copying this history. ": "在复制此历史后。",
+    "login here": "在此登录",
+    "register here": "在此注册",
+    "Enter a title for the new history": "输入新历史的标题",
+    "Please enter a valid history title": "请输入有效的历史标题",
+    "Choose which datasets from the original history to include:": "从原始历史中选择要包含的数据集：",
+    "Importing history": "导入历史",
+    "Import": "导入",
+    "History could not be imported.": "无法导入历史",
+    "Import only the active, non-deleted datasets": "仅导入可用的、未删除的数据集",
+    "Import all datasets including deleted ones": "导入所有数据集，包括已删除的数据集",
+    "after importing this history. ": "在导入此历史后。",
+
+  // ---- history-view-annotated
     Dataset: "数据",
-    Annotation: "备注",
+    Annotation: "注释",
 
     // ---- history-view-edit-current
     "This history is empty. Click 'Get Data' on the left tool menu to start": "历史已空，请单击左边窗格中‘获取数据’",
@@ -160,6 +213,7 @@ define({
     //TODO:
     "You can ": "您可以 ",
     " or ": " 或者 ",
+    "or": " 或者 ",
     "load your own data": "上传您的个人数据",
     "get data from an external source": "从外部来源获取数据",
 
@@ -171,6 +225,28 @@ define({
 
     // ---------------------------------------------------------------------------- upload-view
     "Download from web or upload from disk": "从网站下载或从磁盘上传文件",
+    "Choose local file": "选择本地文件",
+    "Choose local files": "选择本地文件",
+    "Choose FTP file": "选择FTP文件",
+    "Choose FTP files": "选择FTP文件",
+    "Paste/Fetch data": "粘贴/获取数据",
+    Start: "开始",
+    Pause: "暂停",
+    Reset: "重置",
+    Close: "关闭",
+    Build: "构建",
+    "FTP files": "FTP文件",
+    "Select a file": "选择一个文件",
+    Regular: "常规",
+    Composite: "综合",
+    Collection: "集合",
+    "Rule-based": "基于规则",
+    "Upload configuration": "上传配置",
+    "Upload data as": "上传资料为",
+    "Load tabular data from": "加载表格数据",
+    "Select dataset to load": "选择要加载的数据集",
+
+
     // ---------------------------------------------------------------------------- upload-button
     // "Download from URL or upload files from disk": false,
     "Download from URL or upload files from disk": "从网站下载或从磁盘上传文件",
@@ -249,7 +325,7 @@ define({
     "This job is currently running": "任务正在运行中",
     // state: paused
     'This job is paused. Use the "Resume Paused Jobs" in the history menu to resume':
-        '此任务已暂停。使用历史菜单中的 "恢复已暂停的工作" 来恢复',
+        '此任务已暂停。使用历史菜单中的 "恢复已暂停的任务" 来恢复',
     // state: error
     "An error occurred with this dataset": "此数据集发生错误",
     // state: empty
@@ -261,7 +337,7 @@ define({
     "There was an error getting the data for this dataset": "获取此数据集的数据时出错",
 
     // purged'd/del'd msg
-    "This dataset has been deleted and removed from disk": "此数据集已被删除并从磁盘中删除",
+    "This dataset has been deleted and removed from disk": "此数据集已被删除且从磁盘中删除",
     "This dataset has been deleted": "此数据集已被删除",
     "This dataset has been hidden": "此数据集已被隐藏",
 
@@ -293,7 +369,7 @@ define({
     "set it manually or retry auto-detection": "手动设置或重试自动检测",
 
     "Edit dataset tags": "编辑数据集标签",
-    "Edit dataset annotation": "编辑数据集备注",
+    "Edit dataset annotation": "编辑数据集注释",
 
     "Tool Help": "工具帮助",
 
@@ -321,7 +397,7 @@ define({
     "Data types": "数据类型",
     "Data tables": "数据表",
     "Display applications": "显示应用程序",
-    Jobs: "工作",
+    Jobs: "任务",
     "Workflow invocations": "流程调用",
     "User Management": "用户管理",
      Forms: "表单",
@@ -342,7 +418,7 @@ define({
 
     // ---------------------------------------------------------------------------- misc. MVC
     Tags: "标签",
-    "Edit annotation": "编辑备注",
+    "Edit annotation": "编辑注释",
 
     // ---------------------------------------------------------------------------- error-modal
     "An error occurred": "发生一个错误",
@@ -358,6 +434,21 @@ define({
 
     // ---------------------------------------------------------------------------- RuleCollectionBuilder
     "Numeric sorting.": "数值排序。",
+
+    // ---------------------------------------------------------------------------- user-custom-builds
+    "Delete custom build.": "删除自定义构建。",
+    "Provide the data source.": "提供数据源。",
+    "Create new Build": "创建新构建",
+
+    // ---------------------------------------------------------------------------- list-view
+    "This list is empty": "这个列表是空的",
+    "No matching items found": "没有找到匹配的项目",
+    search: "搜索",
+
+    // ---------------------------------------------------------------------------- collection-li
+    "There was an error getting the data for this collection": "此集合已被删除",
+    "This collection has been deleted and removed from disk": "此集合已从磁盘中删除",
+    "This collection has been deleted": "此集合已被删除",
 
 
 
