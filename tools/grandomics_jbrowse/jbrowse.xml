@@ -469,7 +469,7 @@
                                name="chunkSizeLimit"
                                type="integer"
                                help="Maximum size in bytes of BAM chunks that the browser will try to deal with. When this is exceeded, most tracks will display 'Too much data' message."
-                               value="5000000"/>
+                               value="100000000"/>
                         <expand macro="track_custom_config"/>
                         <expand macro="track_display"/>
                     </when>

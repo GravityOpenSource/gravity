@@ -1,0 +1,4 @@
+#<unique_build_id>	<dbkey>	<display_name>	<file_path>
+#hg19full	hg19	Human (Homo sapiens): hg19 Full	/path/to/genome/hg19/hg19full.fa
+
+MN994467.1	USA-CA1	Wuhan seafood market pneumonia virus isolate 2019-nCoV/USA-CA1/2020	/opt/galaxy/database/tool-data/reference/MN994467.1.fa

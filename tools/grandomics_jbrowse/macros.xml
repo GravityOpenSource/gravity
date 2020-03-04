@@ -262,7 +262,7 @@ This Galaxy tool relies on the JBrowse, maintained by the GMOD Community. The Ga
        token_label="product,name,id"
        token_description="note,description"
        token_height="10px"
-       token_maxheight="600">
+       token_maxheight="100000">
     <section name="jbstyle" title="JBrowse Styling Options [Advanced]" expanded="false">
         <param label="JBrowse style.className" type="text"
                name="style_classname"
