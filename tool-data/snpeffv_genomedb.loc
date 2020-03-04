@@ -3,5 +3,5 @@
 ## the Description field in this sample is "Genome : Version"
 #Key    snpeff_version  Version Description     data_dir        path
 #SnpEff4.0_GRCh37.74    SnpEff4.0       GRCh37.74       Homo sapiens : GRCh37.74        /home/galaxy/snpEff/v4_0/data
-SnpEff4.3_MN994467      SnpEff4.3       ncov.MN994467   COVID-19 : MN994467     /data/library/database/snpEff/  /opt/galaxy/tools/grandomics_tools/snpEff.config
-SnpEff4.3_MN994467.1    SnpEff4.3       ncov.MN994467.1 COVID-19 : MN994467.1   /data/library/database/snpEff/  /opt/galaxy/tools/grandomics_tools/snpEff.config
+SnpEff4.3_MN994467      SnpEff4.3       ncov.MN994467   COVID-19 : MN994467     /opt/galaxy/database/tool-data/snpEff/  /opt/galaxy/tools/grandomics_tools/snpEff.config
+SnpEff4.3_MN994467.1    SnpEff4.3       ncov.MN994467.1 COVID-19 : MN994467.1   /opt/galaxy/database/tool-data/snpEff/  /opt/galaxy/tools/grandomics_tools/snpEff.config
