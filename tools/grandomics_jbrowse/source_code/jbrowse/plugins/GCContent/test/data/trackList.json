@@ -1,0 +1,36 @@
+{
+  "tracks": [
+    {
+      "seqType": "dna",
+      "key": "Reference sequence",
+      "storeClass": "JBrowse/Store/Sequence/StaticChunked",
+      "chunkSize": 20000,
+      "urlTemplate": "seq/{refseq_dirpath}/{refseq}-",
+      "label": "DNA",
+      "type": "SequenceTrack",
+      "category": "Reference sequence"
+    },
+    {
+      "storeClass": "JBrowse/Store/Sequence/StaticChunked",
+      "urlTemplate": "seq/{refseq_dirpath}/{refseq}-",
+      "type": "GCContent/View/Track/GCContentXY",
+      "label": "GCContentXY"
+    },
+    {
+      "storeClass": "JBrowse/Store/Sequence/StaticChunked",
+      "urlTemplate": "seq/{refseq_dirpath}/{refseq}-",
+      "type": "GCContent/View/Track/GCContent",
+      "label": "GCContent"
+    },
+    {
+      "storeClass": "JBrowse/Store/Sequence/StaticChunked",
+      "urlTemplate": "seq/{refseq_dirpath}/{refseq}-",
+      "type": "GCContent/View/Track/GCContent",
+      "label": "GCContent 1bp",
+      "windowSize": 1,
+      "windowDelta": 1
+    }
+  ],
+  "formatVersion": 1,
+  "plugins": ["GCContent"]
+}

@@ -1,18 +1,35 @@
 <?xml version="1.0"?>
-<tool id="load_from_basecalled" name="加载数据" version="0.1.0">
-    <description>从Basecalled目录加载指定cell的fastq_pass数据</description>
-    <command>
-        mkdir -p outputs; cd outputs; python '$__tool_directory__/basecalled.py' -n $cell -f fastq -t pass
-    </command>
+<tool id="load_data_from_basecalled" name="加载数据" version="0.1.0">
+    <description>从BASECALLED目录加载指定CELL的FASTQs数据</description>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$__tool_directory__/basecalled.py' -c $cell -r $pass_required -n $number -o outputs
+    ]]></command>
     <inputs>
-        <param name="cell" type="text" label="Cell名称" value="20190219-TEST-P1"/>
+        <param name="cell" type="text" label="Cell名称"/>
+        <param name="pass_required" type="boolean" truevalue="true" falsevlaue="false" checked="true"
+               label="是否仅加载PASS FASTQs(文件名带有_pass_)"/>
+        <param name="number" type="integer" label="合并文件都N个" value="10"/>
     </inputs>
     <outputs>
-        <collection name="list_output" type="list" label="BASECALLED FASTQs">
-            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        <collection name="list_output" type="list" label="BASECALLED FASTQs($cell)">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs"/>
         </collection>
     </outputs>
-<!--    <help><![CDATA[
-        TODO: Fill in help.
-    ]]></help>-->
+    <help><![CDATA[
+说明
+-----
+
+该工具在将根据CELL名称以及相关筛选条件，在ONT BASECALLED目录查找对应的CELL内的FASTQ文件后，将符合条件的所有FASTQ文件合并为
+指定数量的FASTQ文件并加载。
+
+Cell 名称:
+    在BASECALLED目录中查找的对应的CELL文件夹名称。
+
+是否仅加载PASS FASTQs:
+    若选择“YES”，则工具仅查找文件名中带有“_pass_”子串的FASTQ文件，否则工具将查找所有FASTQ文件。
+
+合并文件都N个:
+    ONT测序平台如PromethION由于通量较高，fastq文件较多，导致文件难以管理并产生卡顿，建议将文件合并为指定数量N个文件。
+
+    ]]></help>
 </tool>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="head-line">
+    <h3>
+        {% if status == 0 %}警告：未发现需要关闭的实时检测实例正在运行{% endif %}
+        {% if status == 1 %}消息：已关闭实时检测实例{% endif %}
+        {% if status == -1 %}错误：未成功关闭实时检测实例{% endif %}
+        ：{{ cell }}
+    </h3>
+</div>
+<div class="title">
+    <h4>以下为正在运行的实例，可通过“病原实时检测->列表”查看详情</h4>
+</div>
+<table class="table" cellpadding="0" cellspacing="0">
+    <tr>
+        <th>Cell名称</th>
+        <th>运行端口</th>
+    </tr>
+    {% for container in containers %}
+    <tr>
+        <td>{{ container.name }}</td>
+        <td>{{ container.port }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+<style type="text/css">
+    body {
+        background-color: #02292e;
+        color: #fff3cd;
+    }
+
+    div.head-line {
+        margin-top: 60px;
+        text-align: center;
+        border-bottom: #fff3cd solid 1px;
+    }
+
+    div.title {
+        margin-top: 60px;
+        text-align: center;
+    }
+
+    table.table {
+        width: 100%;
+        text-align: center;
+    }
+
+    table.table td, table.table th {
+        border-bottom: #fff3cd solid 1px;
+        line-height: 40px;
+        font-size: 14px;
+        width: 50%;
+    }
+</style>
+</body>
+</html>
