@@ -8,7 +8,7 @@
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         minimap2 -x map-ont --MD -Y -a -t $threads $ref $input_fastq | samtools view -S -b -h -F 3840 -q 60 - | samtools sort -o $bam - && samtools index $bam &&
-        samtools depth -a -d 0 $bam > $depth &&
+        samtools depth -d 0 $bam > $depth &&
         samtools mpileup -a -d 0 -Q 7 -f $ref $bam | mpileup2readcounts > $base_stat
         ]]>
     </command>

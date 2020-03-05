@@ -13,8 +13,8 @@
                 samtools index infile infile.bai &&
             #end if
         #end if
-        medaka consensus --threads $thread --model $model infile hdf &&
-        medaka snp $reference hdf $outvcf &&
+        /opt/conda/envs/medaka/bin/medaka consensus --threads $thread --model $model infile hdf &&
+        /opt/conda/envs/medaka/bin/medaka snp $reference hdf $outvcf &&
         rm hdf
         ]]>
     </command>

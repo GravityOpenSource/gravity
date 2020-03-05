@@ -1,0 +1,31 @@
+##gff-version 3
+#!gff-spec-version 1.21
+#!processor NCBI annotwriter
+#!genome-build ASM985889v3
+#!genome-build-accession NCBI_Assembly:GCF_009858895.2
+##sequence-region MN994467.1 1 29903
+##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2697049
+MN994467.1	RefSeq	region	1	29903	.	+	.	ID=MN994467.1:1..29903;Dbxref=taxon:2697049;collection-date=Dec-2019;country=China;gbkey=Src;genome=genomic;isolate=Wuhan-Hu-1;mol_type=genomic RNA;nat-host=Homo sapiens
+MN994467.1	RefSeq	five_prime_UTR	1	265	.	+	.	ID=id-MN994467.1:1..265;gbkey=5'UTR
+MN994467.1	RefSeq	gene	266	21555	.	+	.	ID=gene-GU280_gp01;Dbxref=GeneID:43560238;Name=orf1ab;gbkey=Gene;gene=orf1ab;gene_biotype=protein_coding;locus_tag=GU280_gp01
+MN994467.1	RefSeq	CDS	266	13468	.	+	0	ID=cds-YP_009724389.1;Parent=gene-GU280_gp01;Dbxref=Genbank:YP_009724389.1,GeneID:43560238;Name=YP_009724389.1;Note=translated by -1 ribosomal frameshift;exception=ribosomal slippage;gbkey=CDS;gene=orf1ab;locus_tag=GU280_gp01;product=orf1ab polyprotein (pp1ab);protein_id=YP_009724389.1;color=#00FF00
+MN994467.1	RefSeq	CDS	13468	21555	.	+	0	ID=cds-YP_009724389.1;Parent=gene-GU280_gp01;Dbxref=Genbank:YP_009724389.1,GeneID:43560238;Name=YP_009724389.1;Note=translated by -1 ribosomal frameshift;exception=ribosomal slippage;gbkey=CDS;gene=orf1ab;locus_tag=GU280_gp01;product=orf1ab polyprotein (pp1ab);protein_id=YP_009724389.1;color=#00FF00
+MN994467.1	RefSeq	gene	21563	25384	.	+	.	ID=gene-GU280_gp02;Dbxref=GeneID:43560230;Name=S;gbkey=Gene;gene=S;gene_biotype=protein_coding;locus_tag=GU280_gp02
+MN994467.1	RefSeq	CDS	21563	25384	.	+	0	ID=cds-YP_009724390.1;Parent=gene-GU280_gp02;Dbxref=Genbank:YP_009724390.1,GeneID:43560230;Name=YP_009724390.1;Note=structural protein;gbkey=CDS;gene=S;locus_tag=GU280_gp02;product=surface glycoprotein;protein_id=YP_009724390.1;color=#00FF00
+MN994467.1	RefSeq	gene	25393	26220	.	+	.	ID=gene-GU280_gp03;Dbxref=GeneID:43560231;Name=ORF3a;gbkey=Gene;gene=ORF3a;gene_biotype=protein_coding;locus_tag=GU280_gp03
+MN994467.1	RefSeq	CDS	25393	26220	.	+	0	ID=cds-YP_009724391.1;Parent=gene-GU280_gp03;Dbxref=Genbank:YP_009724391.1,GeneID:43560231;Name=YP_009724391.1;gbkey=CDS;gene=ORF3a;locus_tag=GU280_gp03;product=ORF3a protein;protein_id=YP_009724391.1
+MN994467.1	RefSeq	gene	26245	26472	.	+	.	ID=gene-GU280_gp04;Dbxref=GeneID:43560232;Name=E;gbkey=Gene;gene=E;gene_biotype=protein_coding;locus_tag=GU280_gp04
+MN994467.1	RefSeq	CDS	26245	26472	.	+	0	ID=cds-YP_009724392.1;Parent=gene-GU280_gp04;Dbxref=Genbank:YP_009724392.1,GeneID:43560232;Name=YP_009724392.1;Note=structural protein%3B E protein;gbkey=CDS;gene=E;locus_tag=GU280_gp04;product=envelope protein;protein_id=YP_009724392.1;color=#00FF00
+MN994467.1	RefSeq	gene	26523	27191	.	+	.	ID=gene-GU280_gp05;Dbxref=GeneID:43560233;Name=M;gbkey=Gene;gene=M;gene_biotype=protein_coding;locus_tag=GU280_gp05
+MN994467.1	RefSeq	CDS	26523	27191	.	+	0	ID=cds-YP_009724393.1;Parent=gene-GU280_gp05;Dbxref=Genbank:YP_009724393.1,GeneID:43560233;Name=YP_009724393.1;Note=structural protein;gbkey=CDS;gene=M;locus_tag=GU280_gp05;product=membrane glycoprotein;protein_id=YP_009724393.1;color=#00FF00
+MN994467.1	RefSeq	gene	27202	27387	.	+	.	ID=gene-GU280_gp06;Dbxref=GeneID:43560234;Name=ORF6;gbkey=Gene;gene=ORF6;gene_biotype=protein_coding;locus_tag=GU280_gp06
+MN994467.1	RefSeq	CDS	27202	27387	.	+	0	ID=cds-YP_009724394.1;Parent=gene-GU280_gp06;Dbxref=Genbank:YP_009724394.1,GeneID:43560234;Name=YP_009724394.1;gbkey=CDS;gene=ORF6;locus_tag=GU280_gp06;product=ORF6 protein;protein_id=YP_009724394.1;color=#00FF00
+MN994467.1	RefSeq	gene	27394	27759	.	+	.	ID=gene-GU280_gp07;Dbxref=GeneID:43560235;Name=ORF7a;gbkey=Gene;gene=ORF7a;gene_biotype=protein_coding;locus_tag=GU280_gp07
+MN994467.1	RefSeq	CDS	27394	27759	.	+	0	ID=cds-YP_009724395.1;Parent=gene-GU280_gp07;Dbxref=Genbank:YP_009724395.1,GeneID:43560235;Name=YP_009724395.1;gbkey=CDS;gene=ORF7a;locus_tag=GU280_gp07;product=ORF7a protein;protein_id=YP_009724395.1;color=#00FF00
+MN994467.1	RefSeq	gene	27894	28259	.	+	.	ID=gene-GU280_gp08;Dbxref=GeneID:43560236;Name=ORF8;gbkey=Gene;gene=ORF8;gene_biotype=protein_coding;locus_tag=GU280_gp08
+MN994467.1	RefSeq	CDS	27894	28259	.	+	0	ID=cds-YP_009724396.1;Parent=gene-GU280_gp08;Dbxref=Genbank:YP_009724396.1,GeneID:43560236;Name=YP_009724396.1;gbkey=CDS;gene=ORF8;locus_tag=GU280_gp08;product=ORF8 protein;protein_id=YP_009724396.1;color=#00FF00
+MN994467.1	RefSeq	gene	28274	29533	.	+	.	ID=gene-GU280_gp09;Dbxref=GeneID:43560237;Name=N;gbkey=Gene;gene=N;gene_biotype=protein_coding;locus_tag=GU280_gp09
+MN994467.1	RefSeq	CDS	28274	29533	.	+	0	ID=cds-YP_009724397.2;Parent=gene-GU280_gp09;Dbxref=Genbank:YP_009724397.2,GeneID:43560237;Name=YP_009724397.2;Note=structural protein;gbkey=CDS;gene=N;locus_tag=GU280_gp09;product=nucleocapsid phosphoprotein;protein_id=YP_009724397.2;color=#00FF00
+MN994467.1	RefSeq	gene	29558	29674	.	+	.	ID=gene-GU280_gp10;Dbxref=GeneID:43569679;Name=ORF10;gbkey=Gene;gene=ORF10;gene_biotype=protein_coding;locus_tag=GU280_gp10
+MN994467.1	RefSeq	CDS	29558	29674	.	+	0	ID=cds-YP_009725255.1;Parent=gene-GU280_gp10;Dbxref=Genbank:YP_009725255.1,GeneID:43569679;Name=YP_009725255.1;gbkey=CDS;gene=ORF10;locus_tag=GU280_gp10;product=ORF10 protein;protein_id=YP_009725255.1;color=#00FF00
+MN994467.1	RefSeq	three_prime_UTR	29675	29903	.	+	.	ID=id-MN994467.1:29675..29903;gbkey=3'UTR

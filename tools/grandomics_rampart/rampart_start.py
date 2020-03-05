@@ -56,13 +56,12 @@ class Cell(object):
             'remove': True
         }
 
-    def create_protocol(self, genome_file, references_file, primers_file):
-        target_genome_file = os.path.join(self.protocol_dir, 'genome.json')
-        target_references_file = os.path.join(self.protocol_dir, 'references.fasta')
-        target_primers_file = os.path.join(self.protocol_dir, 'primers.json')
-        if not os.path.isfile(target_genome_file): shutil.copyfile(genome_file, target_genome_file)
-        if not os.path.isfile(target_references_file): shutil.copyfile(references_file, target_references_file)
-        if not os.path.isfile(target_primers_file): shutil.copyfile(primers_file, target_primers_file)
+    def create_protocol(self, source_protocol_dir):
+        for filename in ('genome.json', 'references.fasta', 'primers.json'):
+            source_file = os.path.join(source_protocol_dir, filename)
+            target_file = os.path.join(self.protocol_dir, filename)
+            if not os.path.isfile(target_file):
+                shutil.copyfile(source_file, target_file)
 
     def create_config(self):
         data = {'title': self._name, 'basecalledPath': self.fastq_dir, 'samples': []}
@@ -83,6 +82,7 @@ class Cell(object):
             self._host_ip, port, '100%', '100%'
         ))
         fo.close()
+
 
 class Docker(object):
     def __init__(self):
@@ -123,15 +123,12 @@ class Docker(object):
         self._client.containers.run(**kwargs)
 
 
-
-
-
 def main(args):
     docker = Docker()
     container = docker.get_container(cell_name=args.cell)
     if container: container.stop()
     cell = Cell(name=args.cell)
-    cell.create_protocol(genome_file=args.genome, references_file=args.references, primers_file=args.primers)
+    cell.create_protocol(args.protocol)
     cell.create_config()
     port = docker.port
     docker_params = cell.get_docker_params(port=port)
@@ -144,9 +141,10 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description='Author: Ying Zhu (zhuy@grandomics.com) from GrandOmics'
     )
-    parser.add_argument('-g', '--genome', required=True, help='genome json file')
-    parser.add_argument('-r', '--references', required=True, help='references fastq file')
-    parser.add_argument('-p', '--primers', required=True, help='primers json file')
+    # parser.add_argument('-g', '--genome', required=True, help='genome json file')
+    # parser.add_argument('-r', '--references', required=True, help='references fastq file')
+    # parser.add_argument('-p', '--primers', required=True, help='primers json file')
+    parser.add_argument('-p', '--protocol', required=True, help='protocol dir')
     parser.add_argument('-c', '--cell', required=True, help='cell name')
     parser.add_argument('-o', '--out_html', required=True, help='output html')
     parser.set_defaults(function=main)

@@ -1,0 +1,22 @@
+<tool id="variant_annotation2" name="变异注释" version="1.0.0">
+    <description> snpEff注释VCF文件</description>
+    <!--
+    <command><![CDATA[
+        snpEff -c $__tool_directory__/snpEff.config $genome $input > $output
+    ]]></command>
+    -->
+    <command><![CDATA[
+        snpEff -c ${genome.fields.config} $genome $input > $output
+    ]]></command>
+    <inputs>
+        <param name="input" type="data" format="vcf" label="variants in VCF foramt"/>
+        <param name="genome" type="select" label="snpEff genomedb">
+            <options from_data_table="snpeffv_genomedb">
+                <filter type="sort_by" column="1"/>
+            </options>
+        </param>
+    </inputs>
+    <outputs>
+        <data name="output" format_source="input" />
+    </outputs>
+</tool>

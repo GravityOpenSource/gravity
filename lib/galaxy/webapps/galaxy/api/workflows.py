@@ -607,7 +607,8 @@ class WorkflowsAPIController(BaseAPIController, UsesStoredWorkflowMixin, UsesAnn
         try:
             data = json.loads(archive_data)
         except Exception:
-            if "GalaxyWorkflow" in archive_data:
+            key = 'GalaxyWorkflow' if isinstance(archive_data, str) else b'GalaxyWorkflow'
+            if key in archive_data:
                 data = {"yaml_content": archive_data}
             else:
                 raise exceptions.MessageException("The data content does not appear to be a valid workflow.")

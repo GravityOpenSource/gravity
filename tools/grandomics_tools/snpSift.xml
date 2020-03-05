@@ -1,0 +1,12 @@
+<tool id="variant_report" name="展示VCF结果" version="1.0.0">
+    <command><![CDATA[
+        SnpSift extractFields -e "." $input CHROM POS REF ALT "ANN[0].GENE" "ANN[0].IMPACT" "ANN[0].EFFECT" "ANN[0].HGVS_P" > $output
+    ]]></command>
+    <inputs>
+        <param name="input" type="data" format="vcf" label="variants in VCF foramt"/>
+    </inputs>
+    <outputs>
+        <data name="output" format="tabular" />
+    </outputs>
+</tool>
+

@@ -3,17 +3,18 @@
     <description>新增实时检测实例</description>
     <command detect_errors="exit_code"><![CDATA[
         python '$__tool_directory__/rampart_start.py'
-        -g $genome
-        -r $references
-        -p $primers
+        -p $protocol
         -c $cell
         -o $output
     ]]></command>
     <inputs>
         <param name="cell" type="text" label="Cell名称"/>
-        <param name="references" type="data" multiple="false" format="fasta" label="参考基因组序列(example: references.fasta)"/>
-        <param name="genome" type="data" multiple="false" format="json" label="参考基因组注释(example: genome.json)"/>
-        <param name="primers" type="data" multiple="false" format="json" label="Primers(example: primers.json)"/>
+        <param name="protocol" type="select" label="选择PROTOCOL">
+            <options from_data_table="rampart_protocol">
+                <column name="name" index="0"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
     </inputs>
     <outputs>
         <data name="output" format="html" label="新增:实时检测实例($cell)"/>

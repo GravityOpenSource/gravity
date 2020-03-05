@@ -64,6 +64,42 @@
         <galaxyUrl>${__app__.config.galaxy_infrastructure_url}</galaxyUrl>
     </metadata>
     <tracks>
+      <track cat="default_gff" format="gff,gff3,bed" visibility="default_off">
+            <files>
+              <trackFile path="$reference_annotation.fields.path" ext="gff" label="$reference_annotation.label">
+                <metadata/>
+              </trackFile>
+            </files>
+
+            <options>
+                <style>
+                    <overridePlugins>False</overridePlugins>
+                    <overrideDraggable>False</overrideDraggable>
+                    <className>feature</className>
+                    <description>note,description</description>
+                    <label>product,name,id</label>
+                    <height>10px</height>
+                    <maxHeight>600</maxHeight>
+                </style>
+
+                <scaling>
+                    <method>ignore</method>
+                    <scheme>
+                        <color>__auto__</color>
+                    </scheme>
+                </scaling>
+
+
+
+                <custom_config/>
+
+                <gff>
+                    <trackType>NeatHTMLFeatures/View/Track/NeatFeatures</trackType>
+                    <match>False</match>
+                    <index>False</index>
+                </gff>
+            </options>
+        </track>
         #for $tg in $track_groups:
         #for $track in $tg.data_tracks:
         <track cat="${tg.category}" format="${track.data_format.data_format_select}" visibility="${track.data_format.track_visibility}">
@@ -311,6 +347,13 @@
         </conditional>
 
         <param name="standalone" type="hidden" value="Complete"/>
+        <param label="Reference annotation(GFF)"  name="reference_annotation" type="select">
+          <options from_data_table="all_gff">
+              <filter column="2" type="sort_by"/>
+              <!-- <column name="name" index="0"/>
+              <column name="value" index="3"/> -->
+          </options>
+        </param>
 
         <!--
         <param name="standalone" type="boolean" truevalue="Complete" falsevalue="Data Directory" checked="true"
@@ -469,7 +512,7 @@
                                name="chunkSizeLimit"
                                type="integer"
                                help="Maximum size in bytes of BAM chunks that the browser will try to deal with. When this is exceeded, most tracks will display 'Too much data' message."
-                               value="100000000"/>
+                               value="5000000"/>
                         <expand macro="track_custom_config"/>
                         <expand macro="track_display"/>
                     </when>
