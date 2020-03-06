@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import collections
 import copy
 import json
+import simplejson
 import logging
 import math
 import random
@@ -67,7 +68,8 @@ def safe_dumps(*args, **kwargs):
     re-encoding.
     """
     try:
-        dumped = json.dumps(*args, allow_nan=False, **kwargs)
+        # dumped = json.dumps(*args, allow_nan=False, **kwargs)
+        dumped = simplejson.dumps(*args, allow_nan=False, **kwargs)
     except ValueError:
         obj = swap_inf_nan(copy.deepcopy(args[0]))
         dumped = json.dumps(obj, allow_nan=False, **kwargs)
