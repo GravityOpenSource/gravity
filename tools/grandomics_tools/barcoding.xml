@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<tool id="barcoding_fastq_files" name="拆分BARCODE" version="0.1.0">
-    <description>QCAT-FASTQ拆分Barcode</description>
+<tool id="barcoding_fastq_files" name="数据拆分" version="0.1.0">
+    <description> </description>
     <command detect_errors="exit_code"><![CDATA[
-        mkdir -p outputs && qcat --quiet -f $input_fastq -b outputs/ --trim -k $kit
+        mkdir -p outputs && qcat --quiet -f $input_fastq -b outputs/ --trim -k $kit &&
+        rm outputs/none.fastq 
         ]]>
     </command>
     <inputs>
@@ -26,8 +27,8 @@
         </param>
     </inputs>
     <outputs>
-        <collection name="list_output" type="list" label="QCAT BARCODED FASTQs">
-            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        <collection name="list_output" type="list" label="拆分BARCODE">
+            <discover_datasets pattern="__name_and_ext__" format="fastq" directory="outputs" />
         </collection>
     </outputs>
     <help><![CDATA[

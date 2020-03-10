@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tool id="seqkit_seq" name="质控过滤" version="0.1.0">
-    <description>seqkit seq数据过滤</description>
+    <description></description>
     <command detect_errors="exit_code"><![CDATA[
         seqkit seq --quiet -m $min_length -M $max_length -o $output_fastq $input_fastq
     ]]></command>
@@ -10,7 +10,7 @@
         <param name="max_length" type="integer" label=" 最大长度" value="600"/>
     </inputs>
     <outputs>
-        <data name="output_fastq" format="input" metadata_source="input_fastq"/>
+        <data name="output_fastq" format="input" metadata_source="input_fastq" label="质控过滤 on $input_fastq.name"/>
     </outputs>
     <help><![CDATA[
 说明

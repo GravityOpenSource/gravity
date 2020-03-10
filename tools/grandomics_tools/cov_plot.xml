@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<tool id="covplot" name="覆盖度可视化" version="0.1.0">
+    <requirements>
+	<requirement type="package">re</requirement>
+	<requirement type="package">sys</requirement>
+	<requirement type="package">os</requirement>
+	<requirement type="package">gzip</requirement>
+        <requirement type="package">numpy</requirement>
+        <requirement type="package">pandas</requirement>
+        <requirement type="package">matplotlib</requirement>
+        <requirement type="package">collections</requirement>
+        <requirement type="package">subprocess</requirement>
+        <requirement type="package">argparse</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python3 $__tool_directory__/cov_depth.py -i $bam -b $bed -c $coverage -d $depth
+        ]]>
+    </command>
+    <inputs>
+        <param name="bam" type="data" multiple="false" format="bam" label="输入BAM文件"/>
+        <param name="bed" type="select" label="选择BED文件">
+            <options from_data_table="capture_bed">
+                <column name="name" index="0"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
+    </inputs>
+    <outputs>
+        <data name="coverage" format="png" label="覆盖度图 on $bam.element_identifier"/>
+        <data name="depth" format="png" label="深度图 on $bam.element_identifier"/>
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+对BAM文件的BED区域进行覆盖度画图
+
+输入BAM文件:
+    待进行覆盖度画图的比对BAM文件
+
+选择BED文件：
+    可以从下拉菜单中选择扩增的BED区间文件
+
+
+        ]]></help>
+</tool>
+

@@ -1,5 +1,5 @@
 <tool id="variant_annotation2" name="变异注释" version="1.0.0">
-    <description> snpEff注释VCF文件</description>
+    <description> </description>
     <!--
     <command><![CDATA[
         snpEff -c $__tool_directory__/snpEff.config $genome $input > $output
@@ -17,6 +17,6 @@
         </param>
     </inputs>
     <outputs>
-        <data name="output" format_source="input" />
+        <data name="output" format_source="input" label="变异注释 on $input.element_identifier"/>
     </outputs>
 </tool>

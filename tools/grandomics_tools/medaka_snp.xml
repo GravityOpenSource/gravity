@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tool id="medaka_variant" name="变异检测" version="0.1.0" python_template_version="3.6">
-    <description> Medaka检测SNV及InDel</description>
+    <description> </description>
     <requirements>
         <requirement type="package" version="0.11.1">medaka</requirement>
     </requirements>
@@ -41,7 +41,7 @@
         </param>
     </inputs>
     <outputs>
-        <data name="outvcf" format="vcf" />
+        <data name="outvcf" format="vcf" label="变异检测 on $inbam.element_identifier"/>
     </outputs>
     <help><![CDATA[
 说明

@@ -37,6 +37,7 @@ database/tmp
 database/*.sqlite
 database/openid_consumer_cache
 database/dependencies
+database/html
 
 # Python bytecode
 *.pyc
@@ -72,7 +73,7 @@ tool_shed_wsgi.ini
 #tool_conf.xml
 #external_service_types_conf.xml
 #migrated_tools_conf.xml
-shed_tool_conf.xml
+# shed_tool_conf.xml
 #tool_data_table_conf.xml
 #tool_sheds_conf.xml
 #integrated_tool_panel.xml
@@ -180,6 +181,4 @@ packages/*/*.egg-info
 config/plugins/visualizations/**/static/script.js
 static/client_build_hash.txt
 config/integrated_tool_panel.xml
-#config/tool_sheds_conf.xml
 config/tool_shed.yml
-config/shed_tool_data_table_conf.xml
