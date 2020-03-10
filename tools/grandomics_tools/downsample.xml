@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<tool id="downsample" name="比对BAM抽样" version="0.1.0">
-    <description> 需要抽样后进行可视化</description>
+<tool id="downsample" name="比对BAM文件抽样" version="0.1.0">
+    <description> </description>
     <requirements>
         <requirement type="package" version="0.1">variant</requirement>
     </requirements>
@@ -11,10 +11,10 @@
     <inputs>
         <param name="inbam" type="data" multiple="false" format="bam" label="输入BAM文件"/>
         <param name="depth" type="integer" label="抽样深度" value="1000"/>
-        <param name="threads" type="integer" label="线程数" value="3"/>
+        <param name="threads" type="integer" label="线程数（0为单线程）" value="3"/>
     </inputs>
     <outputs>
-        <data name="outbam" format="bam" label="比对BAM抽样-$inbam.name"/>
+        <data name="outbam" format="bam" label="比对BAM抽样 on $inbam.element_identifier"/>
     </outputs>
     <help><![CDATA[
 说明

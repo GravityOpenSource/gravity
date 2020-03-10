@@ -1,0 +1,20 @@
+<tool id="infection_detector" name="阳性检测（深度覆盖度）" version="1.0.0">
+    <requirements>
+        <requirement type="package" version="0.2.6">mosdepth</requirement>
+        <requirement type="package">samtools</requirement>
+        <requirement type="package">docopt</requirement>
+        <requirement type="package">pandas</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python $__tool_directory__/infection_detector.py -x ${depth} -c $coverage -t $thresholds $__tool_directory__/genome.bed $bam $output
+    ]]></command>
+    <inputs>
+        <param name="bam" type="data" format="bam" label="输入比对bam文件"/>
+        <param name="depth" type="integer" value="100" label="深度阈值"/> 
+        <param name="coverage" type="float" value="0.5" min="0" max="1" label="覆盖度阈值（0-1）"/> 
+        <param name="thresholds" type="text" value="1,10,50,100,500,1000" label="报告覆盖度的深度值（逗号分隔）"/>
+    </inputs>
+    <outputs>
+        <data name="output" format="tabular" label="阳性检测 on $bam.element_identifier"/>
+    </outputs>
+</tool>

@@ -1,15 +1,12 @@
 <?xml version="1.0"?>
 <tool id="minimap2_ont" name="序列比对" version="0.1.0">
-    <description> Minimap2比对ONT数据</description>
+    <description> </description>
     <requirements>
         <requirement type="package" version="2.17">minimap2</requirement>
         <requirement type="package" version="1.9">samtools</requirement>
-        <requirement type="package" version="1.0.0">mpileup2readcounts</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        minimap2 -x map-ont --MD -Y -a -t $threads $ref $input_fastq | samtools view -S -b -h -F 3840 -q 60 - | samtools sort -o $bam - && samtools index $bam &&
-        samtools depth -d 0 $bam > $depth &&
-        samtools mpileup -a -d 0 -Q 7 -f $ref $bam | mpileup2readcounts > $base_stat
+        minimap2 -x map-ont --MD -Y -a -t $threads $ref $input_fastq | samtools view -S -b -h -F 3840 -q 60 - | samtools sort -o $bam - && samtools index $bam 
         ]]>
     </command>
     <inputs>
@@ -23,9 +20,7 @@
         <param name="threads" type="integer" label="线程数" value="4"/>
     </inputs>
     <outputs>
-        <data name="bam" format="bam" />
-        <data name="depth" format="txt" />
-        <data name="base_stat" format="txt" />
+        <data name="bam" format="bam" label="序列比对 on $input_fastq.element_identifier" />
     </outputs>
     <help><![CDATA[
 说明
