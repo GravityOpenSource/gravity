@@ -1,7 +1,6 @@
 <%
     root = h.url_for( "/static/" )
     app_root = root + "plugins/visualizations/phyd3/static/"
-    app_src = root + "plugins/visualizations/phyd3/src/"
 %>
 ## ----------------------------------------------------------------------------
 <!DOCTYPE html>
@@ -22,8 +21,8 @@
     ${h.javascript_link( app_root + 'js/d3.v3.min.js' )}
 
     <!-- phyd3 -->
-    ${h.stylesheet_link( app_src + 'css/phyd3.min.css' )}
-    ${h.javascript_link( app_src + 'js/phyd3.min.js' )}
+    ${h.stylesheet_link( app_root + 'css/phyd3.min.css' )}
+    ${h.javascript_link( app_root + 'js/phyd3.min.js' )}
 
     <script>
         var opts = {
