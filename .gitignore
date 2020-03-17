@@ -146,7 +146,7 @@ tool-data/shared/jars/
 
 # JS, Local node_modules, and bower_components directories
 static/maps
-#static/plugins
+static/plugins
 static/scripts
 node_modules
 bower_components
