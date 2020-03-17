@@ -748,7 +748,7 @@
     <datatype extension="dada2_sequencetable" type="galaxy.datatypes.tabular:Tabular" mimetype="application/text" subclass="true" display_in_upload="true" />
     <datatype extension="dada2_uniques" type="galaxy.datatypes.tabular:Tabular" mimetype="application/text" subclass="true" display_in_upload="true" />
     <datatype extension="ckpt" type="galaxy.datatypes.binary:Binary" subclass="true" display_in_upload="true" />
-    <datatype extension="phyxml" type="galaxy.datatypes.xml:GenericXml" mimetype="application/xml" subclass="true" display_in_upload="true" description="Data for Phyd3"/>
+    <!-- datatype extension="phyxml" type="galaxy.datatypes.xml:GenericXml" mimetype="application/xml" subclass="true" display_in_upload="true" description="Data for Phyd3"/ -->
   </registration>
   <sniffers>
     <!--

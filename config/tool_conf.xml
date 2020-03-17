@@ -3,6 +3,7 @@
     <section id="grandomics_getext" name="获取数据">
         <tool file="grandomics_data_source/upload.xml"/>
         <tool file="grandomics_data_source/basecalled.xml"/>
+        <tool file="grandomics_data_source/test.xml"/>
     </section>
     <section id="grandomics_tools" name="希望组工具">
         <tool file="grandomics_tools/seqkit.xml"/>
