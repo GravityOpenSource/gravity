@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<tool id="obtain_positives" name="获得阳性样本" version="0.1.0">
+    <description></description>
+    <command><![CDATA[
+        mkdir -p outputs && 
+        #for $bam in $input_bams
+            #for $txt in $input_txt
+                #if $bam.element_identifier == $txt.element_identifier
+                    python $__tool_directory__/decide_infection.py --bam $bam --infection $txt --out $bam.element_identifier &&
+                #end if
+            #end for
+        #end for
+        ls outputs/
+    ]]></command>
+    <inputs>
+        <param name="input_bams" type="data_collection"  format="bam" label="输入BAM文件"/>
+        <param name="input_txt" type="data_collection"  format="txt" label="输入阳性检测结果文件"/>
+    </inputs>
+    <outputs>
+        <collection name="list_output" type="list" label="阳性样本">
+            <discover_datasets pattern="__name_and_ext__" format="bam" directory="outputs" />
+        </collection>
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+根据阳性判定得到的深度及覆盖度文件，获得阳性样本bam列表进行下一步分析。
+
+输入BAM文件:
+    BAM文件数据集合
+    
+输入阳性深度文件：
+    输入阳性检测（深度覆盖度）的结果文件
+
+        ]]></help>
+</tool>
+

@@ -12,12 +12,14 @@
         <tool file="grandomics_tools/nanoplexer.xml"/>
         <tool file="grandomics_tools/minimap2_map_ont.xml"/>
         <tool file="grandomics_tools/infection_detector.xml"/>
+        <tool file="grandomics_tools/decide_infection.xml"/>
         <tool file="grandomics_tools/cov_plot.xml"/>
         <tool file="grandomics_tools/medaka_snp.xml"/>
         <tool file="grandomics_tools/snp_filter.xml"/>
         <tool file="grandomics_tools/snpEff2.xml"/>
         <tool file="grandomics_tools/snpSift.xml"/>
         <tool file="grandomics_tools/downsample.xml"/>
+	<tool file="grandomics_tools/decide_infection_jhs.xml"/>
     </section>
     <section id="grandomics_rampart" name="病原实时检测">
         <tool file="grandomics_rampart/rampart_start.xml"/>
@@ -27,8 +29,8 @@
     <section id="grandomics_snvphyl" name="基于SNV的谱系分析">
         <tool file="grandomics_tools/snpSift.xml"/>
     </section>
-    <section id="grandomics_centrifuge" name="病原centrifuge">
-        <tool file="grandomics_tools/snpSift.xml"/>
+    <section id="grandomics_centrifuge" name="宏基因组分类">
+        <tool file="grandomics_tools/taxonomy.xml"/>
     </section>
     <section id='grandomics_jbrowse' name="可视化">
         <tool file="grandomics_jbrowse/jbrowse.xml" />
