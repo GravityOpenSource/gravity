@@ -4,6 +4,8 @@
 #all_fasta.loc. This file has the format (white space characters are
 #TAB characters):
 #
-#<unique_build_id>      <dbkey>         <display_name>  <file_path>
+#<unique_build_id>	<dbkey>		<display_name>	<file_path>
+#
+#So, all_fasta.loc could look something like this:
+MN994467.1_primer.bed	USA-CA1-bed	BED for Wuhan seafood market pneumonia virus isolate 2019-nCoV/USA-CA1/2020	/opt/galaxy/database/tool-data/reference/MN994467.1_primer.bed
 
-MN994467.1_primer	USA-CA1_primers	Primers for Wuhan seafood market pneumonia virus isolate 2019-nCoV/USA-CA1/2020	/opt/galaxy/database/tool-data/reference/MN994467.1_primer.fa

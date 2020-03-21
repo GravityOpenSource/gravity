@@ -196,3 +196,4 @@ docker
 biopython
 jinja2
 pandas
+matplotlib==3.2.0

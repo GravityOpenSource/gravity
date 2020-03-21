@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<tool id="decide_infection_jhs" name="获得阳性样本jhs" version="0.1.0">
+    <description></description>
+    <command><![CDATA[
+        mkdir -p outputs && cd outputs && python $__tool_directory__/decide_infection_jhs.py --txt_names
+        #for $input_txt in $input_txts
+            $input_txt.element_identifier
+        #end for
+        --input_txts 
+        #for $input_txt in $input_txts
+            $input_txt
+        #end for
+        --input_bams
+        #for $input_bam in $input_bams
+            $input_bam
+        #end for
+        --bam_names
+        #for $input_bam in $input_bams
+            $input_bam.element_identifier
+        #end for        
+    ]]></command>
+    <inputs>
+        <param name="input_bams" type="data_collection"  format="bam" label="输入BAM文件"/>
+        <param name="input_txts" type="data_collection"  format="txt" label="输入所有样本检测结果文件"/>
+    </inputs>
+    <outputs>
+        <collection name="list_output" type="list" label="阳性样本">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        </collection>
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+根据阳性判定得到的深度及覆盖度文件，获得阳性样本bam列表进行下一步分析。
+
+输入BAM文件:
+    BAM文件数据集合
+    
+输入阳性深度文件：
+    输入阳性检测（深度覆盖度）的结果文件
+
+        ]]></help>
+</tool>
+

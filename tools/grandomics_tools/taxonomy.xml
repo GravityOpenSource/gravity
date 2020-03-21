@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<tool id="taxonomy" name="病原宏基因组分类" version="0.1.0">
+  <description> </description>
+  <requirements>
+    <requirement type="package" version="1.0.4">centrifuge</requirement>
+    <requirement type="package" version="2.7.1">krona</requirement>
+  </requirements>
+  <command detect_errors="exit_code"><![CDATA[
+    /opt/conda/envs/taxonomy/bin/centrifuge -q -x /data/library/database/taxonomy/p+h+v -p $threads -S centrifuge_output --report-file centrifuge_report $input_fastq && 
+    /opt/conda/envs/taxonomy/bin/centrifuge-kreport -x /data/library/database/taxonomy/p+h+v centrifuge_report > centrifuge_kreport &&
+    /opt/conda/envs/taxonomy/bin/ktImportTaxonomy -tax /data/library/database/taxonomy -q 6 -t 5 -s 4 -o $krona_output centrifuge_kreport
+    ]]>
+  </command>
+  <inputs>
+    <param name="input_fastq" type="data" multiple="false" format="fastq" label="输入FASTQ" />
+    <param name="threads" type="integer" label="线程数" value="4" />
+  </inputs>
+  <outputs>
+    <data name="krona_output" format="html" label="宏基因组分类结果" />
+  </outputs>
+  <help><![CDATA[
+说明
+-----
+使用centrifuge对FASTQ序列在宏基因组数据库进行搜索分类，并展示结果
+
+输入FASTQ：
+  待分类的FASTQ文件
+
+线程数:
+  分析使用的线程数
+
+  ]]></help>
+</tool>

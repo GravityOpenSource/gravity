@@ -10,6 +10,10 @@
         <columns>value, dbkey, name, path</columns>
         <file path="tool-data/primer_fasta.loc" />
     </table>
+    <table name="capture_bed" comment_char="#" allow_duplicate_entries="False">
+        <columns>value, dbkey, name, path</columns>
+        <file path="tool-data/capture_bed.loc" />
+    </table>
     <!-- Locations of snpEff annotation database -->
     <table name="snpeffv_genomedb" comment_char="#" allow_duplicate_entries="False">
         <columns>key, version, value, name, path, config</columns>
@@ -20,8 +24,8 @@
         <columns>value, dbkey, name, path</columns>
 	<file path="tool-data/rampart_protocol.loc" />
     </table>
-    <table name="all_gff" comment_char="#" allow_duplicate_entries="False">
+    <table name="gff_gff3_bed" comment_char="#" allow_duplicate_entries="False">
         <columns>value, dbkey, name, path</columns>
-	<file path="tool-data/all_gff.loc" />
+	<file path="tool-data/gff_gff3_bed.loc" />
     </table>
 </tables>
