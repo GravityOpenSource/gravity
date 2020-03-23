@@ -2,7 +2,8 @@
     root = h.url_for( "/static/" )
     app_root = root + "plugins/visualizations/csvtotable/static/"
     data_url = h.url_for(controller='/datasets', action='index')+"/"+trans.security.encode_id( hda.id )+"/display"
-    data_type = hda.to_dict().get('file_ext')
+    data_type = hda.to_dict().get('data_type').split('.')[-1].lower()
+    print(data_type)
 %>
 <!doctype html>
 <html>
