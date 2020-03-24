@@ -1,6 +1,7 @@
-<tool id="infection_detector" name="阳性检测（深度覆盖度）" version="1.0.0">
+<?xml version="1.0"?>
+<tool id="infection_detector" name="阳性检测（深度覆盖度）" version="1.0.0"  hidden="true">
     <requirements>
-        <requirement type="package" version="0.2.6">mosdepth</requirement>
+	<requirement type="package" version="0.2.6">mosdepth</requirement>
         <requirement type="package">samtools</requirement>
         <requirement type="package">docopt</requirement>
         <requirement type="package">pandas</requirement>

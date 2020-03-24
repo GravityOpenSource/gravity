@@ -1,24 +1,26 @@
 <?xml version="1.0"?>
-<tool id="obtain_positives" name="获得阳性样本" version="0.1.0">
+<tool id="obtain_positives" name="获得阳性样本" version="0.1.0" hidden="true">
     <description></description>
     <command><![CDATA[
         mkdir -p outputs && 
         #for $bam in $input_bams
             #for $txt in $input_txt
                 #if $bam.element_identifier == $txt.element_identifier
-                    python $__tool_directory__/decide_infection.py --bam $bam --infection $txt --out $bam.element_identifier &&
+                    python $__tool_directory__/decide_infection.py --bam $bam --infection $txt --out $bam.element_identifier >> all_stat &&
+                    head -1 $txt > header &&
                 #end if
             #end for
         #end for
-        ls outputs/
+        cat <(sed 's/#/#sample	/g' header) all_stat >> $final_stat
     ]]></command>
     <inputs>
         <param name="input_bams" type="data_collection"  format="bam" label="输入BAM文件"/>
         <param name="input_txt" type="data_collection"  format="txt" label="输入阳性检测结果文件"/>
     </inputs>
     <outputs>
-        <collection name="list_output" type="list" label="阳性样本">
-            <discover_datasets pattern="__name_and_ext__" format="bam" directory="outputs" />
+        <data name="final_stat" format="tsv" label="样本阳性统计"/>
+        <collection name="list_output" type="list" label="阳性样本集合">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
         </collection>
     </outputs>
     <help><![CDATA[

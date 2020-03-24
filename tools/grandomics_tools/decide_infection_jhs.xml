@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<tool id="decide_infection_jhs" name="获得阳性样本jhs" version="0.1.0">
+<tool id="decide_infection_jhs" name="获得阳性样本jhs" version="0.1.0" hidden="true">
     <description></description>
     <command><![CDATA[
         mkdir -p outputs && cd outputs && python $__tool_directory__/decide_infection_jhs.py --txt_names

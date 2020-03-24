@@ -5,7 +5,7 @@
         <tool file="grandomics_data_source/basecalled.xml"/>
         <tool file="grandomics_data_source/test.xml"/>
     </section>
-    <section id="grandomics_tools" name="希望组工具">
+    <section id="grandomics_tools" name="希望组工具" hidden="true">
         <tool file="grandomics_tools/seqkit.xml"/>
         <tool file="grandomics_tools/barcoding.xml"/>
         <tool file="grandomics_tools/merge_barcode.xml"/>
@@ -27,9 +27,10 @@
         <tool file="grandomics_rampart/rampart_stop.xml"/>
     </section>
     <section id="grandomics_snvphyl" name="基于SNV的谱系分析">
-        <tool file="grandomics_tools/snpSift.xml"/>
+        <!--<tool file="grandomics_tools/snpSift.xml"/> -->
+        <tool file="grandomics_tools/newick2phyloXML.xml"/>
     </section>
-    <section id="grandomics_centrifuge" name="宏基因组分类">
+    <section id="grandomics_metagenomics" name="病原宏基因组分类">
         <tool file="grandomics_tools/taxonomy.xml"/>
     </section>
     <section id='grandomics_jbrowse' name="可视化">
