@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<tool id="nhx2phy3D" name="进化树文件格式转换" version="0.1.0" hidden="true">
+    <requirements>
+        <requirement type="package">argparse</requirement>
+        <requirement type="package">sys</requirement>
+	<requirement type="package">os</requirement>
+        <requirement type="package">gc</requirement>
+        <requirement type="package">numpy</requirement>
+        <requirement type="package">pandas</requirement>
+        <requirement type="package">time</requirement>
+        <requirement type="package">Bio</requirement>
+        <requirement type="package">xml</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python3 $__tool_directory__/newick2phy3D.py -n $nhx -p $phy3d -s $snvtable -r -f reference
+        ]]>
+    </command>
+    <inputs>
+        <param name="nhx" type="data" multiple="false" format="newick" label="输入newick文件"/>
+        <param name="snvtable" type="data" format="tabular" label="选择snvtable文件">
+        </param>
+    </inputs>
+    <outputs>
+        <data name="phy3d" format="phyloxml" label="进化树可视化文件"/>
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+系统发育树格式转换
+
+
+        ]]></help>
+</tool>
+

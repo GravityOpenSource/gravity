@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 # coding: utf-8
 
 """
@@ -10,7 +10,7 @@ __email__ = 'jinhongshuai@grandomics.com'
 __version__ = '0.0.1'
 __status__ = 'Dev'
 
-import sys,os,re,time,gzip,json
+import sys,os,re,time
 import argparse
 import collections
 import numpy as np

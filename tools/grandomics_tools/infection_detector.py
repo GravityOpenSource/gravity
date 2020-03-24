@@ -87,6 +87,7 @@ def main(depth: int, coverage: float, thresholds: list, genome_bed: str, bam_fil
     # add asterisk * to the end of the header name of depth set by user, like 100X -> 100X*
     df = df.rename(columns = {depth_header: depth_header + '*'})
     # add positive column to data frame
+    df['coverage'] = [coverage] # modified by zhangsw 20200319
     df['positive'] = [positive]
 
     # output df
