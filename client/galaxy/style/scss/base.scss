@@ -400,13 +400,13 @@ body {
         text-decoration: none;
         .navbar-brand-image {
             display: inline;
-            width: 226px;
+            height: 30px;
             margin-left: 0.35em;
-            border: none;
+            border-radius: 5px;
         }
         .navbar-brand-title {
-            //color: $white;
-            display: none;
+            color: $white;
+            vertical-align: middle;
         }
     }
 }
