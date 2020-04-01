@@ -7,6 +7,5 @@
 #<unique_build_id>	<dbkey>		<display_name>	<file_path>
 #
 #So, all_fasta.loc could look something like this:
-p_compressed+v	p_compressed+v	p_compressed+v	/opt/galaxy/database/tool-data/taxonomy/p_compressed+v
-p+h+v	p+h+v	p+h+v	/opt/galaxy/database/tool-data/taxonomy/p+h+v
-h+v	h+v	h+v	/opt/galaxy/database/tool-data/taxonomy/h+v
+card.json	CARD	database for AMR(antimicrobial resistance) use softawre RGI	/opt/galaxy/database/tool-data/AMR/CARD/card.json
+
