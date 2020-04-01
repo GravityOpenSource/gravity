@@ -24,6 +24,7 @@ from galaxy.util import (
 from galaxy.web import url_for
 from galaxy.web.framework.helpers import grids, time_ago
 from galaxy.web.params import QuotaParamParser
+from galaxy.web.framework.middleware.request_id import RsaVerify
 from galaxy.webapps.base import controller
 from galaxy.webapps.base.controller import UsesQuotaMixin
 from tool_shed.util import (
@@ -534,6 +535,27 @@ class AdminGalaxy(controller.JSAppLauncher, AdminActions, UsesQuotaMixin, QuotaP
         condition=(lambda item: not item.deleted and not item.purged),
         allow_multiple=False
     )
+
+    @web.expose
+    def license_reg(self, trans, **kwd):
+        if trans.request.method == 'POST':
+            code = kwd.get('code')
+            if not code:
+                return 'error'
+            RsaVerify().write_reg_file(code)
+        return trans.response.send_redirect(url_for("/"))
+
+    @web.expose
+    @web.json
+    @web.require_admin
+    def license_info(self, trans, **kwd):
+        rsa_verify = RsaVerify()
+        return {
+            'machine_code': rsa_verify.machine_code,
+            'license': rsa_verify.license,
+            'expire': rsa_verify.expire,
+        }
+
 
     @web.expose
     @web.require_admin

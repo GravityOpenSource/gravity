@@ -119,6 +119,7 @@ def app_factory(global_conf, load_app_kwds={}, **kwargs):
     webapp.add_client_route('/admin/quotas', 'admin')
     webapp.add_client_route('/admin/form/{form_id}', 'admin')
     webapp.add_client_route('/admin/api_keys', 'admin')
+    webapp.add_client_route('/admin/license', 'admin')
     webapp.add_client_route('/tours')
     webapp.add_client_route('/tours/{tour_id}')
     webapp.add_client_route('/user')
@@ -160,8 +161,8 @@ def app_factory(global_conf, load_app_kwds={}, **kwargs):
     webapp.finalize_config()
 
     # Wrap the webapp in some useful middleware
-    if kwargs.get('middleware', True):
-        webapp = wrap_in_middleware(webapp, global_conf, app.application_stack, **kwargs)
+    # if kwargs.get('middleware', True):
+    webapp = wrap_in_middleware(webapp, global_conf, app.application_stack, **kwargs)
     if asbool(kwargs.get('static_enabled', True)):
         webapp = wrap_if_allowed(webapp, app.application_stack, wrap_in_static,
                                  args=(global_conf,),
@@ -1200,7 +1201,7 @@ def wrap_in_middleware(app, global_conf, application_stack, **local_conf):
     app = wrap_if_allowed(app, stack, XForwardedHostMiddleware)
     # Request ID middleware
     from galaxy.web.framework.middleware.request_id import RequestIDMiddleware
-    app = wrap_if_allowed(app, stack, RequestIDMiddleware)
+    app = wrap_if_allowed(app, stack, RequestIDMiddleware, args=(webapp, {}))
     # api batch call processing middleware
     from galaxy.web.framework.middleware.batch import BatchMiddleware
     app = wrap_if_allowed(app, stack, BatchMiddleware, args=(webapp, {}))

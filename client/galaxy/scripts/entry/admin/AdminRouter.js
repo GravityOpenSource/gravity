@@ -18,6 +18,7 @@ import DisplayApplications from "components/admin/DisplayApplications.vue";
 import Toolshed from "components/Toolshed/Index.vue";
 import Vue from "vue";
 import store from "store";
+import License from "components/admin/License.vue";
 
 export const getAdminRouter = (Galaxy, options) => {
     const galaxyRoot = getAppRoot();
@@ -42,7 +43,12 @@ export const getAdminRouter = (Galaxy, options) => {
             "(/)admin/jobs": "show_jobs",
             "(/)admin/invocations": "show_invocations",
             "(/)admin/data_manager*path": "show_data_manager",
+            "(/)admin/license": "show_license",
             "*notFound": "not_found"
+        },
+
+        show_license: function() {
+            this._display_vue_helper(License);
         },
 
         authenticate: function() {
