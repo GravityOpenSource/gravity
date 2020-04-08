@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
-<tool id="nanoplexer_primer" name="拆分过滤后样本序列" version="0.1.0" hidden="true">
+<tool id="nanoplexer_primer" name="检测PRIMER序列" version="0.1.0" hidden="false">
     <description> </description>
     <requirements>
         <requirement type="package" version="0.1">nanoplexer</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        mkdir -p outputs && nanoplexer -b $barcode -p outputs -t $threads -L $length $input_fastq &&
-        rm outputs/unclassified.fastq &&
-        cat outputs/*fastq > $output_fastq &&
-        rm -r -f outputs/
+        mkdir -p $output_path && nanoplexer -b $barcode -p $output_path -t $threads -L $length $input_fastq -M fasta&&
+        rm $output_path/unclassified.fastq 
         ]]>
     </command>
     <inputs>
@@ -23,7 +21,7 @@
         <param name="length" type="integer" label=" 查找primer的序列长度" value="70" />
     </inputs>
     <outputs>
-        <data name="output_fastq" format="fastq" label="检测primer序列 on $input_fastq.element_identifier" />
+        <data name="output_path" label="检测primer序列 on $input_fastq.element_identifier" />
     </outputs>
     <help><![CDATA[
 说明

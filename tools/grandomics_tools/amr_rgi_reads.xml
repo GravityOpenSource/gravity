@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<tool id="amr_rgi_reads" name="细菌耐药性检测-RGI基于比对" version="0.1.0" python_template_version="3.6" hidden="false">
+    <description> </description>
+    <requirements>
+        <requirement type="package">rgi</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+		bash $__tool_directory__/amr_rgi_reads.sh $card_path $read_one $read_two $aligner out $threads
+        ]]>
+    </command>
+    <inputs>
+        <param name="card_path" type="select" label="选择数据库" >
+            <options from_data_table="amr_card">
+                <column name="name" index="0"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
+        <param name="read_one" type="data" format="fasta" label="输入二代测序数据的R1" />
+        <param name="read_two" type="data" format="fasta" label="输入二代测序数据的R2" />
+        <param name="aligner"  type="select" format="text" label="比对软件">
+            <option value="bowtie2">bowtie2</option>
+            <option value="bwa">bwa</option>
+        </param>
+        <param name="threads" type="integer" label="线程数" value="4"/>
+    </inputs>
+    <outputs>
+        <data name="out" format="tsv" label="基于比对的耐药基因检测结果" from_work_dir="out.allele_mapping_data.txt" />
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+使用RGI软件对二代数据进行耐药基因分析，输入的数据必须为质控后的clean_data。详细参考https://github.com/arpcard/rgi
+
+输入CARD数据库路径：
+    路径默认，不可更改
+输入read_one：
+	输入二代测序数据中的R1
+输入read_two：
+	输入二代测序数据中的R2
+选择aligner：
+	选择bowtie2或者bwa作为比对工具，默认bowtie2
+选择threads：
+	数据分析使用的线程数，默认4
+	
+        ]]></help>
+</tool>

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<tool id="amr_detection" name="细菌耐药性检测" version="0.1.0">
+    <requirements>
+        <requirement type="package">rgi</requirement>
+        <requirement type="package">shovill</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        shovill --outdir outdir --R1 $pInput1 --R2 $pInput2 --ram $ram --depth $depth --trim --cpus $cpu 
+        #if str( $estimate_gSize.choose ) == "yes":
+            --gsize $estimate_gSize.gsize
+        #end if
+    ]]>
+    </command>
+    <inputs>
+        <!-- 选择数据来源及处理方式 -->
+        <conditional name="meta_OR_single">
+            <param name="data_source" type="select" label="选择数据来源">
+                <option value="metagenomics">宏基因组数据</option>
+                <option value="singlemicrobial" selected="true">单菌数据</option>
+            </param>
+            <!-- 宏基因组数据的比对方式 -->
+            <when value="metagenomics">
+                <conditional name="assemble_OR_align">
+                    <param name="process_type" type="select" label="选择处理方式" optional="false" help="目前宏基因组数据仅支持比对，不支持组装">
+                        <option value="align">比对</option>
+                    </param>
+                    <when value="align">
+                        <param name="aligner" type="select" label="选择比对软件">
+                            <option value="bwa">NGS-bwa</option>
+                            <option value="bowtie">NGS-bowtie</option>
+                            <option value="minimap2">ONT-minimap2</option>
+                        </param>
+                    </when>
+                </conditional>
+            </when>
+            <!-- 单菌数据的组装和比对方式 -->
+            <when value="singlemicrobial">
+                <conditional name="assemble_OR_align">
+                    <param name="process_type" type="select" label="选择处理方式">
+                        <option value="assemble">组装</option>
+                        <option value="align">比对</option>
+                    </param>
+                    <when value="assemble">
+                        <param name="depth" type="text" label="用于组装的抽样深度" value="100" argument="--depth" help="过深的数据组装会耗费大量资源，默认抽样100x进行数据组装"/>
+                        <param name="ram" type="text" label="组装内存使用限额 (G)" value="16" argument="--ram" help=" 避免内存耗费过多导致任务失败，默认16G内存"/>
+                        <conditional name="estimate_gSize">
+                            <param name="choose" type="select" label="是否预估基因组大小">
+                                <option value="yes">预估</option>
+                                <option value="no" selected="True">不预估</option>
+                            </param>
+                            <when value="yes">
+                                <param name="gsize" type="text" value="" label="预估基因组大小 (M)" argument="--gsize" help="给定预估的基因组大小以便得到更相近的组装结果"/>
+                            </when>
+                        </conditional>
+                    </when>
+                    <when value="align">
+                        <param name="aligner" type="select" label="选择比对软件">
+                            <option value="bwa">NGS-bwa</option>
+                            <option value="bowtie">NGS-bowtie</option>
+                            <option value="minimap2">ONT-minimap2</option>
+                        </param>
+                    </when>
+                </conditional>
+            </when>
+        </conditional>
+        <!-- 选择数据类型，ONT还是NGS -->
+        <conditional name="ngs_OR_ont">
+            <param name="ngsont" type="select" label="选择测序平台">
+                <option value="ngs">二代测序</option>
+                <option value="ont">ONT测序</option>
+            </param>
+            <when value="ont">
+                <param name="sInput1" type="data" format="fastq" label="输入FASTQ文件" optional="false"/>
+            </when>
+            <when value="ngs">
+                <conditional name="singlePaired">
+                    <param name="sPaired" type="select" label="选择数据类型">
+                        <option value="single">单端数据</option>
+                        <option value="paired" selected="true">双端数据</option>
+                    </param>
+                    <when value="single">
+                        <param name="sInput1" type="data" format="fastq" label="输入FASTQ文件" optional="false"/>
+                    </when>
+                    <when value="paired">
+                        <param name="pInput1" type="data" format="fastq" label="输入Forward FASTQ文件" />
+                        <param name="pInput2" type="data" format="fastq" label="输入Reverse FASTQ文件" />
+                    </when>
+                </conditional>
+            </when>
+        </conditional>
+        <!-- 选择耐药数据库 -->
+        <param name="card_path" type="select" label="选择数据库" >
+            <options from_data_table="amr_card">
+                <column name="name" index="1"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
+        <!-- 其他全局变量 -->
+        <param name="cpu" type="text" label="使用CPU数量" value="4" />
+        
+    </inputs>
+    
+    <outputs>
+        <data name="contig" format="fasta" label="二代数据组装 $pInput1.element_identifier" from_work_dir="outdir/contigs.fa" />
+    </outputs>
+    
+    <help><![CDATA[
+说明
+-----
+细菌耐药性分析可以选择宏基因组数据或单菌数据。
+目前宏基因组数据仅支持比对方法，单菌数据可选组装或者比对方法进行耐药性检测，并可以指定用于组装的抽样深度及组装使用内存阈值。
+本工具支持二代测序数据（可选单端及双端）和ONT测序数据。
+
+二代数据处理：
+    组装：使用shovill进行组装。
+    比对：可选bwa或者bowtie进行比对。
+
+三代数据处理：
+    组装：使用canu进行组装。
+    比对：使用minimap2进行比对。
+
+
+结果解释：
+    
+    >contig00001 len=263154 cov=8.9 corr=1 origname=NODE_1 date=20180327 sw=shovill/0.9
+    
+    len：组装后contig长度
+    
+    cov：平均k-mer覆盖度
+    
+    corr：组装后矫正次数
+    
+    origname：contig原始名称
+    
+    data：组装日期
+    
+    sw：组装软件版本
+    
+  ]]></help>
+</tool>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<tool id="reference_base_assemblies" name="三代数据组装" version="0.1.0" hidden="false">
+    <description> </description>
+    <requirements>
+        <requirement type="package" version="0.1">nanoplexer</requirement>
+		<requirement type="package" version="0.2.0">rebaler</requirement>
+        <requirement type="package" version="2.17-r941">minimap2</requirement>
+        <requirement type="package" version="1.10">samtools</requirement>
+		<requirement type="package">Bio</requirement>
+		<requirement type="package">pysam</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python $__tool_directory__/Rebaler_pipeline.py $reference $input_fastq $barcode -t $threads -L $length -c $cov -T $stime -b 1 -o $output_fasta --prefix $input_fastq.element_identifier
+        ]]>
+    </command>
+    <inputs>
+        <param name="input_fastq" type="data" format="fastq" label="输入FASTQ" />
+        <param name="reference" type="select" label="选择参考基因组">
+            <options from_data_table="all_fasta">
+                <column name="name" index="0"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
+        <param name="barcode" type="select" label="输入primer序列FASTA" >
+            <options from_data_table="primer_fasta">
+                <column name="name" index="0"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
+        <param name="threads" type="integer" label=" 线程数" value="4" />
+        <param name="length" type="integer" label=" 查找primer的序列长度" value="70" />
+        <param name="cov" type="integer" label="抽样深度" value="100" />
+        <param name="stime" type="integer" label="抽样次数" value="10" />
+        <!--<param name="by" type="integer" label="窗口大小" value="1" />-->				
+    </inputs>
+    <outputs>
+        <data name="output_fasta" format="fasta" label="组装结果 on $input_fastq.element_identifier" />
+        
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+基于参考long reads组装流程
+
+        ]]></help>
+</tool>
