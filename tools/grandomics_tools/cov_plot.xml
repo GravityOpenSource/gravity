@@ -1,15 +1,9 @@
 <?xml version="1.0"?>
-<tool id="covplot" name="覆盖度可视化" version="0.1.0">
+<tool id="covplot" name="覆盖度可视化" version="0.1.0" hidden="true">
     <requirements>
-	<requirement type="package">re</requirement>
-	<requirement type="package">sys</requirement>
-	<requirement type="package">os</requirement>
-	<requirement type="package">gzip</requirement>
         <requirement type="package">numpy</requirement>
         <requirement type="package">pandas</requirement>
         <requirement type="package">matplotlib</requirement>
-        <requirement type="package">collections</requirement>
-        <requirement type="package">subprocess</requirement>
         <requirement type="package">argparse</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[

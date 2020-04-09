@@ -17,6 +17,7 @@ def check_infection(bam, infection, out):
     result = open(infection)
     for line in result:
         if "#" not in line:
+            print(out+"\t"+line.strip())
             stat = line.strip().split("\t")[-1]
             if stat=="True":
                 os.system("ln -s "+bam+" ./outputs/"+out+".bam") 

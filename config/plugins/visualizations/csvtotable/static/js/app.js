@@ -1,71 +1,61 @@
-let data = [];
-let columns = {};
+'use strict';
 
-function setData(url, type) {
-    $.get(url, null, function (value) {
-        parse(type, $.trim(value));
-    }, "text");
-    // $.ajax({
-    //     type: "get",  // 请求方式
-    //     url: url,  // 目标资源
-    //     data: null, // 请求参数
-    //     dataType: "text",  // 服务器响应的数据类型
-    //     success: function (value) {  // readystate == 4 && status == 200
-    //         parse(type, $.trim(value));
-    //     }
-    // });
+let colunms = [];
+let tables;
+let tableData = [];
+
+function parse(type,value) {
+  tableData = [];
+  if(type==='csv') {
+    tableData = $.csv.toObjects(value);
+  }else if(type==='tsv') {
+    tableData = $.tsv.toObjects(value);
+  }
 };
 
-function parse(type, value) {
-    if (type === 'csv') {
-        data = $.csv.toObjects(value);
-    } else if (type === 'tsv') {
-        data = $.tsv.toObjects(value);
-    }
-    setColumns(data);
-    getData(data);
-};
-
-function setColumns(data) {
-    columns = {};
-    for (const value of data) {
-        for (const i in value) {
-            columns[i] = i;
+function createTable(url,type) {
+  $.ajax({
+    url: url,
+    dataType: "text",
+    success: function (result) {
+      colunms = [];
+      let obj = {};
+      parse(type,$.trim(result));
+      let results = tableData;
+      $.each(results[0], function (key, val) {
+        obj = {
+          "title": key,
+          "class": "center",
+          "render": function (data, type, full, meta) {
+            return full[key];
+          }
+        };
+        colunms.push(obj);
+      });
+      console.log(tables);
+      if (tables) {
+        tables.destroy();
+        $('#example').empty();
+      }
+      tables = $('#example').DataTable({
+        "processing": true, //是否显示处理状态(排序的时候，数据很多耗费时间长的话，也会显示这个)
+        "data": results,//设置数据
+        "columns": colunms,
+        "destroy": true,
+        "dom": '<"myWrapper"lftip>',
+        "language": {
+          "lengthMenu": "每页_MENU_ 条记录",
+          "zeroRecords": "没有找到记录",
+          "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+          "infoEmpty": "无记录",
+          "search": "搜索：",
+          "infoFiltered": "(从 _MAX_ 条记录搜索)",
+          "paginate": {
+            "previous": "上一页",
+            "next": "下一页"
+          }
         }
+      });
     }
+  });
 }
-
-let table = $('#table-sortable').tableSortable({
-    element: '',
-    data: [],
-    rowsPerPage: 10,
-    pagination: true,
-    searchField: '#searchField',
-    nextText: '<span> >> </span>',
-    prevText: '<span> << </span>',
-});
-
-$('select').on('change', function () {
-    table.updateRowsPerPage(parseInt($(this).val(), 10));
-});
-
-$('#refresh').click(function () {
-    table.refresh();
-});
-
-// 测试函数
-$('#csvBtn').click(function () {
-    setData(csvUrl, csvType);
-});
-
-// 测试函数
-$('#tsvBtn').click(function () {
-    setData(tsvUrl, tsvType);
-});
-
-let getData = (data) => {
-    // Push data into existing data
-    table.setData(data, null, true);
-    // or Set new data on table, columns is optional.
-    table.setData(data, columns);
-};

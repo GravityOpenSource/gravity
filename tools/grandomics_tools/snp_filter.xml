@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
-<tool id="snp_filter" name="变异过滤" version="0.1.0">
+<tool id="snp_filter" name="变异过滤" version="0.1.0" hidden="true">
     <description> </description>
+    <requirements>
+        <requirement type="package">argparse</requirement>
+    </requirements>
     <command><![CDATA[
         python $__tool_directory__/medaka_vcf_filter.py --raw_vcf $raw_vcf --bam $input_bam --ref_prob $ref_prob --qual $qual --min_depth $min_depth --frequence $frequence --out_vcf $out_vcf 
     ]]></command>

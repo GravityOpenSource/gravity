@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 # coding: utf-8
 
 import sys,re,os
@@ -50,7 +50,7 @@ def filter(raw_vcf,out_vcf,ref_prob,qual,bam,samtools,min_depth,frequence):
 		if float(RefProb) > float(ref_prob) or float(QUAL) < float(qual): ##filter 默认0.06、17
 			continue
 		#DP = os.popen("{samtools} depth -r {chrom}:{pos}-{pos} {bam}".format(samtools=samtools,chrom=CHROM,pos=POS,bam=bam)).read().split()[2]
-		status,output = sb.getstatusoutput ("{samtools} mpileup -Q 0 -d 10000000 -r {chrom}:{pos}-{pos} {bam}".format(samtools=samtools,chrom=CHROM,pos=POS,bam=bam))
+		status,output = sb.getstatusoutput("{samtools} mpileup -Q 0 -d 10000000 -r {chrom}:{pos}-{pos} {bam}".format(samtools=samtools,chrom=CHROM,pos=POS,bam=bam))
 		DP,math_info = output.split("\n")[-1].split()[3:5]
 		
 		if int(DP) < int(min_depth): ## filter low depth，默认15X
@@ -88,4 +88,5 @@ def filter(raw_vcf,out_vcf,ref_prob,qual,bam,samtools,min_depth,frequence):
 if __name__ == '__main__':
 	
 	opt=get_args()
+	os.system("samtools index %s"%opt.bam)
 	filter(opt.raw_vcf,opt.out_vcf,opt.ref_prob,opt.qual,opt.bam,opt.samtools,opt.min_depth,opt.frequence)

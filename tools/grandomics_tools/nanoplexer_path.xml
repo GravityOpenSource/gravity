@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<tool id="nanoplexer_primer" name="检测PRIMER序列" version="0.1.0" hidden="false">
+    <description> </description>
+    <requirements>
+        <requirement type="package" version="0.1">nanoplexer</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        mkdir -p $output_path && nanoplexer -b $barcode -p $output_path -t $threads -L $length $input_fastq -M fasta&&
+        rm $output_path/unclassified.fastq 
+        ]]>
+    </command>
+    <inputs>
+        <param name="input_fastq" type="data" format="fastq" label="输入FASTQ" />
+        <param name="barcode" type="select" label="输入primer序列FASTA" >
+            <options from_data_table="primer_fasta">
+                <column name="name" index="0"/>
+                <column name="value" index="3"/>
+            </options>
+        </param>
+        <param name="threads" type="integer" label=" 线程数" value="4" />
+        <param name="length" type="integer" label=" 查找primer的序列长度" value="70" />
+    </inputs>
+    <outputs>
+        <data name="output_path" label="检测primer序列 on $input_fastq.element_identifier" />
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+
+使用nanoplexer对FASTQ进行primer序列查找，过滤不含primer的序列，nanoplexer工具详情请参见：https://github.com/hanyue36/nanoplexer
+
+输入FASTQ:
+    待过滤的FASTQ文件
+
+输入primer序列FASTA:
+    选择用于过滤的primer序列
+
+线程数:
+    每个样本分析使用的线程数
+
+查找primer的序列长度:
+    每条序列两端用于查找primer的长度
+
+        ]]></help>
+</tool>
+

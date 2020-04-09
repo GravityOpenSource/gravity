@@ -19,6 +19,12 @@ const AdminPanel = Backbone.View.extend({
                 title: _l("Server"),
                 items: [
                     {
+                        title: _l("License"),
+                        url: "admin/license",
+                        target: "__use_router__",
+                        id: "admin-link-license"
+                    },
+                    {
                         title: _l("Data types"),
                         url: "admin/data_types",
                         target: "__use_router__",

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<tool id="medaka_variant" name="变异检测" version="0.1.0" python_template_version="3.6">
+<tool id="medaka_variant" name="变异检测" version="0.1.0" python_template_version="3.6" hidden="true">
     <description> </description>
     <requirements>
         <requirement type="package" version="0.11.1">medaka</requirement>

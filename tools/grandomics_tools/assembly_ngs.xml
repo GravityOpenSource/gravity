@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<tool id="assembly_ngs" name="细菌耐药性检测-二代数据组装" version="0.1.0">
+    <requirements>
+        <requirement type="package">shovill</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        shovill --outdir outdir --R1 $pInput1 --R2 $pInput2 --ram $ram --depth $depth --trim --cpus $cpu 
+        #if str( $estimate_gSize.choose ) == "yes":
+            --gsize $estimate_gSize.gsize
+        #end if
+    ]]>
+    </command>
+    <inputs>
+        <param name="pInput1" type="data" format="fastq" label="输入Forward FASTQ文件" />
+        <param name="pInput2" type="data" format="fastq" label="输入Reverse FASTQ文件" />
+        <param name="depth" type="text" label="用于组装的抽样深度" value="100" />
+        <param name="cpu" type="text" label="使用CPU数量" value="4" />
+        <param name="ram" type="text" label="内存使用限额 (G)" value="16" />
+        <conditional name="estimate_gSize">
+            <param name="choose" type="select" label="是否预估基因组大小">
+                <option value="yes">预估</option>
+                <option value="no" selected="True">不预估</option>
+            </param>
+            <when value="yes">
+                <param name="gsize" type="text" value="" label="预估基因组大小 (M)" argument="--gsize"/>
+            </when>
+        </conditional>
+        
+    </inputs>
+    <outputs>
+        <data name="contig" format="fasta" label="二代数据组装 $pInput1.element_identifier" from_work_dir="outdir/contigs.fa" />
+    </outputs>
+    <help><![CDATA[
+说明
+-----
+使用shovill对二代数据进行组装，以便后续进行如细菌耐药性检测等分析
+
+输入Forward/Reverse FASTQ文件：
+    待分类的FASTQ文件
+
+用于组装的抽样深度：
+    过深的数据组装会耗费大量资源，默认抽样100x进行数据组装
+
+线程数:
+    分析使用的线程数
+
+内存使用限额：
+    避免内存耗费过多导致任务失败，默认16G内存
+
+预估基因组大小：
+    给定预估的基因组大小以便得到更相近的组装结果
+
+
+结果解释：
+    
+    >contig00001 len=263154 cov=8.9 corr=1 origname=NODE_1 date=20180327 sw=shovill/0.9
+    
+    len：组装后contig长度
+    
+    cov：平均k-mer覆盖度
+    
+    corr：组装后矫正次数
+    
+    origname：contig原始名称
+    
+    data：组装日期
+    
+    sw：组装软件版本
+    
+  ]]></help>
+</tool>

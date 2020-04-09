@@ -28,4 +28,12 @@
         <columns>value, dbkey, name, path</columns>
 	<file path="tool-data/gff_gff3_bed.loc" />
     </table>
+    <table name="centrifuge_indices" comment_char="#" allow_duplicate_entries="False">
+        <columns>value, dbkey, name, path</columns>
+        <file path="tool-data/centrifuge_indices.loc" />
+    </table>
+    <table name="amr_card" comment_char="#" allow_duplicate_entries="False">
+        <columns>value, dbkey, name, path</columns>
+        <file path="tool-data/amr_database.loc" />
+    </table>
 </tables>
