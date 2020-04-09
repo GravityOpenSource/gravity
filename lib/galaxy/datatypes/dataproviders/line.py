@@ -4,6 +4,7 @@ Dataproviders that iterate over lines from their sources.
 import collections
 import logging
 import re
+import sys
 
 from . import base
 
@@ -69,6 +70,7 @@ class FilteredLineDataProvider(base.LimitedOffsetDataProvider):
         """
         if line is not None:
             # ??: shouldn't it strip newlines regardless, if not why not use on of the base.dprovs
+            if sys.version_info.major == 3 and isinstance(line, bytes): line = line.decode()
             if self.strip_lines:
                 line = line.strip()
             elif self.strip_newlines:

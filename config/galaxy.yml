@@ -1007,7 +1007,7 @@ galaxy:
   # instance configured below by enabling fluent_log.
   #fluent_port: 24224
 
-  # Sanitize all HTML tool output.  By default, all tool output served
+  # Sanitize all  tool output.  By default, all tool output served
   # as 'text/html' will be sanitized thoroughly.  This can be disabled
   # if you have special tools that require unaltered output.  WARNING:
   # disabling this does make the Galaxy instance susceptible to XSS
