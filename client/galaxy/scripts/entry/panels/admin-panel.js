@@ -94,12 +94,12 @@ const AdminPanel = Backbone.View.extend({
             {
                 title: _l("Tool Management"),
                 items: [
-                    {
-                        title: _l("Install or Uninstall"),
-                        url: "admin/toolshed",
-                        target: "__use_router__",
-                        enabled: this.settings.is_tool_shed_installed
-                    },
+                    // {
+                    //     title: _l("Install or Uninstall"),
+                    //     url: "admin/toolshed",
+                    //     target: "__use_router__",
+                    //     enabled: this.settings.is_tool_shed_installed
+                    // },
                     {
                         title: _l("Monitor installation"),
                         url: "admin_toolshed/monitor_repository_installation",

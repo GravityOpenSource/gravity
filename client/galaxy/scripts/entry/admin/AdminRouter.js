@@ -29,7 +29,7 @@ export const getAdminRouter = (Galaxy, options) => {
             "(/)admin(/)users(/)create": "show_users_create",
             "(/)admin(/)roles": "show_roles",
             "(/)admin(/)groups": "show_groups",
-            "(/)admin(/)toolshed": "show_toolshed",
+            // "(/)admin(/)toolshed": "show_toolshed",
             "(/)admin(/)error_stack": "show_error_stack",
             "(/)admin(/)display_applications": "show_display_applications",
             "(/)admin(/)tool_versions": "show_tool_versions",

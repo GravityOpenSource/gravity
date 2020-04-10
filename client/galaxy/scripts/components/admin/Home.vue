@@ -50,7 +50,7 @@
                 </strong>
 <!--                - Manage the reference (and other) data that is stored within Tool Data Tables. See-->
 <!--                <a href="https://galaxyproject.org/admin/tools/data-managers" target="_blank">wiki</a> for details.-->
-                - 管理存储在工具数据表中的引用（和其他）数据。有关详细信息，请参见<a href="https://galaxyproject.org/admin/tools/data-managers" target="_blank">wiki</a>。
+                - 管理存储在工具数据表中的引用（和其他）数据。
             </li>
         </ul>
 
