@@ -311,6 +311,8 @@ class HistoryContentsController(BaseAPIController, UsesLibraryMixin, UsesLibrary
             for file_path, relpath in hda.datatype.to_archive(trans=trans, dataset=hda, name=name):
                 archive.add(file=file_path, relpath=relpath)
         archive_name = "%s: %s.%s" % (dataset_collection_instance.hid, dataset_collection_instance.name, archive_ext)
+        import urllib.parse
+        archive_name = urllib.parse.quote(archive_name)
         trans.response.set_content_type("application/x-tar")
         trans.response.headers["Content-Disposition"] = 'attachment; filename="{}"'.format(archive_name)
         archive.wsgi_status = trans.response.wsgi_status()
