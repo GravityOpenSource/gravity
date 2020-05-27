@@ -56,7 +56,7 @@
       <a href="${h.url_for( app.config.get( 'logo_url', '/' ) )}" aria-label="homepage" class="navbar-brand">
           <img alt="logo" class="navbar-brand-image" src="${h.url_for('/static/images/galaxyIcon_noText.png')}">
           <span class="navbar-brand-title">
-             Grand Pathogen
+             Pathogen Genomics Platform
                ## %if app.config.brand:
                   ## / ${app.config.brand}
                ## %endif

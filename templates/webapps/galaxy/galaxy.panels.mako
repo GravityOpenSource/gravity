@@ -34,7 +34,7 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1">
 
         <title>
-            希望组病原分析平台
+            Pathogen Genomics Platform
         </title>
         ## relative href for site root
         <link rel="index" href="${ h.url_for( '/' ) }"/>

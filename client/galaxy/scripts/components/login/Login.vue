@@ -4,7 +4,7 @@
             <div class="col col-lg-6">
                 <b-alert :show="messageShow" :variant="messageVariant" v-html="messageText" />
                 <b-form id="login" @submit.prevent="submitGalaxyLogin()">
-                    <b-card no-body header="欢迎使用希望组病原分析平台">
+                    <b-card no-body header="欢迎使用Pathogen Genomics Platform">
                         <b-card-body>
                             <b-form-group label="用户名或邮箱">
                                 <b-form-input name="login" type="text" v-model="login" />

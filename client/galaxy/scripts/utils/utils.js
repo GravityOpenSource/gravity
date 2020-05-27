@@ -346,7 +346,7 @@ export function setWindowTitle(title) {
     // } else {
     //     window.document.title = `Galaxy ${Galaxy.config.brand ? ` | ${Galaxy.config.brand}` : ""}`;
     // }
-    window.document.title =  "希望组病原分析平台";
+    window.document.title =  "Pathogen Genomics Platform";
 }
 
 /**

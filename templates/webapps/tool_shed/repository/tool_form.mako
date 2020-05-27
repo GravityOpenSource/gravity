@@ -12,7 +12,7 @@
 <html>
     <head>
         <title>
-            希望组病原分析平台
+            Pathogen Genomics Platform
         </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         ${h.css( "base" )}
