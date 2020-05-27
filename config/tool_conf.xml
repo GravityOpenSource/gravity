@@ -20,6 +20,8 @@
         <tool file="grandomics_tools/snpSift.xml"/>
         <tool file="grandomics_tools/downsample.xml"/>
 	<tool file="grandomics_tools/decide_infection_jhs.xml"/>
+        <tool file="grandomics_tools/Rebaler_pipeline.xml"/>
+        <tool file="grandomics_tools/multiQC.xml"/>
     </section>
     <section id="grandomics_rampart" name="病原实时检测">
         <tool file="grandomics_rampart/rampart_start.xml"/>
@@ -32,8 +34,16 @@
     </section>
     <section id="grandomics_metagenomics" name="病原宏基因组分类">
         <tool file="grandomics_tools/taxonomy.xml"/>
+        <tool file="grandomics_tools/taxonomy_test.xml"/>
     </section>
     <section id='grandomics_jbrowse' name="可视化">
         <tool file="grandomics_jbrowse/jbrowse.xml" />
+    </section>
+    <section id='grandomics_amr' name="细菌耐药性分析" hidden="false">
+        <!--<tool file="grandomics_tools/assembly_ngs.xml"/>
+        <tool file="grandomics_tools/amr_rgi_contig.xml"/>
+	<tool file="grandomics_tools/amr_rgi_reads.xml"/>-->
+        <tool file="grandomics_tools/amr_detection.xml"/>
+        <tool file="grandomics_tools/virulence_kleborate.xml"/>
     </section>
 </toolbox>
