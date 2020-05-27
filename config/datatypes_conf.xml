@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <datatypes>
   <registration converters_path="lib/galaxy/datatypes/converters" display_path="display_applications">
+    <!-- custom datatypes -->
+    <datatype extension="coverage" type="galaxy.datatypes.coverage:DepthCoverage" display_in_upload="true" description="chrom, depth:1000X-0X, coverage_pecentage:0-1"/>
+    <!-- end custom datatypes -->
     <datatype extension="ab1" type="galaxy.datatypes.binary:Ab1" mimetype="application/octet-stream" display_in_upload="true" description="A binary sequence file in 'ab1' format with a '.ab1' file extension.  You must manually select this 'File Format' when uploading the file." description_url="https://wiki.galaxyproject.org/Learn/Datatypes#Ab1"/>
     <datatype extension="afg" type="galaxy.datatypes.assembly:Amos" display_in_upload="false"/>
     <datatype extension="anvio_cog_profile" type="galaxy.datatypes.anvio:AnvioComposite" display_in_upload="false" subclass="true" />
@@ -758,6 +761,9 @@
     defined format first, followed by next-most rigidly defined,
     and so on.
     -->
+    <!-- custom datatypes -->
+    <sniffer type="galaxy.datatypes.coverage:DepthCoverage"/>
+    <!-- end custom datatypes -->
     <sniffer type="galaxy.datatypes.plant_tribes:PlantTribesKsComponents"/>
     <sniffer type="galaxy.datatypes.plant_tribes:Smat"/>
     <sniffer type="galaxy.datatypes.mothur:Sabund"/>
