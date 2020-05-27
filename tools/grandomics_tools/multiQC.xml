@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<tool id="multiqc" name="多样本QC报告" version="0.1.0">
+    <requirements>
+        <requirement type="package">multiqc</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        mkdir fastqc &&
+        #for $fq in $fastq_files:
+            ln -s ${fq} ./${fq.element_identifier}.fastq &&
+        #end for
+        fastqc -q -o fastqc *.fastq &&
+        /opt/conda/envs/multiqc/bin/multiqc -q fastqc
+    ]]>
+    </command>
+    <inputs>
+        <param name="fastq_files" type="data_collection" format="fastq" label="原始fastq数据集合"/>        
+    </inputs>
+    
+    <outputs>
+        <data name="report" format="html" label="多样本QC报告结果" from_work_dir="multiqc_report.html" />
+    </outputs>
+    
+    <help><![CDATA[
+说明
+-----
+使用fastqc进行QC检查，multiQC整合结果出具报告
+
+  ]]></help>
+</tool>
+

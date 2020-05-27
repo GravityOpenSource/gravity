@@ -3,11 +3,11 @@
     <requirements>
         <requirement type="package">numpy</requirement>
         <requirement type="package">pandas</requirement>
-        <requirement type="package">matplotlib</requirement>
+        <!-- requirement type="package">matplotlib</requirement -->
         <requirement type="package">argparse</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        python3 $__tool_directory__/cov_depth.py -i $bam -b $bed -c $coverage -d $depth
+        python3 $__tool_directory__/cov_depth_0.02.py -i $bam -b $bed -c $coverage -d $depth
         ]]>
     </command>
     <inputs>
@@ -20,8 +20,8 @@
         </param>
     </inputs>
     <outputs>
-        <data name="coverage" format="png" label="覆盖度图 on $bam.element_identifier"/>
-        <data name="depth" format="png" label="深度图 on $bam.element_identifier"/>
+        <data name="coverage" format="coverage" label="基因组覆盖度" from_work_dir="out.coverage" />
+        <data name="depth" format="coverage" label="基因组深度" from_work_dir="out.depth" />
     </outputs>
     <help><![CDATA[
 说明

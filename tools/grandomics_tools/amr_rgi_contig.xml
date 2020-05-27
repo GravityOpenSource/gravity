@@ -20,8 +20,8 @@
     </inputs>
     <outputs>
         <data name="out" format="tsv" label="细菌耐药基因注释" from_work_dir="out.txt" />
-	<data name="amr" format="tsv" label="细菌耐药基因分析结果" from_work_dir="amr.tsv" />
-        <data name="heatmap" format="png" label="耐药基因热图" from_work_dir="./png_out/heatmap.png"/>
+		<data name="amr" format="tsv" label="细菌耐药基因分析结果" from_work_dir="out.amr.tsv" />
+        <!--<data name="heatmap" format="png" label="耐药基因热图" from_work_dir="./png_out/heatmap.png"/>-->
     </outputs>
     <help><![CDATA[
 说明

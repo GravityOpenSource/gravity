@@ -14,6 +14,9 @@ threads=$6
 /opt/conda/envs/rgi/bin/rgi load -i ${card_path}/card.json  --card_annotation ${card_path}/card_database_v3.0.8.fasta --local
 
 /opt/conda/envs/rgi/bin/rgi bwt --read_one ${r1} --read_two ${r2} --aligner ${aligner} --output_file ${output_prefix} --threads ${threads} --local
+cp ${output_prefix}.gene_mapping_data.txt out.txt
+
+python $(dirname $0)/amr_format.py --input_file out.txt --data_type read
 
 # mkdir -p txt_out
 # cp ./${output_prefix}.allele_mapping_data.txt ./txt_out/

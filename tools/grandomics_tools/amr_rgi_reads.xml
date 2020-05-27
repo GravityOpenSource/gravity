@@ -24,7 +24,7 @@
         <param name="threads" type="integer" label="线程数" value="4"/>
     </inputs>
     <outputs>
-        <data name="out" format="tsv" label="基于比对的耐药基因检测结果" from_work_dir="out.allele_mapping_data.txt" />
+		<data name="out2" format="tsv" label="基于比对的耐药基因检测结果" from_work_dir="out.gene_mapping_data.txt" />
     </outputs>
     <help><![CDATA[
 说明

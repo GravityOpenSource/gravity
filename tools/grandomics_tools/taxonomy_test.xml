@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<tool id="taxonomy_test" name="病原宏基因组beta" version="0.1.0">
+  <description> </description>
+  <requirements>
+    <requirement type="package" version="1.0.4">centrifuge</requirement>
+    <requirement type="package" version="2.7.1">krona</requirement>
+  </requirements>
+  <command detect_errors="exit_code"><![CDATA[
+    #if $singlePaired.sPaired == "single": 
+        /opt/conda/envs/taxonomy/bin/centrifuge -q -x $db -p $threads -S centrifuge_output --report-file centrifuge_report -U $singlePaired.sInput1 && 
+    #elif $singlePaired.sPaired == "paired":
+        /opt/conda/envs/taxonomy/bin/centrifuge -q -x $db -p $threads -S centrifuge_output --report-file centrifuge_report -1 $singlePaired.pInput1 -2 $singlePaired.pInput2 && 
+    #elif $singlePaired.sPaired == "paired_collection":
+        /opt/conda/envs/taxonomy/bin/centrifuge -q -x $db -p $threads -S centrifuge_output --report-file centrifuge_report -1 $singlePaired.fastq_input.forward -2 $singlePaired.fastq_input.reverse &&
+    #end if
+
+    python $__tool_directory__/detect_pathogen.py -r /data/library/database/taxonomy/human_pathogen.tsv -i centrifuge_report -o $pathogen &&
+
+    /opt/conda/envs/taxonomy/bin/centrifuge-kreport -x $db centrifuge_output > $centrifuge_kreport &&
+    cat centrifuge_output | cut -f 1,3 > centrifuge_output.krona && 
+    /opt/conda/envs/taxonomy/bin/ktImportTaxonomy -tax /data/library/database/taxonomy -o $krona_output centrifuge_output.krona
+    ]]>
+  </command>
+  <inputs>
+        <param name="batch_name" type="text" label="分析批次名" />
+        <param name="db" type="select" display="radio" label="选择数据库">
+            <options from_data_table="centrifuge_indices">
+                <column name="name" index="0" />
+                <column name="value" index="3" />
+            </options>
+        </param>
+        <conditional name="singlePaired">
+            <param name="sPaired" type="select" display="radio" label="选择数据类型">
+                <option value="single">单端数据</option>
+                <option value="paired">双端数据</option>
+                <option value="paired_collection">双端集合数据</option>
+            </param>
+            <when value="single">
+                <param name="sInput1" type="data" format="fastq" label="输入FASTQ文件" optional="false"/>
+            </when>
+            <when value="paired">
+                <param name="pInput1" type="data" format="fastq" label="输入Forward FASTQ文件" />
+                <param name="pInput2" type="data" format="fastq" label="输入Reverse FASTQ文件" />
+            </when>
+            <when value="paired_collection">
+                 <param name="fastq_input" format="fastqsanger" type="data_collection" collection_type="paired" label="选择双端集合数据" help="指定包含成对reads的成对数据集集合"/>
+            </when>
+        </conditional>
+        <param name="threads" type="integer" label="线程数" value="4" />
+    </inputs>
+    <outputs>
+        <data name="centrifuge_kreport" format="txt" label="$batch_name宏基因组分类结果" />
+        <data name="krona_output" format="html" label="$batch_name宏基因组分类结果可视化" />
+        <data name="pathogen" format="tsv" label="$batch_name人致病性病原候选结果" />
+    </outputs>
+
+    <help>
+
+    </help>
+</tool>

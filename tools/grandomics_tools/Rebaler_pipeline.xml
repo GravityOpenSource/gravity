@@ -27,11 +27,13 @@
                 <column name="value" index="3"/>
             </options>
         </param>
-        <param name="threads" type="integer" label=" 线程数" value="4" />
-        <param name="length" type="integer" label=" 查找primer的序列长度" value="70" />
-        <param name="cov" type="integer" label="抽样深度" value="100" />
-        <param name="stime" type="integer" label="抽样次数" value="10" />
-        <!--<param name="by" type="integer" label="窗口大小" value="1" />-->				
+        <section name="parameters" expanded="false" title="调整其他默认参数">
+            <param name="threads" type="integer" label=" 线程数" value="4" />
+            <param name="length" type="integer" label=" 查找primer的序列长度" value="70" />
+            <param name="cov" type="integer" label="抽样深度" value="100" />
+            <param name="stime" type="integer" label="抽样次数" value="10" />
+            <!--<param name="by" type="integer" label="窗口大小" value="1" />-->
+        </section>
     </inputs>
     <outputs>
         <data name="output_fasta" format="fasta" label="组装结果 on $input_fastq.element_identifier" />

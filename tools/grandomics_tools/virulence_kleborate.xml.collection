@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<tool id="virulence_kleborate" name="细菌毒力鉴定" version="1.0.0">
+    <requirements>
+        <requirement type="package">kleborate</requirement>
+        <requirement type="package">blast</requirement>
+		<requirement type="package">unicycler</requirement>
+    </requirements>
+    <command detect_error="exit_code"><![CDATA[
+		#if str( $reads_OR_contigs.input_type ) == "reads":
+		
+			#if str( $reads_OR_contigs.ngs_OR_ont_OR_hybrid.platform ) == "ont":
+				python $__tool_directory__/virulence_kleborate.py --thread $cpu --data_type read --sequencing_platform ont --ont_fastq
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs.is_collection
+					#for $ont_fastq in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs
+						$ont_fastq
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs
+				#end if
+				--prefix
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs.is_collection
+					#for $ont_fastq in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs
+						$ont_fastq.element_identifier
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs.element_identifier
+				#end if
+			#end if
+			
+			#if str( $reads_OR_contigs.ngs_OR_ont_OR_hybrid.platform ) == "ngs":
+				python $__tool_directory__/virulence_kleborate.py --thread $cpu --data_type read --sequencing_platform ngs --ngs_r1
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s.is_collection
+					#for $ngs_r1 in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s
+						$ngs_r1
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s
+				#end if
+				--ngs_r2
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r2s.is_collection
+					#for $ngs_r2 in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r2s
+						$ngs_r2
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r2s
+				#end if
+				--prefix
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s.is_collection
+					#for $ngs_r1 in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s
+						$ngs_r1.element_identifier
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s.element_identifier
+				#end if
+			#end if
+			
+			#if str( $reads_OR_contigs.ngs_OR_ont_OR_hybrid.platform ) == "hybrid":
+				python $__tool_directory__/virulence_kleborate.py --thread $cpu --data_type read --sequencing_platform hybrid --ngs_r1
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s.is_collection
+					#for $ngs_r1 in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s
+						$ngs_r1
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s
+				#end if
+				--ngs_r2
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r2s.is_collection
+					#for $ngs_r2 in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r2s
+						$ngs_r2
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r2s
+				#end if
+				--ont_fastqs
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs.is_collection
+					#for $ont_fastq in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs
+						$ont_fastq
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ont_fastqs
+				#end if
+				--prefix
+				#if $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s.is_collection
+					#for $ngs_r1 in $reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s
+						$ngs_r1.element_identifier
+					#end for
+				#else
+					$reads_OR_contigs.ngs_OR_ont_OR_hybrid.ngs_r1s.element_identifier
+				#end if
+			#end if
+		#end if
+		
+		#if str( $reads_OR_contigs.input_type ) == "contigs":
+			python $__tool_directory__/virulence_kleborate.py --thread $cpu --data_type contig --assembly_fasta 
+			#if $reads_OR_contigs.input_fastas.is_collection
+				#for $input_fasta in $reads_OR_contigs.input_fastas
+					$input_fasta
+				#end for
+			#else
+				$reads_OR_contigs.input_fastas
+			#end if
+			--prefix
+			#if $reads_OR_contigs.input_fastas.is_collection
+				#for $input_fasta in $reads_OR_contigs.input_fastas
+					$input_fasta.element_identifier
+				#end for
+			#else
+				$reads_OR_contigs.input_fastas.element_identifier
+			#end if
+		#end if
+    ]]>
+	</command>
+    <inputs>
+		<conditional name="reads_OR_contigs">
+			<param name="input_type" type="select" label="选择数据类型">
+                <option value="reads">测序数据</option>
+                <option value="contigs">组装结果</option>
+            </param>
+			<when value="reads">
+				<conditional name="ngs_OR_ont_OR_hybrid">
+					<param name="platform" type="select" label="选择测序平台">
+						<option value="ngs">二代数据</option>
+						<option value="ont">ONT数据</option>
+						<option value="hybrid">混合数据</option>
+					</param>
+					<when value="ont">
+						<param name="ont_fastqs" type="data" format="fastq" label="输入ONT FASTQ文件"/>
+					</when>
+					<when value="ngs">
+						<param name="ngs_r1s" type="data" format="fastq" label="输入二代Forward FASTQ文件" />
+						<param name="ngs_r2s" type="data" format="fastq" label="输入二代Reverse FASTQ文件" />
+					</when>
+					<when value="hybrid">
+						<param name="ont_fastqs" type="data" format="fastq" label="输入ONT FASTQ文件"/>
+						<param name="ngs_r1s" type="data" format="fastq" label="输入二代Forward FASTQ文件" />
+						<param name="ngs_r2s" type="data" format="fastq" label="输入二代Reverse FASTQ文件" />
+					</when>
+				</conditional>
+            </when>
+			<when value="contigs">
+                <param name="input_fastas" type="data" format="fasta" label="输入组装FASTA文件"/>
+            </when>
+        </conditional>
+        <!-- 其他全局变量 -->
+        <param name="cpu" type="text" label="使用CPU数量" value="4" />
+    </inputs>
+    <outputs>
+        <data name="output" format="tsv" label="细菌毒力鉴定结果" from_work_dir="Kleborate_results.txt"/>
+    </outputs>
+</tool>
+

@@ -5,85 +5,135 @@
         <requirement type="package">shovill</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        shovill --outdir outdir --R1 $pInput1 --R2 $pInput2 --ram $ram --depth $depth --trim --cpus $cpu 
-        #if str( $estimate_gSize.choose ) == "yes":
-            --gsize $estimate_gSize.gsize
+        echo "Run ${batch}." && 
+        #if str( $meta_OR_single.data_source ) == "metagenomics":
+            #if str($meta_OR_single.assemble_OR_align.process_type) == "align":
+                #if str($meta_OR_single.assemble_OR_align.ngs_OR_ont.ngsont) == "ngs":
+                    bash $__tool_directory__/amr_rgi_reads.sh $card_path $meta_OR_single.assemble_OR_align.ngs_OR_ont.pInput1 $meta_OR_single.assemble_OR_align.ngs_OR_ont.pInput2 $meta_OR_single.assemble_OR_align.ngs_OR_ont.aligner out $cpu
+                #end if
+                #if str($meta_OR_single.assemble_OR_align.ngs_OR_ont.ngsont) == "ont":
+                    python $__tool_directory__/amr_detecter_v1.py --ref $card_path/card_database_v3.0.8.fasta --fastq $meta_OR_single.assemble_OR_align.ngs_OR_ont.sInput1 --card $card_path/card.json --thread $cpu --prefix out 
+                #end if
+            #end if 
+        #end if
+        
+        #if str( $meta_OR_single.data_source ) == "single_microbial":
+            #if str($meta_OR_single.assemble_OR_align.process_type) == "assemble":
+                #if str($meta_OR_single.assemble_OR_align.ngs_OR_ont.ngsont) == "ngs":
+                    shovill --outdir outdir --R1 $meta_OR_single.assemble_OR_align.ngs_OR_ont.pInput1 --R2 $meta_OR_single.assemble_OR_align.ngs_OR_ont.pInput2 --ram $meta_OR_single.assemble_OR_align.ngs_OR_ont.ram --depth $meta_OR_single.assemble_OR_align.ngs_OR_ont.depth --trim --cpus $cpu 
+                    #if str( $meta_OR_single.assemble_OR_align.ngs_OR_ont.estimate_gSize.choose ) == "yes":
+                        --gsize $meta_OR_single.assemble_OR_align.ngs_OR_ont.estimate_gSize.gsize
+                    #end if
+                    && bash $__tool_directory__/amr_rgi_contig.sh $card_path outdir/contigs.fa out heatmap
+                #end if
+                #if str($meta_OR_single.assemble_OR_align.ngs_OR_ont.ngsont) == "ont":
+                    unicycler -l $meta_OR_single.assemble_OR_align.ngs_OR_ont.sInput1 -o outdir --keep 0 -t $cpu &&
+                    bash $__tool_directory__/amr_rgi_contig.sh $card_path outdir/assembly.fasta out heatmap
+                #end if
+            #end if 
+            #if str($meta_OR_single.assemble_OR_align.process_type) == "align":
+                #if str($meta_OR_single.assemble_OR_align.ngs_OR_ont.ngsont) == "ngs":
+                    bash $__tool_directory__/amr_rgi_reads.sh $card_path $meta_OR_single.assemble_OR_align.ngs_OR_ont.pInput1 $meta_OR_single.assemble_OR_align.ngs_OR_ont.pInput2 $meta_OR_single.assemble_OR_align.ngs_OR_ont.aligner out $cpu
+                #end if
+                #if str($meta_OR_single.assemble_OR_align.ngs_OR_ont.ngsont) == "ont":
+                    python $__tool_directory__/amr_detecter_v1.py --ref $card_path/card_database_v3.0.8.fasta --fastq $meta_OR_single.assemble_OR_align.ngs_OR_ont.sInput1 --card $card_path/card.json --thread $cpu --prefix out 
+                #end if
+            #end if
         #end if
     ]]>
     </command>
     <inputs>
+        <param name="batch" type="text" label="分析批次名(暂时只支持英文输入)" help="客户指定分析批次名，''批次-数据来源-处理方式-测序平台''会加到最终结果名字上"/>
         <!-- 选择数据来源及处理方式 -->
         <conditional name="meta_OR_single">
-            <param name="data_source" type="select" label="选择数据来源">
+            <param name="data_source" type="select" display="radio" label="选择数据来源">
                 <option value="metagenomics">宏基因组数据</option>
-                <option value="singlemicrobial" selected="true">单菌数据</option>
+                <option value="single_microbial" selected="true">单菌数据</option>
             </param>
             <!-- 宏基因组数据的比对方式 -->
             <when value="metagenomics">
                 <conditional name="assemble_OR_align">
-                    <param name="process_type" type="select" label="选择处理方式" optional="false" help="目前宏基因组数据仅支持比对，不支持组装">
+                    <param name="process_type" type="select" display="radio" label="选择处理方式" optional="false" help="目前宏基因组数据仅支持比对，不支持组装">
                         <option value="align">比对</option>
                     </param>
                     <when value="align">
-                        <param name="aligner" type="select" label="选择比对软件">
-                            <option value="bwa">NGS-bwa</option>
-                            <option value="bowtie">NGS-bowtie</option>
-                            <option value="minimap2">ONT-minimap2</option>
-                        </param>
+                        <!-- 选择数据类型，ONT还是NGS -->
+                        <conditional name="ngs_OR_ont">
+                            <param name="ngsont" type="select" display="radio" label="选择测序平台">
+                                <option value="ngs">二代测序</option>
+                                <option value="ont">ONT测序</option>
+                            </param>
+                            <when value="ont">
+                                <param name="sInput1" type="data" format="fastq" label="输入FASTQ文件" optional="false"/>
+                            </when>
+                            <when value="ngs">
+                                <param name="pInput1" type="data" format="fastq" label="输入Forward FASTQ文件" />
+                                <param name="pInput2" type="data" format="fastq" label="输入Reverse FASTQ文件" />
+                                <param name="aligner" type="select" label="选择比对软件">
+                                    <!-- option value="bowtie2">NGS-bowtie2</option -->
+                                    <option value="bwa">NGS-bwa</option>
+                                    
+                                </param>
+                            </when>
+                        </conditional>
                     </when>
                 </conditional>
             </when>
             <!-- 单菌数据的组装和比对方式 -->
-            <when value="singlemicrobial">
+            <when value="single_microbial">
                 <conditional name="assemble_OR_align">
-                    <param name="process_type" type="select" label="选择处理方式">
+                    <param name="process_type" type="select" display="radio" label="选择处理方式">
                         <option value="assemble">组装</option>
                         <option value="align">比对</option>
                     </param>
                     <when value="assemble">
-                        <param name="depth" type="text" label="用于组装的抽样深度" value="100" argument="--depth" help="过深的数据组装会耗费大量资源，默认抽样100x进行数据组装"/>
-                        <param name="ram" type="text" label="组装内存使用限额 (G)" value="16" argument="--ram" help=" 避免内存耗费过多导致任务失败，默认16G内存"/>
-                        <conditional name="estimate_gSize">
-                            <param name="choose" type="select" label="是否预估基因组大小">
-                                <option value="yes">预估</option>
-                                <option value="no" selected="True">不预估</option>
+                        <!-- 选择数据类型，ONT还是NGS -->
+                        <conditional name="ngs_OR_ont">
+                            <param name="ngsont" type="select" display="radio" label="选择测序平台">
+                                <option value="ngs">二代测序</option>
+                                <option value="ont">ONT测序</option>
                             </param>
-                            <when value="yes">
-                                <param name="gsize" type="text" value="" label="预估基因组大小 (M)" argument="--gsize" help="给定预估的基因组大小以便得到更相近的组装结果"/>
+                            <when value="ont">
+                                <param name="sInput1" type="data" format="fastq" label="输入FASTQ文件" optional="false"/>
+                                <!-- 三代组装参数留白 -->
+                            </when>
+                            <when value="ngs">
+                                <param name="pInput1" type="data" format="fastq" label="输入Forward FASTQ文件" />
+                                <param name="pInput2" type="data" format="fastq" label="输入Reverse FASTQ文件" />
+                                <param name="depth" type="text" label="用于组装的抽样深度" value="150" argument="--depth" help="过深的数据组装会耗费大量资源，默认抽样150x进行数据组装"/>
+                                <param name="ram" type="text" label="组装内存使用限额 (G)" value="16" argument="--ram" help=" 避免内存耗费过多导致任务失败，默认16G内存"/>
+                                <conditional name="estimate_gSize">
+                                    <param name="choose" type="select" display="radio" label="是否预估基因组大小">
+                                        <option value="yes">预估</option>
+                                        <option value="no" selected="True">不预估</option>
+                                    </param>
+                                    <when value="yes">
+                                        <param name="gsize" type="text" value="" label="预估基因组大小 (M)" argument="--gsize" help="给定预估的基因组大小以便得到更相近的组装结果"/>
+                                    </when>
+                                </conditional>
                             </when>
                         </conditional>
                     </when>
                     <when value="align">
-                        <param name="aligner" type="select" label="选择比对软件">
-                            <option value="bwa">NGS-bwa</option>
-                            <option value="bowtie">NGS-bowtie</option>
-                            <option value="minimap2">ONT-minimap2</option>
-                        </param>
-                    </when>
-                </conditional>
-            </when>
-        </conditional>
-        <!-- 选择数据类型，ONT还是NGS -->
-        <conditional name="ngs_OR_ont">
-            <param name="ngsont" type="select" label="选择测序平台">
-                <option value="ngs">二代测序</option>
-                <option value="ont">ONT测序</option>
-            </param>
-            <when value="ont">
-                <param name="sInput1" type="data" format="fastq" label="输入FASTQ文件" optional="false"/>
-            </when>
-            <when value="ngs">
-                <conditional name="singlePaired">
-                    <param name="sPaired" type="select" label="选择数据类型">
-                        <option value="single">单端数据</option>
-                        <option value="paired" selected="true">双端数据</option>
-                    </param>
-                    <when value="single">
-                        <param name="sInput1" type="data" format="fastq" label="输入FASTQ文件" optional="false"/>
-                    </when>
-                    <when value="paired">
-                        <param name="pInput1" type="data" format="fastq" label="输入Forward FASTQ文件" />
-                        <param name="pInput2" type="data" format="fastq" label="输入Reverse FASTQ文件" />
+                        <!-- 选择数据类型，ONT还是NGS -->
+                        <conditional name="ngs_OR_ont">
+                            <param name="ngsont" type="select" display="radio" label="选择测序平台">
+                                <option value="ngs">二代测序</option>
+                                <option value="ont">ONT测序</option>
+                            </param>
+                            <when value="ont">
+                                <param name="sInput1" type="data" format="fastq" label="输入FASTQ文件" optional="false"/>
+                            </when>
+                            <when value="ngs">
+                                <param name="pInput1" type="data" format="fastq" label="输入Forward FASTQ文件" />
+                                <param name="pInput2" type="data" format="fastq" label="输入Reverse FASTQ文件" />
+                                <param name="aligner" type="select" display="radio" label="选择比对软件">
+                                    <!-- option value="bowtie2">NGS-bowtie2</option -->
+                                    <option value="bwa">NGS-bwa</option>
+                                    
+                                </param>
+                            </when>
+                        </conditional>
                     </when>
                 </conditional>
             </when>
@@ -101,7 +151,8 @@
     </inputs>
     
     <outputs>
-        <data name="contig" format="fasta" label="二代数据组装 $pInput1.element_identifier" from_work_dir="outdir/contigs.fa" />
+        <data name="out" format="tsv" label="细菌耐药基因注释-$batch-${meta_OR_single.data_source}-${meta_OR_single.assemble_OR_align.process_type}-${meta_OR_single.assemble_OR_align.ngs_OR_ont.ngsont}" from_work_dir="out.txt" />
+        <data name="amr" format="tsv" label="细菌耐药基因分析结果-$batch-${meta_OR_single.data_source}-${meta_OR_single.assemble_OR_align.process_type}-${meta_OR_single.assemble_OR_align.ngs_OR_ont.ngsont}" from_work_dir="out.amr.tsv" />
     </outputs>
     
     <help><![CDATA[

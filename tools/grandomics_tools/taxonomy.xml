@@ -7,9 +7,9 @@
   </requirements>
   <command detect_errors="exit_code"><![CDATA[
     #if $singlePaired.sPaired == "single": 
-        /opt/conda/envs/taxonomy/bin/centrifuge -q -x $db -p $threads -S centrifuge_output --report-file centrifuge_report -U $singlePaired.sInput1 && 
+        /opt/conda/envs/taxonomy/bin/centrifuge -q --mm -x $db -p $threads -S centrifuge_output --report-file centrifuge_report -U $singlePaired.sInput1 && 
     #elif $singlePaired.sPaired == "paired":
-        /opt/conda/envs/taxonomy/bin/centrifuge -q -x $db -p $threads -S centrifuge_output --report-file centrifuge_report -1 $singlePaired.pInput1 -2 $singlePaired.pInput2 && 
+        /opt/conda/envs/taxonomy/bin/centrifuge -q --mm -x $db -p $threads -S centrifuge_output --report-file centrifuge_report -1 $singlePaired.pInput1 -2 $singlePaired.pInput2 && 
     #end if
 
     python $__tool_directory__/detect_pathogen.py -r /data/library/database/taxonomy/human_pathogen.tsv -i centrifuge_report -o $pathogen &&
